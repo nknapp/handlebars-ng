@@ -1,0 +1,33 @@
+{
+  "$id": "https://handlebars.knappi.org/schemas/spec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "This file describes the format of a handlebars-test specification",
+  "type": "object",
+  "properties": {
+    "description": {
+      "type": "string",
+      "description": "A description of what should be tested in this file"
+    },
+    "template": {
+      "type": "string",
+      "description": "The original template that should be compiled"
+    },
+    "ast": {
+      "additionalProperties": true,
+      "description": "The AST that is expected to be returned by the parser"
+    },
+    "input": {
+      "additionalProperties": true,
+      "description": "The input object"
+    },
+    "helpers": {
+      "additionalProperties": {
+        "description": "The filename of the helper inside the 'language-specific' directory",
+        "type": "string"
+      }
+    },
+    "output": {
+      "type": "string"
+    }
+  }
+}
