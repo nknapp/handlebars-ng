@@ -11,13 +11,14 @@ export function compile(ast: Program): CompiledTemplate {
 
 
 export class Visitor {
-    visitNode(node: AnyNode) {
+    visitNode(node: AnyNode): void {
         switch (node.type) {
             case "ContentStatement":
                 return this.visitContentStatement(node)
             case "Program":
                 return this.visitProgram(node)
             default:
+                // @ts-ignore
                 throw new Error("Unknown node type: " + node.type)
         }
     }

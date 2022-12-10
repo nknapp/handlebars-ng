@@ -1,0 +1,15 @@
+{
+  "name": "benchmarks",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "run-suites": "vite-node src/index.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^4.9.4",
+    "vite-node": "^0.25.6",
+    "vitest": "^0.25.6"
+  }
+}

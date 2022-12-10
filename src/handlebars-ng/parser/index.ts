@@ -1,4 +1,4 @@
-import {Program} from "./types/ast/program";
+import {Program} from "./ast/program";
 
 export function parse(template: string): Program {
     return {
