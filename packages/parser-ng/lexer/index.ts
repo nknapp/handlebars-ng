@@ -1,35 +1,48 @@
+import moo, {Lexer} from "moo";
+
 export type TokenType = "CONTENT" | "OPEN" | "CLOSE"
+
+export type Location = {
+    col: number;
+    row: number;
+}
 
 export interface Token {
     type: TokenType;
-    start: number;
-    end: number;
+    location: Location;
+    value: string
 }
+
 
 export class HandlebarsLexer {
 
-    private position = 0;
-    private template: string;
+    private lexer: Lexer;
 
 
     constructor(template: string) {
-        this.template = template;
+        this.lexer = moo.compile({
+            OPEN: /{{/,
+            CLOSE: /}}/,
+            CONTENT: {fallback: true}
+        })
+        this.lexer.reset(template)
     }
 
     [Symbol.iterator](): Iterator<Token> {
         return {
             next: (): IteratorResult<Token, undefined> => {
-                if (this.position < this.template.length) {
-                    try {
-                        return {
-                            value: {
-                                type: "CONTENT",
-                                start: this.position,
-                                end: this.position+1
-                            }
+                const next = this.lexer.next()
+                if (next != null) {
+                    return {
+                        done: false,
+                        value: {
+                            type: next.type as TokenType,
+                            location: {
+                                col: next.col,
+                                row: next.line,
+                            },
+                            value: next.value,
                         }
-                    } finally {
-                        this.position++
                     }
                 }
                 return {
@@ -39,6 +52,5 @@ export class HandlebarsLexer {
             }
         }
     }
-
-
 }
+
