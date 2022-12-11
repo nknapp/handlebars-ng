@@ -1,7 +1,7 @@
 import {HandlebarsLexer} from "../lexer";
 import {HandlebarsParser} from "./parser";
-import {Program} from "../model/program";
-import {SourceLocation} from "../model/node";
+import {Program} from "../model/ast";
+import {SourceLocation} from "../model/ast";
 
 
 describe("parser", () => {

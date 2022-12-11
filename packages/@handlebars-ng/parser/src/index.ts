@@ -1,4 +1,4 @@
-import {Program} from "./model/program";
+import {Program} from "./model/ast";
 import {HandlebarsLexer} from "./lexer";
 import {HandlebarsParser} from "./parser/parser";
 

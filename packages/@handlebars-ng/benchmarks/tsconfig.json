@@ -19,6 +19,6 @@
   },
   "include": [
     "src",
-    "./node_modules/vitest/globals.d.ts"
+    "../../../node_modules/vitest/globals.d.ts"
   ]
 }

@@ -1,6 +1,6 @@
-import {ContentStatement, MustacheStatement, PathExpression, Program, Statement} from "../model/program";
+import {ContentStatement, MustacheStatement, PathExpression, Program, Statement} from "../model/ast";
 import {MustacheCloseType, MustacheOpenType, Token, TokenType} from "../lexer";
-import {Position} from "../model/node";
+import {Position} from "../model/ast";
 
 
 export class HandlebarsParser {

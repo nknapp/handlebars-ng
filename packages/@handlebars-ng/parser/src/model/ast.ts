@@ -1,5 +1,3 @@
-import {Node} from "./node";
-
 
 export interface Program extends Node {
     type: "Program",
@@ -37,4 +35,21 @@ export interface PathExpression extends Node {
     parts: string[];
     original: string;
 }
+
+export interface Node {
+    type: string;
+    loc: SourceLocation;
+}
+
+export interface SourceLocation {
+    source?: string;
+    start: Position;
+    end: Position;
+}
+
+export interface Position {
+    line: number;
+    column: number;
+}
+
 
