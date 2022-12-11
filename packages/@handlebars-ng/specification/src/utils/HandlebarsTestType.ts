@@ -6,5 +6,6 @@ export interface HandlebarsTest {
     input: object,
     helpers?: Record<string, string>
     output: string
+    failsInOriginalHandlebars?: boolean
 
 }

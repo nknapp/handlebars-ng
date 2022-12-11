@@ -1,5 +1,5 @@
 
-import {testCases} from "specification";
+import {testCases} from "@handlebars-ng/specification";
 import {HandlebarsParser} from "./parser/parser";
 import {HandlebarsLexer} from "./lexer";
 

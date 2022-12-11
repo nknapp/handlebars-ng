@@ -28,6 +28,10 @@
     },
     "output": {
       "type": "string"
+    },
+    "failsInOriginalHandlebars": {
+      "description": "Indicates that this test fails in the original Handlebars (4.x), but in my opinion this should be correct",
+      "type": "boolean"
     }
   },
   "required": ["description","ast","input","output","template"]

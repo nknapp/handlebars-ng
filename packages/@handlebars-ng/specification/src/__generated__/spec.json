@@ -1,5 +1,28 @@
 [
   {
+    "description": "An empty template yields an empty result\n",
+    "template": "",
+    "ast": {
+      "type": "Program",
+      "body": [],
+      "strip": {},
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 1
+        }
+      }
+    },
+    "input": {},
+    "failsInOriginalHandlebars": true,
+    "output": "",
+    "filename": "basic/empty.hb-spec.yaml"
+  },
+  {
     "description": "A simple text is output as is\n",
     "template": "This is a simple text",
     "ast": {

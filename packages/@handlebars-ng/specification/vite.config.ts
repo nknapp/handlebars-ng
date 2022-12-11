@@ -5,7 +5,7 @@ import {defineConfig} from "vite";
 import dts from "vite-plugin-dts";
 
 export default defineConfig({
-    plugins: [dts()],
+    plugins: [dts({include: "src"})],
     build: {
         outDir: "dist",
         lib: {
@@ -13,6 +13,7 @@ export default defineConfig({
                 "spec": resolve(__dirname, 'src', '__generated__', "spec.ts"),
             },
             formats: ['es', "cjs"],
+            name: "specification"
         },
         sourcemap: true,
         minify: false,

@@ -1,12 +1,12 @@
-import {ContentStatement, MustacheStatement, PathExpression, Program, Statement} from "../model/ast";
+import {ContentStatement, MustacheStatement, PathExpression, Program, SourceLocation, Statement} from "../model/ast";
 import {MustacheCloseType, MustacheOpenType, Token, TokenType} from "../lexer";
-import {Position} from "../model/ast";
 
 
 export class HandlebarsParser {
 
     private tokens: Iterator<Token>;
     private lookAhead: IteratorResult<Token>
+    private currentToken: Token | null = null
 
     constructor(tokens: Iterable<Token>) {
         this.tokens = tokens[Symbol.iterator]()
@@ -15,22 +15,17 @@ export class HandlebarsParser {
 
     parse(): Program {
         const body: Statement[] = [];
-        let lastStatement: Statement | null = null
+        const firstToken = this.lookAhead.value
         while (!this.lookAhead.done) {
             let statement = this.parseStatement();
             body.push(statement)
-            lastStatement = statement
         }
-        const end: Position = lastStatement == null ? {column: 1, line: 1} : lastStatement.loc.end
 
         return {
             type: "Program",
-            loc: {
-                start: {line: 1, column: 0},
-                end,
-            },
             strip: {},
             body,
+            loc: this.loc(firstToken, this.currentToken)
         }
     }
 
@@ -52,16 +47,7 @@ export class HandlebarsParser {
         return {
             type: "ContentStatement",
             original: token.value,
-            loc: {
-                start: {
-                    line: token.start.line,
-                    column: token.start.column
-                },
-                end: {
-                    line: token.end.line,
-                    column: token.end.column
-                },
-            },
+            loc: this.loc(token, token),
             value: token.value,
         }
     }
@@ -78,17 +64,8 @@ export class HandlebarsParser {
             path,
             escaped,
             params: [],
-            strip: { close: false, open: false},
-            loc: {
-                start: {
-                    line: open.start.line,
-                    column: open.start.column
-                },
-                end: {
-                    line: close.end.line,
-                    column: close.end.column
-                },
-            }
+            strip: {close: false, open: false},
+            loc: this.loc(open, close)
         }
 
     }
@@ -98,25 +75,32 @@ export class HandlebarsParser {
         return {
             type: "PathExpression",
             original: token.value,
-            loc: { start: token.start, end: token.end},
+            loc: {start: token.start, end: token.end},
             depth: 0,
             data: false,
-            parts: [ token.value ]
+            parts: [token.value]
         }
     }
 
-    private eat(type: TokenType): Token {
+    eat(type: TokenType): Token {
         if (this.lookAhead.done == null) throw new Error(`Expected '${type}', but received end of file.`)
-        const nextToken = this.lookAhead.value;
-        if (nextToken.type !== type) throw new Error(`Expected '${type}', but received '${nextToken}'`)
+        const currentToken = this.lookAhead.value;
+        if (currentToken.type !== type) throw new Error(`Expected '${type}', but received '${currentToken}'`)
         this.lookAhead = this.tokens.next()
-        return nextToken
+        this.currentToken = currentToken
+        return currentToken
     }
 
-    private ignore(type: TokenType): void {
+    ignore(type: TokenType): void {
         while (!this.lookAhead.done && this.lookAhead.value.type === type) {
             this.lookAhead = this.tokens.next()
         }
+    }
+
+    loc(firstToken?: Token |null , lastToken?: Token | null): SourceLocation {
+        let start = firstToken?.start ?? {column: 0, line: 1};
+        let end = lastToken?.end ?? {column: 1, line: 1};
+        return {start, end,}
     }
 }
 
