@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "license": "MIT",
   "main": "dist/index.js",
+  "scripts": {
+    "dev:unit": "vitest --ui"
+  },
   "devDependencies": {
     "@types/moo": "^0.5.5",
     "moo": "^0.5.2",
+    "nearley": "^2.20.1",
     "vite": "^4.0.0",
     "vitest": "^0.25.6"
   }

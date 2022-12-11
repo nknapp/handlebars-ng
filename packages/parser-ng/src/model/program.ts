@@ -9,7 +9,7 @@ export interface Program extends Node {
 }
 
 export type AnyNode = Statement | Program
-type Statement = ContentStatement
+export type Statement = ContentStatement
 
 export interface ContentStatement extends Node {
     type: 'ContentStatement';

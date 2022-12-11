@@ -13,11 +13,15 @@ export interface Token {
     value: string
 }
 
+export interface TokenStream extends Iterable<Token> {
+    readonly currentToken: Token
+}
 
-export class HandlebarsLexer {
+export class HandlebarsLexer implements TokenStream {
 
     private lexer: Lexer;
 
+    private current: Token | null = null
 
     constructor(template: string) {
         this.lexer = moo.compile({
@@ -28,21 +32,27 @@ export class HandlebarsLexer {
         this.lexer.reset(template)
     }
 
+    get currentToken() {
+        if (this.current == null) throw new Error("Lexing has not started yet")
+        return this.current
+    }
+
     [Symbol.iterator](): Iterator<Token> {
         return {
             next: (): IteratorResult<Token, undefined> => {
                 const next = this.lexer.next()
                 if (next != null) {
+                    this.current = {
+                        type: next.type as TokenType,
+                        location: {
+                            col: next.col,
+                            row: next.line,
+                        },
+                        value: next.value,
+                    };
                     return {
                         done: false,
-                        value: {
-                            type: next.type as TokenType,
-                            location: {
-                                col: next.col,
-                                row: next.line,
-                            },
-                            value: next.value,
-                        }
+                        value: this.current
                     }
                 }
                 return {

@@ -1,4 +1,5 @@
-import {Program} from "./ast/program";
+import {Program} from "../model/program";
+
 
 export function parse(template: string): Program {
     return {
