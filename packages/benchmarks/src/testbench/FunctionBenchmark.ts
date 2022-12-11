@@ -21,7 +21,6 @@ export class FunctionBenchmark {
         }
     }
 
-
     getStats() {
         let count = this.durations.length;
         return {
