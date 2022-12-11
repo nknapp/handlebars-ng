@@ -1,5 +1,4 @@
 import {HandlebarsLexer, Token} from "./index";
-import {describe, expect, it} from "vitest";
 
 describe("Lexer", () => {
     describe("works for different templates", () => {

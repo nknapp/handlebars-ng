@@ -1,4 +1,3 @@
-import {describe} from "vitest";
 import {HandlebarsLexer} from "../lexer";
 import {HandlebarsParser} from "./parser";
 import {Program} from "../model/program";

@@ -2,7 +2,6 @@
 import {testCases} from "specification";
 import {HandlebarsParser} from "./parser/parser";
 import {HandlebarsLexer} from "./lexer";
-import {describe, expect, it} from "vitest";
 
 describe("specification tests", () => {
     for (const testCase of testCases) {
