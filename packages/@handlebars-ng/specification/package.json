@@ -1,6 +1,6 @@
 {
-  "name": "specification",
-  "version": "1.0.0",
+  "name": "@handlebars-ng/specification",
+  "version": "0.0.1",
   "license": "MIT",
   "scripts": {
     "test:ui": "vitest --ui",
