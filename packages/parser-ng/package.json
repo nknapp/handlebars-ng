@@ -4,15 +4,19 @@
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
-    "dev:unit": "vitest --ui"
+    "dev:unit": "vitest --ui",
+    "dev:types": "tsc --watch"
   },
   "devDependencies": {
     "@types/moo": "^0.5.5",
     "@vitest/ui": "^0.25.7",
-    "moo": "^0.5.2",
+    "specifiation": "../specification",
     "specification": "../specification",
     "vite": "^4.0.0",
     "vite-plugin-dts": "^1.7.1",
     "vitest": "^0.25.6"
+  },
+  "dependencies": {
+    "moo": "^0.5.2"
   }
 }

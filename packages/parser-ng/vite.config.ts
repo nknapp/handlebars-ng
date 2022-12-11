@@ -1,12 +1,9 @@
-/// <reference types="vitest" />
+/// <reference types="vitest/" />
 
 import {defineConfig} from "vite";
 import dts from "vite-plugin-dts";
 
 export default defineConfig({
-    test: {
-        globals: true
-    },
     plugins: [dts()],
     build: {
         lib: {
@@ -16,5 +13,8 @@ export default defineConfig({
         sourcemap: true,
         minify: false,
         target: "esnext"
-    }
+    },
+    test: {
+        globals: true
+    },
 })
