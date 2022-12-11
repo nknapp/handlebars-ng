@@ -10,37 +10,51 @@ describe("Lexer", () => {
         }
 
         it("a single character is a content token", () => {
-            testTemplate("a", [{type: "CONTENT", location: {col: 1, row: 1}, value: "a"}]);
+            testTemplate("a", [{
+                type: "CONTENT",
+                start: {column: 0, line: 1},
+                end: {column: 1, line: 1},
+                original: "a",
+                value: "a"
+            }]);
         })
         it("a multiple characters are one content token", () => {
-            testTemplate("hello", [{type: "CONTENT", location: {col: 1, row: 1}, value: "hello"}]);
+            testTemplate("hello", [{
+                type: "CONTENT",
+                start: {column: 0, line: 1},
+                end: {column: 5, line: 1},
+                original: "hello",
+                value: "hello"
+            }]);
         })
         it("detect OPEN", () => {
             testTemplate("hello {{", [
-                {type: "CONTENT", location: {col: 1, row: 1}, value: "hello "},
-                {type: "OPEN", location: {col: 7, row: 1}, value: "{{"}
+                {
+                    type: "CONTENT", start: {column: 0, line: 1}, end: {column: 6, line: 1},
+                    original: "hello ",
+                    value: "hello "
+                },
+                {
+                    type: "OPEN", start: {column: 6, line: 1}, end: {column: 8, line: 1},
+                    original: "{{",
+                    value: "{{"
+                }
             ]);
         })
         it("detect CLOSE", () => {
             testTemplate("hello }}", [
-                {type: "CONTENT", location: {col: 1, row: 1}, value: "hello "},
-                {type: "CLOSE", location: {col: 7, row: 1}, value: "}}"}
-            ]);
+                {
+                    type: "CONTENT", start: {column: 0, line: 1}, end: {column: 6, line: 1},
+                    original: "hello ",
+                    value: "hello "
+                },
+                {
+                    type: "CLOSE", start: {column: 6, line: 1}, end: {column: 8, line: 1},
+                    original: "}}",
+                    value: "}}"
+                }
+            ])
         })
-    })
-
-    it("returns the current token", () => {
-        const lexer = new HandlebarsLexer("hello {{")
-        let iterator = lexer[Symbol.iterator]();
-
-        const content = iterator.next().value
-        expect(content.type).toEqual("CONTENT")
-        expect(lexer.currentToken).toEqual(content)
-
-        const open = iterator.next().value
-        expect(open.type).toEqual("OPEN")
-        expect(lexer.currentToken).toEqual(open)
-
     })
 })
 

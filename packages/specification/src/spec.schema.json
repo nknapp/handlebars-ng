@@ -29,5 +29,6 @@
     "output": {
       "type": "string"
     }
-  }
+  },
+  "required": ["description","ast","input","output","template"]
 }

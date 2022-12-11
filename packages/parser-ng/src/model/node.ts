@@ -3,13 +3,13 @@ export interface Node {
     loc: SourceLocation;
 }
 
-interface SourceLocation {
+export interface SourceLocation {
     source?: string;
     start: Position;
     end: Position;
 }
 
-interface Position {
+export interface Position {
     line: number;
     column: number;
 }
