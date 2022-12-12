@@ -59,7 +59,7 @@ describe("parser", () => {
 });
 
 function expectAst(tokens: Token[], expectedAst: Program) {
-  const ast = new HandlebarsParser(tokens).parse();
+  const ast = new HandlebarsParser().parse(tokens);
   expect(ast).toEqual(expectedAst);
 }
 

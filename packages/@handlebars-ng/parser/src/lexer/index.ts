@@ -26,9 +26,11 @@ export class HandlebarsLexer {
         column: startColumn,
         line: token.line,
       },
-      end: {
-        column: startColumn + token.text.length,
-        line: token.line,
+      get end() {
+        return {
+          column: startColumn + token.text.length,
+          line: token.line,
+        };
       },
       value: token.value,
       original: token.text,

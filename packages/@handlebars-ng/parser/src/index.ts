@@ -4,5 +4,5 @@ import { HandlebarsParser } from "./parser/HandlebarsParser";
 
 export function parse(template: string): Program {
   const lexer = new HandlebarsLexer(template);
-  return new HandlebarsParser(lexer).parse();
+  return new HandlebarsParser().parse(lexer);
 }

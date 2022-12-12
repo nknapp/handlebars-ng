@@ -1,6 +1,5 @@
 import { Program } from "../model/ast";
 import { Token } from "../lexer";
-import { ParserContext } from "./ParserContext";
 import { pathExpression } from "./nodes/pathExpression";
 import { contentStatement } from "./nodes/contentStatement";
 import { statement } from "./nodes/statement";
@@ -9,13 +8,9 @@ import { program } from "./nodes/program";
 import { TokenStream } from "./TokenStream";
 
 export class HandlebarsParser {
-  private readonly tokens: TokenStream;
-  private readonly context: ParserContext;
-
-  constructor(tokens: Iterable<Token>) {
-    this.tokens = new TokenStream(tokens[Symbol.iterator]());
-    this.context = {
-      tokens: this.tokens,
+  parse(tokens: Iterable<Token>): Program {
+    const context = {
+      tokens: new TokenStream(tokens[Symbol.iterator]()),
       program: program,
       statement: statement,
       mustache: mustacheStatement("OPEN", "CLOSE", true),
@@ -27,9 +22,6 @@ export class HandlebarsParser {
       content: contentStatement,
       pathExpression: pathExpression,
     };
-  }
-
-  parse(): Program {
-    return this.context.program(this.context);
+    return context.program(context);
   }
 }
