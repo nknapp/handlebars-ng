@@ -28,5 +28,6 @@ await runWith(string);
 async function runWith(fn: FunctionUnderTest): Promise<void> {
   const bench = new FunctionBenchmark(fn);
   await bench.run(1000);
+  // eslint-disable-next-line no-console
   console.log(fn.name, bench.getStats());
 }
