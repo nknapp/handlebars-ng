@@ -34,5 +34,5 @@
       "type": "boolean"
     }
   },
-  "required": ["description","ast","input","output","template"]
+  "required": ["description", "ast", "input", "output", "template"]
 }

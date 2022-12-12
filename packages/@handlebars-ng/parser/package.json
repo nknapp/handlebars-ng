@@ -4,6 +4,8 @@
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
+    "format": "prettier -w src",
+    "lint": "eslint --fix src/",
     "dev:unit": "vitest --ui",
     "dev:types": "tsc --watch"
   },

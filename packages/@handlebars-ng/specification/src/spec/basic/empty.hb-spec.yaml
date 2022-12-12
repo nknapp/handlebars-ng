@@ -12,6 +12,6 @@ ast:
     end:
       line: 1
       column: 1
-input: { }
+input: {}
 failsInOriginalHandlebars: true
 output: ""

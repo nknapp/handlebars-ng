@@ -4,9 +4,11 @@
   "license": "MIT",
   "scripts": {
     "test:ui": "vitest --ui",
+    "lint": "eslint --fix src/",
     "test": "vitest",
     "prebuild": "vite-node src/bin/buildSpec.ts",
-    "build": "tsc && vite build"
+    "build": "tsc && vite build",
+    "format": "prettier -w src"
   },
   "module": "dist/spec.mjs",
   "main": "dist/spec.js",

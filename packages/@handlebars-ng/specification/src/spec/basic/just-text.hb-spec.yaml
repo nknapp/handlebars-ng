@@ -22,5 +22,5 @@ ast:
     end:
       line: 1
       column: 21
-input: { }
+input: {}
 output: "This is a simple text"

@@ -87,9 +87,7 @@
             "type": "PathExpression",
             "data": false,
             "depth": 0,
-            "parts": [
-              "name"
-            ],
+            "parts": ["name"],
             "original": "name",
             "loc": {
               "start": {
@@ -180,9 +178,7 @@
             "type": "PathExpression",
             "data": false,
             "depth": 0,
-            "parts": [
-              "name"
-            ],
+            "parts": ["name"],
             "original": "name",
             "loc": {
               "start": {

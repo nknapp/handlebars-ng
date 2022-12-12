@@ -4,7 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "run-suites": "vite-node src/index.ts"
+    "run-suites": "vite-node src/index.ts",
+    "format": "prettier -w src",
+    "lint": "eslint --fix src/"
   },
   "dependencies": {
     "@types/node": "^18.11.13"

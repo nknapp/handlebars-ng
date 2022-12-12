@@ -59,5 +59,5 @@ ast:
     end:
       line: 1
       column: 17
-input: { name: '<world>' }
+input: { name: "<world>" }
 output: "Hello <world>."
