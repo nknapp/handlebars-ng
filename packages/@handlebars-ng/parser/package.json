@@ -3,8 +3,11 @@
   "version": "0.0.1",
   "license": "MIT",
   "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "scripts": {
     "format": "prettier -w src",
+    "build": "vite build",
     "dev:unit": "vitest --ui",
     "dev:types": "tsc --watch"
   },
