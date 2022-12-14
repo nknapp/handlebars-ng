@@ -85,8 +85,8 @@ export const testCases: HandlebarsTest[] = [
       strip: {},
       loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 15 } },
     },
-    input: { name: "world" },
-    output: "Hello world.",
+    input: { name: "world < sun" },
+    output: "Hello world &lt; sun.",
     filename: "basic/simple-mustache.hb-spec.yaml",
   },
   {

@@ -87,7 +87,9 @@
             "type": "PathExpression",
             "data": false,
             "depth": 0,
-            "parts": ["name"],
+            "parts": [
+              "name"
+            ],
             "original": "name",
             "loc": {
               "start": {
@@ -146,9 +148,9 @@
       }
     },
     "input": {
-      "name": "world"
+      "name": "world < sun"
     },
-    "output": "Hello world.",
+    "output": "Hello world &lt; sun.",
     "filename": "basic/simple-mustache.hb-spec.yaml"
   },
   {
@@ -178,7 +180,9 @@
             "type": "PathExpression",
             "data": false,
             "depth": 0,
-            "parts": ["name"],
+            "parts": [
+              "name"
+            ],
             "original": "name",
             "loc": {
               "start": {
