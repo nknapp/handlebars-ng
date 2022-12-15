@@ -14,17 +14,17 @@ export interface ContentStatement extends Node {
   original: string;
 }
 
-export interface StripFlags {
-  open: boolean;
-  close: boolean;
-}
-
 export interface MustacheStatement extends Node {
   type: "MustacheStatement";
   escaped: boolean;
   params: string[];
   path: PathExpression;
   strip: StripFlags;
+}
+
+export interface StripFlags {
+  open: boolean;
+  close: boolean;
 }
 export interface PathExpression extends Node {
   type: "PathExpression";

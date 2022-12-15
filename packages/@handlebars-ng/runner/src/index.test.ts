@@ -1,6 +1,6 @@
 import { testCases } from "@handlebars-ng/specification";
 import { compile } from ".";
-import { Program } from "./model/ast";
+import { Program } from "@handlebars-ng/specification/src/types/ast";
 
 describe("the runner runs templates from the spec", () => {
   for (const testCase of testCases) {

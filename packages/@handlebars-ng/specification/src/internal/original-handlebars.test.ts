@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import * as Handlebars from "handlebars";
-import { parseSpec } from "./utils/parseSpec";
+import { parseSpec } from "./parseSpec";
 
 const testCases = await parseSpec();
 

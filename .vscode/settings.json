@@ -1,0 +1,5 @@
+{
+    "yaml.schemas": {
+        "./packages/@handlebars-ng/specification/src/types/spec.schema.json": "src/spec/**/*.yaml"
+    }
+}

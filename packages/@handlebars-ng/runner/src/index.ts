@@ -4,7 +4,7 @@ import {
   Node,
   Program,
   Statement,
-} from "./model/ast";
+} from "@handlebars-ng/specification/src/types/ast";
 import { htmlEscape } from "./utils/htmlEscape";
 
 type Runnable = (input: Record<string, unknown>) => string;

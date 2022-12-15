@@ -1,15 +1,6 @@
-export interface HandlebarsTest {
-  filename: string;
-  description: string;
-  template: string;
-  ast: object;
-  input: object;
-  helpers?: Record<string, string>;
-  output: string;
-  failsInOriginalHandlebars?: boolean;
-}
+import { ExportedHandlebarsTest } from "./HandlebarsTest";
 
-export const testCases: HandlebarsTest[] = [
+export const testCases: ExportedHandlebarsTest[] = [
   {
     description: "An empty template yields an empty result\n",
     template: "",
@@ -22,27 +13,7 @@ export const testCases: HandlebarsTest[] = [
     input: {},
     failsInOriginalHandlebars: true,
     output: "",
-    filename: "basic/empty.hb-spec.yaml",
-  },
-  {
-    description: "A simple text is output as is\n",
-    template: "This is a simple text",
-    ast: {
-      type: "Program",
-      body: [
-        {
-          type: "ContentStatement",
-          original: "This is a simple text",
-          value: "This is a simple text",
-          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 21 } },
-        },
-      ],
-      strip: {},
-      loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 21 } },
-    },
-    input: {},
-    output: "This is a simple text",
-    filename: "basic/just-text.hb-spec.yaml",
+    filename: "basic/empty.hb-spec.ts",
   },
   {
     description:
@@ -87,7 +58,27 @@ export const testCases: HandlebarsTest[] = [
     },
     input: { name: "world < sun" },
     output: "Hello world &lt; sun.",
-    filename: "basic/simple-mustache.hb-spec.yaml",
+    filename: "basic/escaped-mustache.hb-spec.ts",
+  },
+  {
+    description: "A simple text is output as is\n",
+    template: "This is a simple text",
+    ast: {
+      type: "Program",
+      body: [
+        {
+          type: "ContentStatement",
+          original: "This is a simple text",
+          value: "This is a simple text",
+          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 21 } },
+        },
+      ],
+      strip: {},
+      loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 21 } },
+    },
+    input: {},
+    output: "This is a simple text",
+    filename: "basic/just-text.hb-spec.ts",
   },
   {
     description:
@@ -132,6 +123,6 @@ export const testCases: HandlebarsTest[] = [
     },
     input: { name: "<world>" },
     output: "Hello <world>.",
-    filename: "basic/simple-raw-mustache.hb-spec.yaml",
+    filename: "basic/unescaped-mustache.hb-spec.ts",
   },
 ];

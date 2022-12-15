@@ -20,6 +20,6 @@
   "include": [
     "src",
     "../../../node_modules/vitest/globals.d.ts"
-  ],
+, "../specification/src/types/ast.ts"  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

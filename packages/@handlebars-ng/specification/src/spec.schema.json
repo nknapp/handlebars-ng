@@ -1,38 +1,244 @@
 {
-  "$id": "https://handlebars.knappi.org/schemas/spec.json",
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "description": "This file describes the format of a handlebars-test specification",
-  "type": "object",
-  "properties": {
-    "description": {
-      "type": "string",
-      "description": "A description of what should be tested in this file"
+  "$id": "http://www.knappi.org/handlebars-ng/test/schema",
+  "$ref": "#/definitions/HandlebarsTest",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "ContentStatement": {
+      "additionalProperties": false,
+      "properties": {
+        "loc": {
+          "$ref": "#/definitions/SourceLocation"
+        },
+        "original": {
+          "type": "string"
+        },
+        "type": {
+          "const": "ContentStatement",
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "loc",
+        "original",
+        "type",
+        "value"
+      ],
+      "type": "object"
     },
-    "template": {
-      "type": "string",
-      "description": "The original template that should be compiled"
+    "HandlebarsTest": {
+      "additionalProperties": false,
+      "properties": {
+        "$schema": {
+          "const": "http://www.knappi.org/handlebars-ng/test/schema",
+          "type": "string"
+        },
+        "ast": {
+          "$ref": "#/definitions/Program"
+        },
+        "description": {
+          "type": "string"
+        },
+        "failsInOriginalHandlebars": {
+          "type": "boolean"
+        },
+        "helpers": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "input": {
+          "type": "object"
+        },
+        "output": {
+          "type": "string"
+        },
+        "template": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "$schema",
+        "description",
+        "template",
+        "ast",
+        "input",
+        "output"
+      ],
+      "type": "object"
     },
-    "ast": {
-      "additionalProperties": true,
-      "description": "The AST that is expected to be returned by the parser"
+    "MustacheStatement": {
+      "additionalProperties": false,
+      "properties": {
+        "escaped": {
+          "type": "boolean"
+        },
+        "loc": {
+          "$ref": "#/definitions/SourceLocation"
+        },
+        "params": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "path": {
+          "$ref": "#/definitions/PathExpression"
+        },
+        "strip": {
+          "$ref": "#/definitions/StripFlags"
+        },
+        "type": {
+          "const": "MustacheStatement",
+          "type": "string"
+        }
+      },
+      "required": [
+        "escaped",
+        "loc",
+        "params",
+        "path",
+        "strip",
+        "type"
+      ],
+      "type": "object"
     },
-    "input": {
-      "additionalProperties": true,
-      "description": "The input object"
+    "PathExpression": {
+      "additionalProperties": false,
+      "properties": {
+        "data": {
+          "type": "boolean"
+        },
+        "depth": {
+          "type": "number"
+        },
+        "loc": {
+          "$ref": "#/definitions/SourceLocation"
+        },
+        "original": {
+          "type": "string"
+        },
+        "parts": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "type": {
+          "const": "PathExpression",
+          "type": "string"
+        }
+      },
+      "required": [
+        "data",
+        "depth",
+        "loc",
+        "original",
+        "parts",
+        "type"
+      ],
+      "type": "object"
     },
-    "helpers": {
-      "additionalProperties": {
-        "description": "The filename of the helper inside the 'language-specific' directory",
-        "type": "string"
-      }
+    "Position": {
+      "additionalProperties": false,
+      "properties": {
+        "column": {
+          "type": "number"
+        },
+        "line": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "line",
+        "column"
+      ],
+      "type": "object"
     },
-    "output": {
-      "type": "string"
+    "Program": {
+      "additionalProperties": false,
+      "properties": {
+        "blockParams": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "body": {
+          "items": {
+            "$ref": "#/definitions/Statement"
+          },
+          "type": "array"
+        },
+        "loc": {
+          "$ref": "#/definitions/SourceLocation"
+        },
+        "strip": {
+          "additionalProperties": {
+            "not": {}
+          },
+          "type": "object"
+        },
+        "type": {
+          "const": "Program",
+          "type": "string"
+        }
+      },
+      "required": [
+        "body",
+        "loc",
+        "strip",
+        "type"
+      ],
+      "type": "object"
     },
-    "failsInOriginalHandlebars": {
-      "description": "Indicates that this test fails in the original Handlebars (4.x), but in my opinion this should be correct",
-      "type": "boolean"
+    "SourceLocation": {
+      "additionalProperties": false,
+      "properties": {
+        "end": {
+          "$ref": "#/definitions/Position"
+        },
+        "source": {
+          "type": "string"
+        },
+        "start": {
+          "$ref": "#/definitions/Position"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "type": "object"
+    },
+    "Statement": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ContentStatement"
+        },
+        {
+          "$ref": "#/definitions/MustacheStatement"
+        }
+      ]
+    },
+    "StripFlags": {
+      "additionalProperties": false,
+      "properties": {
+        "close": {
+          "type": "boolean"
+        },
+        "open": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "open",
+        "close"
+      ],
+      "type": "object"
     }
-  },
-  "required": ["description", "ast", "input", "output", "template"]
+  }
 }
