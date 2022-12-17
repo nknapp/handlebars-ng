@@ -1,0 +1,56 @@
+{
+  "$schema": "../spec.schema.json",
+  "description": "Newlines around a mustache statement",
+  "template": "\n{{a}}\n",
+  "input": { "a": 2 },
+  "output": "\n2\n",
+  "ast": {
+    "type": "Program",
+    "body": [
+      {
+        "type": "ContentStatement",
+        "original": "\n",
+        "value": "\n",
+        "loc": {
+          "start": { "line": 1, "column": 0 },
+          "end": { "line": 2, "column": 0 }
+        }
+      },
+      {
+        "type": "MustacheStatement",
+        "path": {
+          "type": "PathExpression",
+          "data": false,
+          "depth": 0,
+          "parts": ["a"],
+          "original": "a",
+          "loc": {
+            "start": { "line": 2, "column": 2 },
+            "end": { "line": 2, "column": 3 }
+          }
+        },
+        "params": [],
+        "escaped": true,
+        "strip": { "open": false, "close": false },
+        "loc": {
+          "start": { "line": 2, "column": 0 },
+          "end": { "line": 2, "column": 5 }
+        }
+      },
+      {
+        "type": "ContentStatement",
+        "original": "\n",
+        "value": "\n",
+        "loc": {
+          "start": { "line": 2, "column": 5 },
+          "end": { "line": 3, "column": 0 }
+        }
+      }
+    ],
+    "strip": {},
+    "loc": {
+      "start": { "line": 1, "column": 0 },
+      "end": { "line": 3, "column": 0 }
+    }
+  }
+}

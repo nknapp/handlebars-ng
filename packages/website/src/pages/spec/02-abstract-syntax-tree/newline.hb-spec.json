@@ -1,0 +1,26 @@
+{
+  "$schema": "../spec.schema.json",
+  "description": "A single newline",
+  "template": "\n",
+  "output": "\n",
+  "input": {},
+  "ast": {
+    "type": "Program",
+    "body": [
+      {
+        "type": "ContentStatement",
+        "original": "\n",
+        "value": "\n",
+        "loc": {
+          "start": { "line": 1, "column": 0 },
+          "end": { "line": 2, "column": 0 }
+        }
+      }
+    ],
+    "strip": {},
+    "loc": {
+      "start": { "line": 1, "column": 0 },
+      "end": { "line": 2, "column": 0 }
+    }
+  }
+}
