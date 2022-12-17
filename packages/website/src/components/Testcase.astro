@@ -1,0 +1,11 @@
+---
+const {spec} = Astro.props
+---
+<div class="border-red-100">
+     <h2>{spec.name}</h2>
+     <header>{spec.description}</header>
+     <pre>{spec.template}</pre>
+     <div>{JSON.stringify(spec.ast)}</div>
+     <div>{JSON.stringify(spec.input)}</div>
+     <pre>{spec.output}</pre>
+</div>
