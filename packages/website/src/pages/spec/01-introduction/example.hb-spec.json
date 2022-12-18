@@ -1,6 +1,6 @@
 {
   "$schema": "../spec.schema.json",
-  "description": "something",
+  "description": "A basic example with one mustache",
   "template": "Hello {{something}}",
   "input": { "something": "world" },
   "output": "Hello world",

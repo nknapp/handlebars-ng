@@ -1,7 +1,7 @@
-import { parseSpec } from "./parseSpec";
+import { parseSpec } from "../src/utils/parseSpec";
 import fs from "fs";
 import path from "path";
-import { HandlebarsTest } from "../exported/HandlebarsTest";
+import type { HandlebarsTest } from "../src/types/spec";
 
 const targetDir = path.resolve(__dirname, "..");
 const specJsonFile = path.join(targetDir, "exported", "all-tests.json");

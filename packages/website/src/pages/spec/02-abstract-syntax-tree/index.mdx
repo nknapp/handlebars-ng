@@ -2,11 +2,6 @@
 title: 'The Abstract Syntax Tree'
 layout: src/layouts/Layout.astro
 ---
-import Testcase from 'src/components/Testcase.astro';
-
-import empty from './empty.hb-spec.json'
-import newline from './newline.hb-spec.json'
-import newlineAroundMustache from './newline-around-mustache.hb-spec.json'
 
 # The Abstract Syntax Tree
 
@@ -27,6 +22,9 @@ Like in JavaScripts "splice" method, the **end** location is exclusive
 * **line**: The line number of the character (first line is 1)
 * **column**: The column of the charachter (fist columne is 0)
 
-<Testcase spec={empty} />
-<Testcase spec={newline} />
-<Testcase spec={newlineAroundMustache} />
+
+[](./empty.hb-spec.json)
+
+[](./newline.hb-spec.json)
+
+[](./newline-around-mustache.hb-spec.json)

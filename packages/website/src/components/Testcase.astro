@@ -1,11 +1,46 @@
 ---
-const {spec} = Astro.props
+import type { HandlebarsTest } from "src/types/spec";
+import prettier from 'prettier'
+import {Code} from 'astro/components';
+import { Prism } from '@astrojs/prism';
+
+interface Props {
+  spec: HandlebarsTest;
+  filename: string;
+}
+
+const { spec, filename } = Astro.props;
+
+const prettyAst = prettier.format(JSON.stringify(spec.ast), { parser: 'json'})
+const prettyInput = prettier.format(JSON.stringify(spec.input), { parser: 'json'})
+
 ---
-<div class="border-red-100">
-     <h2>{spec.name}</h2>
-     <header>{spec.description}</header>
-     <pre>{spec.template}</pre>
-     <div>{JSON.stringify(spec.ast)}</div>
-     <div>{JSON.stringify(spec.input)}</div>
-     <pre>{spec.output}</pre>
+
+<div class="border-amber-900 border-2">
+  <header class="bg-slate-200 p-2">
+    <div class="text-lg">{filename}</div>
+    <div>{spec.description}</div>
+  </header>
+  <main class="p-2">
+    <dl>
+      <dt>Template:</dt>
+      <dd title={JSON.stringify(spec.template)}><Prism code={spec.template+ "\n"} lang="handlebars" /></dd>
+      <dt>Input</dt>
+      <dd><code><pre class="whitespace-pre">{prettyInput}</pre></code></dd>
+      <dt>Output</dt>
+      <dd title={JSON.stringify(spec.output)}><Prism code={spec.output+"\n"} /></dd>
+      <dt>AST</dt>
+      <dd><code><pre class="whitespace-pre">{prettyAst}</pre></code></dd>
+    </dl>
+  </main>
 </div>
+<style>
+  dt {
+    @apply font-bold;
+  }
+  code, pre{
+    @apply bg-white;
+    font-family: monospace;
+  }
+
+</style>

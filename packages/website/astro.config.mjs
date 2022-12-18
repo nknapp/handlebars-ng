@@ -1,4 +1,5 @@
 import { defineConfig } from "astro/config";
+import {injectTestcases} from './astro-plugins/inject-testcase.mjs';
 
 // https://astro.build/config
 import tailwind from "@astrojs/tailwind";
@@ -16,4 +17,8 @@ export default defineConfig({
       alias: {"src": path.resolve("src") }
     },
   },
+  markdown: {  
+    remarkPlugins: [injectTestcases],
+    extendDefaultPlugins: true
+  }
 });
