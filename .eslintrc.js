@@ -1,4 +1,18 @@
 const sourcesTs = ["packages/*/*/src/**/*.ts"];
+const scriptsTs = ["packages/*/*/scripts/**/*.ts"];
+const baseConfigTs = {
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    sourceType: "module",
+  },
+  plugins: ["@typescript-eslint/eslint-plugin"],
+  extends: [
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+  ],
+};
+const scriptsRules = { "no-console": "off" };
+
 const tests = ["packages/*/*/src/**/*.test.ts"];
 const configTs = ["packages/*/*/vite.config.ts"];
 const configJs = [".eslintrc.js"];
@@ -17,12 +31,12 @@ module.exports = {
   overrides: [
     {
       files: sourcesTs,
-      parser: "@typescript-eslint/parser",
-      plugins: ["@typescript-eslint/eslint-plugin"],
-      extends: [
-        "plugin:@typescript-eslint/eslint-recommended",
-        "plugin:@typescript-eslint/recommended",
-      ],
+      ...baseConfigTs,
+    },
+    {
+      files: scriptsTs,
+      ...baseConfigTs,
+      rules: scriptsRules,
     },
     {
       files: tests,

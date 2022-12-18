@@ -1,30 +1,16 @@
 /// <reference types="vitest" />
 
-import { resolve } from "path";
 import { defineConfig } from "vite";
-import dts from "vite-plugin-dts";
+import path from 'node:path'
 
+// This is the vite.config for scripts ran with "vite-node"
+// For the website-config look at "astro.config.mjs"
 export default defineConfig({
-  plugins: [dts({ include: "src" })],
-  build: {
-    outDir: "dist",
-    lib: {
-      entry: {
-        index: resolve(__dirname, "src", "index.ts"),
-      },
-      formats: ["es", "cjs"],
-      name: "specification",
-    },
-    sourcemap: true,
-    minify: false,
-    target: "esnext",
-  },
-  resolve: {
-    alias: {
-      src: "src",
-    },
-  },
+  plugins: [],
   test: {
     globals: true,
+  },
+  resolve: {
+    alias: {"@": path.resolve("src") }
   },
 });

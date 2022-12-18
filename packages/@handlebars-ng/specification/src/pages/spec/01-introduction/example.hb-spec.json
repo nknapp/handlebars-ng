@@ -1,0 +1,47 @@
+{
+  "$schema": "../schema/testcase.json",
+  "description": "A basic example with one mustache",
+  "template": "Hello {{something}}",
+  "input": { "something": "world" },
+  "output": "Hello world",
+  "ast": {
+    "type": "Program",
+    "body": [
+      {
+        "type": "ContentStatement",
+        "original": "Hello ",
+        "value": "Hello ",
+        "loc": {
+          "start": { "line": 1, "column": 0 },
+          "end": { "line": 1, "column": 6 }
+        }
+      },
+      {
+        "type": "MustacheStatement",
+        "path": {
+          "type": "PathExpression",
+          "data": false,
+          "depth": 0,
+          "parts": ["something"],
+          "original": "something",
+          "loc": {
+            "start": { "line": 1, "column": 8 },
+            "end": { "line": 1, "column": 17 }
+          }
+        },
+        "params": [],
+        "escaped": true,
+        "strip": { "open": false, "close": false },
+        "loc": {
+          "start": { "line": 1, "column": 6 },
+          "end": { "line": 1, "column": 19 }
+        }
+      }
+    ],
+    "strip": {},
+    "loc": {
+      "start": { "line": 1, "column": 0 },
+      "end": { "line": 1, "column": 19 }
+    }
+  }
+}

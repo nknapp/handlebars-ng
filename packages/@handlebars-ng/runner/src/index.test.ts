@@ -1,9 +1,9 @@
-import { testCases } from "@handlebars-ng/specification";
+import {handlebarsSpec  } from "@handlebars-ng/specification/tests";
 import { compile } from ".";
-import { Program } from "@handlebars-ng/specification/src/types/ast";
+import { Program } from "@handlebars-ng/specification/ast";
 
 describe("the runner runs templates from the spec", () => {
-  for (const testCase of testCases) {
+  for (const testCase of handlebarsSpec) {
     describe(testCase.filename, () => {
       it(testCase.description, () => {
         const result = compile(testCase.ast as Program)(testCase.input);

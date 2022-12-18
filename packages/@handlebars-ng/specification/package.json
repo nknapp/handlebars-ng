@@ -1,33 +1,42 @@
 {
   "name": "@handlebars-ng/specification",
+  "type": "module",
   "version": "0.0.1",
-  "license": "MIT",
+  "private": true,
   "scripts": {
-    "dev": "vitest --ui",
-    "lint": "eslint --fix src/",
-    "test": "vitest",
-    "generate:test-schema": "ts-json-schema-generator --path src/types/HandlebarsTest.ts --type HandlebarsTest > src/spec.schema.json --id http://www.knappi.org/handlebars-ng/test/schema",
-    "generate:spec": "vite-node src/internal/generateSpec.ts",
-    "build": "tsc && vite build",
-    "format": "prettier -w src"
+    "dev:server": "astro dev",
+    "dev:unit": "vitest --ui",
+    "test:types": "tsc",
+    "lint": "eslint .",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "generate": "concurrently npm:generate:*",
+    "generate:testcases": "vite-node scripts/assemble-testcases.ts && git add tests.js",
+    "generate:ast-schema": "ts-json-schema-generator -f tsconfig.json -p types/ast.d.ts -t Program -o src/pages/spec/schema/ast.json",
+    "generate:spec-schema": "ts-json-schema-generator -f tsconfig.json -p types/tests.d.ts -t HandlebarsTest -o src/pages/spec/schema/testcase.json"
   },
-  "module": "dist/index.mjs",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "dependencies": {
+    "@astrojs/mdx": "^0.12.2",
+    "@astrojs/prism": "^1.0.2",
+    "@astrojs/tailwind": "^2.1.3",
+    "astro": "^1.6.15",
+    "tailwindcss": "^3.0.24"
+  },
   "devDependencies": {
+    "@types/prettier": "^2.7.1",
     "@vitest/ui": "^0.25.7",
-    "globby": "^13.1.2",
+    "concurrently": "^7.6.0",
+    "del": "^7.0.0",
+    "globby": "^13.1.3",
     "handlebars": "^4.7.7",
+    "json-schema-to-typescript": "^11.0.2",
     "prettier": "^2.8.1",
     "ts-json-schema-generator": "^1.1.2",
     "typescript": "^4.9.4",
-    "vite": "^4.0.0",
+    "vite": "^4.0.1",
     "vite-node": "^0.25.7",
     "vite-plugin-dts": "^1.7.1",
-    "vitest": "^0.25.7",
-    "yaml": "^2.1.3"
+    "vitest": "^0.25.8"
   }
 }

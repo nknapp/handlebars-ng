@@ -1,0 +1,11 @@
+{
+    "json.schemas": [
+        
+    {
+        "fileMatch": [
+            "/**/*.hb.spec.json"
+        ],
+        "url": "./packages/@handlebars-ng/specification/public/schema/draft-00/testcase.json"
+    }
+    ]
+}
