@@ -1,4 +1,4 @@
-import {handlebarsSpec  } from "@handlebars-ng/specification/tests";
+import { handlebarsSpec } from "@handlebars-ng/specification/tests";
 import { compile } from ".";
 import { Program } from "@handlebars-ng/specification/ast";
 

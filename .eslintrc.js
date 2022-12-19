@@ -1,5 +1,8 @@
-const sourcesTs = ["packages/*/*/src/**/*.ts"];
-const scriptsTs = ["packages/*/*/scripts/**/*.ts"];
+const sourcesTs = [
+  "packages/@handlebars-ng/*/src/**/*.ts",
+  "packages/@handlebars-ng/**/*.d.ts",
+];
+const scriptsTs = ["packages/@handlebars-ng/*/scripts/**/*.ts"];
 const baseConfigTs = {
   parser: "@typescript-eslint/parser",
   parserOptions: {

@@ -4,9 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "run-suites": "vite-node src/index.ts",
-    "format": "prettier -w src",
-    "lint": "eslint --fix src/"
+    "test": "vite-node src/index.ts"
   },
   "dependencies": {
     "@handlebars-ng/parser": "0.0.1",

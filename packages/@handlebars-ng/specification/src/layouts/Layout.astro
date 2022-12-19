@@ -1,8 +1,8 @@
 ---
-import SidebarItem from '@/components/SidebarItem.astro';
+import SidebarItem from "@/components/SidebarItem.astro";
 
 interface Props {
-  title: string
+  title: string;
 }
 
 const specPages = await Astro.glob("../pages/spec/**/*.(mdx|md)");
@@ -31,7 +31,10 @@ const { title } = Astro.props;
               specPages.map((page) => {
                 return (
                   <li class="p-1">
-                    <SidebarItem href={page.url} text={page.frontmatter.title as string} />
+                    <SidebarItem
+                      href={page.url}
+                      text={page.frontmatter.title as string}
+                    />
                   </li>
                 );
               })
@@ -74,7 +77,7 @@ const { title } = Astro.props;
   .content h5 {
     @apply text-amber-900 text-lg mt-1 mb-1;
   }
-  
+
   .content ul {
     @apply list-disc list-inside mt-2 mb-2 ml-4;
   }

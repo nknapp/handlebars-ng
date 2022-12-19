@@ -2,22 +2,24 @@ import { parseSpec } from "@/utils/parseSpec";
 import fs from "fs/promises";
 import path from "path";
 import type { ExportedHandlebarsTest } from "../types/tests";
-import prettier from 'prettier'
-import {deleteAsync} from 'del'
+import prettier from "prettier";
+import { deleteAsync } from "del";
 
-await deleteAsync('dist')
-await fs.mkdir('dist')
-
+await deleteAsync("dist");
+await fs.mkdir("dist");
 
 const specTsFile = path.join("tests.mjs");
 const testCases = await parseSpec();
 
 await createJavaScriptSpec(specTsFile, testCases);
 
-async function createJavaScriptSpec(file: string, testCases: ExportedHandlebarsTest[]) {
+async function createJavaScriptSpec(
+  file: string,
+  testCases: ExportedHandlebarsTest[]
+) {
   await fs.writeFile(
     file,
-    prettier.format(generateJs(testCases), {parser: 'typescript'})
+    prettier.format(generateJs(testCases), { parser: "typescript" })
   );
 }
 
@@ -29,7 +31,5 @@ function generateJs(testCases: ExportedHandlebarsTest[]) {
 
 export const handlebarsSpec = ${JSON.stringify(testCases)}
 
-`
+`;
 }
-
-

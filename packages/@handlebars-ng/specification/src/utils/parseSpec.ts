@@ -10,7 +10,6 @@ export async function parseSpec(): Promise<ExportedHandlebarsTest[]> {
     result.push(testCase);
   }
   return result;
-  
 }
 export async function* iterateSpec(): AsyncGenerator<ExportedHandlebarsTest> {
   for (const testCaseFile of await specFilesRelativeToSpecDir()) {
@@ -21,5 +20,5 @@ export async function* iterateSpec(): AsyncGenerator<ExportedHandlebarsTest> {
 }
 
 export function specFilesRelativeToSpecDir(): Promise<string[]> {
-    return globby("**/*.hb-spec.json", { cwd: specDir });
+  return globby("**/*.hb-spec.json", { cwd: specDir });
 }

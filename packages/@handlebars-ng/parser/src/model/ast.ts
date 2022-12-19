@@ -1,1 +1,1 @@
-export * from '@handlebars-ng/specification/ast'
+export * from "@handlebars-ng/specification/ast";

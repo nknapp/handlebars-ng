@@ -1,15 +1,14 @@
 import path, { relative } from "path";
 
 const specDir = path.resolve("website-src/pages/spec");
-const TestCaseComponentName = "InjectedTestCase"
-
+const TestCaseComponentName = "InjectedTestCase";
 
 /**
  * Replace markdown links to hb-spec.json files with "Testcase" components.
- * 
- * There should be a much easier way to achieve this, but I haven't looked a lot. 
- * Seems to work for now, but I would be cautious to copy the concept into other 
- * projects. 
+ *
+ * There should be a much easier way to achieve this, but I haven't looked a lot.
+ * Seems to work for now, but I would be cautious to copy the concept into other
+ * projects.
  *
  */
 export function injectTestcases(options = {}) {
@@ -125,7 +124,7 @@ function createComponentImport() {
         type: "ImportDefaultSpecifier",
         local: {
           type: "Identifier",
-          name: TestCaseComponentName,      
+          name: TestCaseComponentName,
         },
       },
     ],
@@ -133,7 +132,7 @@ function createComponentImport() {
       type: "Literal",
       value: "@/components/Testcase.astro",
     },
-  }
+  };
 }
 
 function createTestcaseImport(variable, url) {
@@ -150,7 +149,7 @@ function createTestcaseImport(variable, url) {
     ],
     source: {
       type: "Literal",
-      value: url
+      value: url,
     },
   };
 }

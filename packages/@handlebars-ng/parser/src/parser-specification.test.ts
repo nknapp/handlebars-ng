@@ -1,7 +1,6 @@
 import { handlebarsSpec } from "@handlebars-ng/specification/tests";
 import { parse } from "./index";
 
-
 describe("test against Handlebars spec", () => {
   for (const testCase of handlebarsSpec) {
     describe(testCase.filename, () => {
