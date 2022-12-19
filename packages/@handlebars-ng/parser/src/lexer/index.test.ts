@@ -2,12 +2,6 @@ import { HandlebarsLexer, Token } from "./index";
 
 describe("Lexer", () => {
   describe("works for different templates", () => {
-    function testTemplate(template: string, expectedValue: Token[]) {
-      const lexer = new HandlebarsLexer(template);
-      const tokens = [...lexer];
-      expect(tokens).toEqual(expectedValue);
-    }
-
     it("a single character is a content token", () => {
       testTemplate("a", [
         {
@@ -30,7 +24,7 @@ describe("Lexer", () => {
         },
       ]);
     });
-    it("detect OPEN", () => {
+    it("detects OPEN", () => {
       testTemplate("hello {{", [
         {
           type: "CONTENT",
@@ -48,7 +42,7 @@ describe("Lexer", () => {
         },
       ]);
     });
-    it("detect CLOSE", () => {
+    it("detects CLOSE", () => {
       testTemplate("hello {{ }}", [
         {
           type: "CONTENT",
@@ -81,4 +75,25 @@ describe("Lexer", () => {
       ]);
     });
   });
+
+  it.each([
+    { text: "lorem ipsum dolor sit", line: 1, column: 21 },
+    { text: "lorem ipsum dolor\nsit", line: 2, column: 3 },
+    { text: "lorem ipsum\ndolor\n", line: 3, column: 0 },
+    { text: "lorem ipsum\ndolor\nsit ", line: 3, column: 4 },
+  ])(
+    "'$text' ends in line $line and column $column",
+    ({ text, line, column }) => {
+      const lexer = new HandlebarsLexer(text);
+      const token: Token = lexer[Symbol.iterator]().next().value;
+      expect(token.original).toEqual(text);
+      expect(token.end).toEqual({ line, column });
+    }
+  );
 });
+
+function testTemplate(template: string, expectedValue: Token[]) {
+  const lexer = new HandlebarsLexer(template);
+  const tokens = [...lexer];
+  expect(tokens).toEqual(expectedValue);
+}

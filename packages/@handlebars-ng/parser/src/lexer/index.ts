@@ -27,10 +27,17 @@ export class HandlebarsLexer {
         line: token.line,
       },
       get end() {
-        return {
-          column: startColumn + token.text.length,
-          line: token.line,
-        };
+        if (token.lineBreaks === 0) {
+          return {
+            column: startColumn + token.text.length,
+            line: token.line,
+          };
+        } else {
+          return {
+            column: token.text.length - token.text.lastIndexOf("\n") - 1,
+            line: token.line + token.lineBreaks,
+          };
+        }
       },
       value: token.value,
       original: token.text,
