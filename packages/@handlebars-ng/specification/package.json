@@ -6,6 +6,7 @@
   "scripts": {
     "dev:server": "astro dev",
     "dev:unit": "vitest --ui",
+    "dev": "concurrently -k npm:dev:*",
     "test:types": "tsc",
     "build": "astro build",
     "preview": "astro preview",

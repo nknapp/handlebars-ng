@@ -1,6 +1,6 @@
 import path, { relative } from "path";
 
-const specDir = path.resolve("website-src/pages/spec");
+const specDir = path.resolve("src/pages/spec");
 const TestCaseComponentName = "InjectedTestCase";
 
 /**

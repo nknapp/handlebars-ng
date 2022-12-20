@@ -9,7 +9,7 @@
 import type { HandlebarsTest } from "@handlebars-ng/specification/tests";
 import prettier from "prettier";
 
-import { Prism } from "@astrojs/prism";
+import { Code } from 'astro/components';
 
 interface Props {
   spec: HandlebarsTest;
@@ -32,17 +32,17 @@ const prettyInput = prettier.format(JSON.stringify(spec.input), {
   <main class="p-2">
     <dl>
       <dt>Template:</dt>
-      <dd title={JSON.stringify(spec.template)}>
-        <Prism code={spec.template + "\n"} lang="handlebars" />
+      <dd class="invisible-chars" title={JSON.stringify(spec.template)}>
+        <Code code={spec.template} lang="handlebars" />
       </dd>
       <dt>Input</dt>
-      <dd><code><pre class="whitespace-pre">{prettyInput}</pre></code></dd>
+      <dd><Code code={prettyInput} lang={"json"}/></dd>
       <dt>Output</dt>
-      <dd title={JSON.stringify(spec.output)}>
-        <Prism code={spec.output + "\n"} />
+      <dd class="invisible-chars" title={JSON.stringify(spec.output)}>
+        <Code code={spec.output} />
       </dd>
       <dt>AST</dt>
-      <dd><code><pre class="whitespace-pre">{prettyAst}</pre></code></dd>
+      <dd><Code code={prettyAst} lang={"json"}/></dd>
     </dl>
   </main>
 </div>

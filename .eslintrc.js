@@ -1,8 +1,8 @@
-const sourcesTs = [
+const sourcesTypeScript = [
   "packages/@handlebars-ng/*/src/**/*.ts",
   "packages/@handlebars-ng/**/*.d.ts",
 ];
-const scriptsTs = ["packages/@handlebars-ng/*/scripts/**/*.ts"];
+const scriptsTypeScript = ["packages/@handlebars-ng/*/scripts/**/*.ts"];
 const baseConfigTs = {
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -16,9 +16,10 @@ const baseConfigTs = {
 };
 const scriptsRules = { "no-console": "off" };
 
-const tests = ["packages/*/*/src/**/*.test.ts"];
-const configTs = ["packages/*/*/vite.config.ts"];
-const configJs = [".eslintrc.js"];
+const testsTypeScript = ["packages/*/*/src/**/*.test.ts"];
+const nodeTypeScript = ["packages/*/*/vite.config.ts"];
+const nodeJavaScript = [".eslintrc.js", "*.cjs"];
+const nodeModuleJavaScript = ["*.mjs"];
 
 module.exports = {
   root: true,
@@ -33,27 +34,36 @@ module.exports = {
   },
   overrides: [
     {
-      files: sourcesTs,
+      files: sourcesTypeScript,
       ...baseConfigTs,
     },
     {
-      files: scriptsTs,
+      files: scriptsTypeScript,
       ...baseConfigTs,
       rules: scriptsRules,
     },
     {
-      files: tests,
+      files: testsTypeScript,
       env: { jest: true },
     },
     {
-      files: configJs,
+      files: nodeJavaScript,
       env: {
         node: true,
       },
     },
     {
-      files: configTs,
+      files: nodeTypeScript,
       parser: "@typescript-eslint/parser",
+      env: {
+        node: true,
+      },
+    },
+    {
+      files: nodeModuleJavaScript,
+      parserOptions: {
+        sourceType: module,
+      },
       env: {
         node: true,
       },

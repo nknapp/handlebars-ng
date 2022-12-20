@@ -81,4 +81,46 @@ const { title } = Astro.props;
   .content ul {
     @apply list-disc list-inside mt-2 mb-2 ml-4;
   }
+
+  .content .astro-code {
+    @apply p-1;
+  } 
+
+
+  /* Inspired by https://sylvaindurand.org/using-css-to-add-line-numbering/ */
+  .content .astro-code code {
+    counter-reset: line;
+  }
+
+  .content  .astro-code .line {
+    counter-increment: line;
+    overflow: visible;
+    display: inline-block;
+    width: 100%;
+  }
+
+  .content .astro-code .line:before {
+    content: counter(line);
+    user-select: none;
+    @apply text-slate-500 mr-2
+  }
+
+  .content .astro-code .line:nth-child(2n) {
+    @apply bg-slate-900;
+  }
+
+  .content .astro-code .line:hover {
+    @apply bg-slate-700;
+  }
+
+
+  .content .invisible-chars  .astro-code .line:not(:last-child):after {
+    content: "⏎";
+    @apply text-slate-300
+  }
+
+  .content .invisible-chars  .astro-code .line:last-child:after {
+    content: " ";
+  }
+
 </style>
