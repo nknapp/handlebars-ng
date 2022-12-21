@@ -1,4 +1,4 @@
-import path, { relative } from "path";
+import path from "path";
 
 const specDir = path.resolve("src/pages/spec");
 const TestCaseComponentName = "InjectedTestCase";
@@ -11,7 +11,7 @@ const TestCaseComponentName = "InjectedTestCase";
  * projects.
  *
  */
-export function injectTestcases(options = {}) {
+export function injectTestcases() {
   return (tree, file) => {
     const testcases = new TestcaseImports();
     for (const { node, replaceWith } of visit(tree)) {
@@ -42,6 +42,7 @@ function* visit(node, parent, childIndex) {
 class TestcaseImports {
   identifierToUrl = {};
   counter = 0;
+
   get importsRequired() {
     return this.counter > 0;
   }

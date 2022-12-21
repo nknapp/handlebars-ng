@@ -25,7 +25,9 @@ module.exports = {
   root: true,
   parserOptions: {
     sourceType: "script",
-    ecmaVersion: 2021,
+  },
+  env: {
+    es2022: true,
   },
   extends: ["eslint:recommended", "prettier"],
   rules: {
@@ -62,7 +64,7 @@ module.exports = {
     {
       files: nodeModuleJavaScript,
       parserOptions: {
-        sourceType: module,
+        sourceType: "module",
       },
       env: {
         node: true,
