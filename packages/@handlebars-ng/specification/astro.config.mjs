@@ -27,4 +27,6 @@ export default defineConfig({
     }
   },
   outDir: "dist",
+  site: "https://handlebars-ng.knappi.org/",
+  base: "/"
 });
