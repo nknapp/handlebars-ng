@@ -23,12 +23,12 @@ jobs:
         with:
           node-version: 18
       - run: |
-          cd ${{ WEBSITE_DIR }}
+          cd ${{ env.WEBSITE_DIR }}
           yarn
           yarn build-site
       - uses: actions/upload-pages-artifact@v1
         with:
-          path: "${{ WEBSITE_DIR }}/dist/"
+          path: "${{ env.WEBSITE_DIR }}/dist/"
 
   deploy-site:
     if: github.ref == 'refs/heads/main'
