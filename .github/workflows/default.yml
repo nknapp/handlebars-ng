@@ -13,6 +13,7 @@ jobs:
 
   build-site:
     runs-on: ubuntu-latest
+    needs: test-and-build
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v3
@@ -24,6 +25,7 @@ jobs:
           package-manager: yarn
 
   deploy-site:
+    if: github.ref == 'refs/heads/main'
     needs: build-site
     runs-on: ubuntu-latest
     environment:
