@@ -4,14 +4,18 @@ import path from "path";
 import type { ExportedHandlebarsTest } from "../types/tests";
 import prettier from "prettier";
 import { deleteAsync } from "del";
+import cp from "child_process";
 
 await deleteAsync("dist");
 await fs.mkdir("dist");
 
-const specTsFile = path.join("tests.mjs");
+const specTsFile = path.join("dist", "tests.mjs");
 const testCases = await parseSpec();
 
 await createJavaScriptSpec(specTsFile, testCases);
+cp.exec("git add " + specTsFile);
+
+/* --------- */
 
 async function createJavaScriptSpec(
   file: string,

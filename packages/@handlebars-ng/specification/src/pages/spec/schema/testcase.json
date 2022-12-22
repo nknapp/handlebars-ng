@@ -19,7 +19,12 @@
           "type": "string"
         }
       },
-      "required": ["loc", "original", "type", "value"],
+      "required": [
+        "loc",
+        "original",
+        "type",
+        "value"
+      ],
       "type": "object"
     },
     "HandlebarsTest": {
@@ -90,7 +95,14 @@
           "type": "string"
         }
       },
-      "required": ["escaped", "loc", "params", "path", "strip", "type"],
+      "required": [
+        "escaped",
+        "loc",
+        "params",
+        "path",
+        "strip",
+        "type"
+      ],
       "type": "object"
     },
     "PathExpression": {
@@ -119,7 +131,14 @@
           "type": "string"
         }
       },
-      "required": ["data", "depth", "loc", "original", "parts", "type"],
+      "required": [
+        "data",
+        "depth",
+        "loc",
+        "original",
+        "parts",
+        "type"
+      ],
       "type": "object"
     },
     "Position": {
@@ -132,7 +151,10 @@
           "type": "number"
         }
       },
-      "required": ["line", "column"],
+      "required": [
+        "line",
+        "column"
+      ],
       "type": "object"
     },
     "Program": {
@@ -164,7 +186,12 @@
           "type": "string"
         }
       },
-      "required": ["body", "loc", "strip", "type"],
+      "required": [
+        "body",
+        "loc",
+        "strip",
+        "type"
+      ],
       "type": "object"
     },
     "SourceLocation": {
@@ -180,7 +207,10 @@
           "$ref": "#/definitions/Position"
         }
       },
-      "required": ["start", "end"],
+      "required": [
+        "start",
+        "end"
+      ],
       "type": "object"
     },
     "Statement": {
@@ -203,7 +233,10 @@
           "type": "boolean"
         }
       },
-      "required": ["open", "close"],
+      "required": [
+        "open",
+        "close"
+      ],
       "type": "object"
     }
   }

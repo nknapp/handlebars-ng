@@ -4,18 +4,26 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "test:types": "tsc --noEmit",
+    "test:unit": "vitest --run",
+    "build": "vite-node scripts/build-testcases.ts",
+    "test-and-build": "yarn test:unit && yarn build && yarn test:types",
+    "generate": "concurrently npm:generate:*",
+    "generate:ast-schema": "scripts/create-json-schema.sh types/ast.d.ts Program src/pages/spec/schema/ast.json",
+    "generate:spec-schema": "scripts/create-json-schema.sh types/tests.d.ts HandlebarsTest src/pages/spec/schema/testcase.json",
     "dev:server": "astro dev",
     "dev:unit": "vitest --ui",
     "dev": "concurrently -k npm:dev:*",
-    "test:types": "tsc",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro",
-    "generate": "concurrently npm:generate:*",
-    "generate:testcases": "vite-node scripts/assemble-testcases.ts && git add tests.js",
-    "generate:ast-schema": "ts-json-schema-generator -f tsconfig.json -p types/ast.d.ts -t Program -o src/pages/spec/schema/ast.json",
-    "generate:spec-schema": "ts-json-schema-generator -f tsconfig.json -p types/tests.d.ts -t HandlebarsTest -o src/pages/spec/schema/testcase.json"
+    "site:preview": "astro preview",
+    "site:build":"astro build",
+    "astro": "astro"
   },
+  "files": [
+    "ast.d.ts",
+    "tests.d.ts",
+    "types",
+    "tests.mjs"
+  ],
   "dependencies": {
     "@astrojs/mdx": "^0.12.2",
     "@astrojs/prism": "^1.0.2",

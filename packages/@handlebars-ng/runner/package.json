@@ -7,10 +7,13 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "vite build",
-    "test": "vitest --run",
+    "test:unit": "vitest --run",
+    "test:types": "tsc --noEmit",
+    "test-and-build": "yarn test:types && yarn test:unit && yarn build",
     "dev": "concurrently -k npm:dev:*",
     "dev:unit": "vitest --ui",
     "dev:types": "tsc --watch"
+
   },
   "devDependencies": {
     "@handlebars-ng/specification": "0.0.1",
