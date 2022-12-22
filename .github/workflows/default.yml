@@ -25,7 +25,7 @@ jobs:
       - run: |
           cd ${{ env.WEBSITE_DIR }}
           yarn
-          yarn build-site
+          yarn site:build
       - uses: actions/upload-pages-artifact@v1
         with:
           path: "${{ env.WEBSITE_DIR }}/dist/"
