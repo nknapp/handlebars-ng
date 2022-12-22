@@ -28,6 +28,10 @@ jobs:
     if: github.ref == 'refs/heads/main'
     needs: build-site
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: read
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
