@@ -2,6 +2,7 @@
   "workspaces": [
     "packages/@handlebars-ng/*"
   ],
+  "license": "MIT",
   "private": true,
   "scripts": {
     "test:lint": "eslint .",
