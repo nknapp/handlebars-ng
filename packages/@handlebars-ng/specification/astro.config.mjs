@@ -20,8 +20,16 @@ export default defineConfig({
       alias: {
         "@": path.resolve("src")
       }
-    }
-  },
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          entryFileNames: 'entry.[hash].js',
+          chunkFileNames: 'chunks/chunk.[hash].js',
+          assetFileNames: 'assets/asset.[hash][extname]',
+        },
+      },
+    },  },
   srcDir: "./src",
   markdown: {
     remarkPlugins: [injectTestcases],
