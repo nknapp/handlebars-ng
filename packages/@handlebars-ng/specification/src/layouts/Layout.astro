@@ -21,10 +21,10 @@ const { title } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body class="pt-12">
-    <div class="">
+  <body class="pt-12 ">
+    <div class="max-w-5xl mx-auto lg:shadow-xl">
       <div
-        class="fixed top-0 w-screen bg-amber-100 text-lg font-bold"
+        class="max-w-5xl mx-auto fixed top-0 w-full bg-amber-100 text-lg font-bold"
       >
         <div class="flex space-between items-center h-12 px-4">
           <SidebarButton client:load />
