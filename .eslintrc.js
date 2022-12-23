@@ -1,5 +1,6 @@
 const sourcesTypeScript = [
   "packages/@handlebars-ng/*/src/**/*.ts",
+  "packages/@handlebars-ng/*/src/**/*.tsx",
   "packages/@handlebars-ng/**/*.d.ts",
 ];
 const scriptsTypeScript = ["packages/@handlebars-ng/*/scripts/**/*.ts"];
@@ -15,6 +16,10 @@ const baseConfigTs = {
   ],
 };
 const scriptsRules = { "no-console": "off" };
+const baseRulesTs = {
+  "no-unused": "off",
+  "@typescript-eslint/no-unused-vars": "error",
+};
 
 const testsTypeScript = ["packages/*/*/src/**/*.test.ts"];
 const nodeTypeScript = ["packages/*/*/vite.config.ts"];
@@ -38,11 +43,12 @@ module.exports = {
     {
       files: sourcesTypeScript,
       ...baseConfigTs,
+      rules: baseRulesTs,
     },
     {
       files: scriptsTypeScript,
       ...baseConfigTs,
-      rules: scriptsRules,
+      rules: { ...baseRulesTs, ...scriptsRules },
     },
     {
       files: testsTypeScript,

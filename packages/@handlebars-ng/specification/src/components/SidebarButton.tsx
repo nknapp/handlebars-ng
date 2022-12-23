@@ -1,6 +1,6 @@
 import { showSidebar, toggleSidebar } from "@/store/sidebar";
 import { useStore } from "@nanostores/solid";
-import type { Component } from "solid-js";
+import type { Component, createSignal } from "solid-js";
 
 export const SidebarButton: Component = () => {
   const sideBarVisible = useStore(showSidebar);
