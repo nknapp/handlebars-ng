@@ -1,4 +1,6 @@
 ---
+import { Sidebar } from "@/components/Sidebar";
+import { SidebarButton } from "@/components/SidebarButton";
 import SidebarItem from "@/components/SidebarItem.astro";
 
 interface Props {
@@ -14,18 +16,22 @@ const { title } = Astro.props;
 <html lang="en" class="h-full">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body class="h-full">
-    <div class="flex flex-col h-full">
-      <div class="h-10 p-4 flex items-center bg-amber-100 text-lg font-bold">
+  <body class="pt-12">
+    <div class="">
+      <div
+        class="fixed top-0 w-screen h-12 px-4 flex space-between items-center bg-amber-100 text-lg font-bold"
+      >
         <a href="/">The Handlebars Language</a>
+        <div class="flex-1"></div>
+        <SidebarButton client:load />
       </div>
-      <div class="flex flex-1">
-        <aside class="p-4 w-64 flex-grow-0 flex-shrink-0 bg-orange-100">
+      <div class="fixed top-0 pt-12 w-0 h-full overflow-visible">
+        <Sidebar client:load>
           <ul class="sticky top-1">
             {
               specPages.map((page) => {
@@ -40,7 +46,9 @@ const { title } = Astro.props;
               })
             }
           </ul>
-        </aside>
+        </Sidebar>
+      </div>
+      <div class="">
         <div class="content p-4">
           <div class="font-bold bg-red-100 text-red-900 p-2">
             This project is in an early work-in-progress stage.
@@ -90,7 +98,6 @@ const { title } = Astro.props;
     @apply mt-0;
   }
 
-
   .content ul {
     @apply list-disc list-inside mt-2 mb-2 ml-4;
   }
@@ -108,7 +115,6 @@ const { title } = Astro.props;
     counter-increment: line;
     overflow: visible;
     display: inline-block;
-    width: 100%;
   }
 
   .content .astro-code .line:before {
@@ -137,9 +143,9 @@ const { title } = Astro.props;
   .content a {
     @apply underline underline-offset-4;
   }
-  
+
   .content a:hover {
-    background-color: rgba(127,127,127, 0.1);
-    outline: 5px solid rgba(127,127,127, 0.1);
-    }
+    background-color: rgba(127, 127, 127, 0.1);
+    outline: 5px solid rgba(127, 127, 127, 0.1);
+  }
 </style>

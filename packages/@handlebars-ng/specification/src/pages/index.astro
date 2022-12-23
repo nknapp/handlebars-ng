@@ -1,9 +1,24 @@
 ---
+import SidebarItem from "@/components/SidebarItem.astro";
 import Layout from "@/layouts/Layout.astro";
+import { For } from "solid-js";
+
+const specPages = await Astro.glob("../pages/spec/**/*.(mdx|md)");
 ---
 
 <Layout title="Handlebars - next generation">
   <main>
-    
+    {
+      specPages.map((page) => {
+        return (
+          <li class="p-1">
+            <SidebarItem
+              href={page.url}
+              text={page.frontmatter.title as string}
+            />
+          </li>
+        );
+      })
+    }
   </main>
 </Layout>

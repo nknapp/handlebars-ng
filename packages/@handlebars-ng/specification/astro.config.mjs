@@ -1,6 +1,6 @@
 import { defineConfig } from "astro/config";
 import { injectTestcases } from "./astro-plugins/inject-testcase.mjs";
-import shikiTheme from 'shiki/themes/github-light.json'
+import shikiTheme from 'shiki/themes/github-light.json';
 
 // https://astro.build/config
 import tailwind from "@astrojs/tailwind";
@@ -10,12 +10,17 @@ import mdx from "@astrojs/mdx";
 import path from "path";
 
 // https://astro.build/config
+import solidJs from "@astrojs/solid-js";
+
+// https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind(), mdx()],
+  integrations: [tailwind(), mdx(), solidJs()],
   vite: {
     resolve: {
-      alias: { "@": path.resolve("src") },
-    },
+      alias: {
+        "@": path.resolve("src")
+      }
+    }
   },
   srcDir: "./src",
   markdown: {
