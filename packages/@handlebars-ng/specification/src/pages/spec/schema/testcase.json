@@ -39,9 +39,6 @@
         "description": {
           "type": "string"
         },
-        "failsInOriginalHandlebars": {
-          "type": "boolean"
-        },
         "helpers": {
           "additionalProperties": {
             "type": "string"
@@ -51,6 +48,9 @@
         "input": {
           "additionalProperties": {},
           "type": "object"
+        },
+        "originalAst": {
+          "description": "The AST created by the original Handlebars parser, in case it is different from \"ast\""
         },
         "output": {
           "type": "string"
@@ -65,7 +65,8 @@
         "template",
         "ast",
         "input",
-        "output"
+        "output",
+        "originalAst"
       ],
       "type": "object"
     },

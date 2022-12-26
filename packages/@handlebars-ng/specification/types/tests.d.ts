@@ -8,7 +8,10 @@ export interface HandlebarsTest {
   input: Record<string, unknown>;
   helpers?: Record<string, string>;
   output: string;
-  failsInOriginalHandlebars?: boolean;
+  /**
+   * The AST created by the original Handlebars parser, in case it is different from "ast"
+   */
+  originalAst: unknown;
 }
 
 export interface ExportedHandlebarsTest extends HandlebarsTest {

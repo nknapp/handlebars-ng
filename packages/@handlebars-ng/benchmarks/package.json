@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@handlebars-ng/parser": "0.0.1",
+    "@handlebars-ng/specification": "0.0.1",
     "@types/node": "^18.11.13"
   },
   "devDependencies": {

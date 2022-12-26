@@ -16,7 +16,8 @@
     "dev": "concurrently -k npm:dev:*",
     "site:preview": "astro preview",
     "site:build": "astro build",
-    "astro": "astro"
+    "astro": "astro",
+    "auto-complete-tests": "vite-node scripts/add-results-to-tests.ts"
   },
   "files": [
     "ast.d.ts",

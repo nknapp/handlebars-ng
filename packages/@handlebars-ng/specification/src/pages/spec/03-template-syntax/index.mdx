@@ -1,0 +1,35 @@
+# Template Syntax
+
+A template (Program) consists of zero or more Statements
+
+```ebnf
+Program = { Statement }
+
+Statement =
+    MustacheStatement |
+    ContentStatement
+```
+
+**TODO: Add more statement types here**
+
+## Content-Statement
+
+Everything that is not any other Statment is considered to be Content.
+Content is copied "as is" to the output.
+
+[](./contents.hb-spec.json)
+
+**TODO Mustache escaping via "\"**
+
+[](./escaped-mustaches.hb-spec.json)
+
+```handlebars
+{{path.expression}}
+```
+
+In the output, it will be replaced by the result of the path expression.
+
+A path expression can have following the following forms:
+
+- An single identifier
+- A list of identifiers

@@ -7,7 +7,7 @@ const testCases = await parseSpec();
 describe("The spec", () => {
   for (const testCase of testCases) {
     describe(testCase.filename, () => {
-      if (testCase.failsInOriginalHandlebars) {
+      if (testCase.originalAst != null) {
         it.todo(testCase.description);
       } else {
         it(testCase.description, () => {
