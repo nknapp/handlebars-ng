@@ -7,6 +7,7 @@ export const statement: ParserContext["statement"] = (context) => {
   }
   switch (lookAhead?.type) {
     case "CONTENT":
+    case "ESCAPED_MUSTACHE":
       return context.content(context);
     case "OPEN":
       return context.mustache(context);

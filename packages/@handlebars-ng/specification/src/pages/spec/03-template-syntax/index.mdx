@@ -19,7 +19,8 @@ Content is copied "as is" to the output.
 
 [](./contents.hb-spec.json)
 
-**TODO Mustache escaping via "\"**
+An exception are escaped mustache statements.
+If a mustache token (`{{`) is prefixed with `\`, the backslash is removed from the output, but the `{{` remains.
 
 [](./escaped-mustaches.hb-spec.json)
 

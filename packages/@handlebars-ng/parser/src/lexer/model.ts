@@ -4,6 +4,7 @@ export type TokenType =
   | "CONTENT"
   | "SPACE"
   | "ID"
+  | "ESCAPED_MUSTACHE"
   | MustacheOpenType
   | MustacheCloseType;
 

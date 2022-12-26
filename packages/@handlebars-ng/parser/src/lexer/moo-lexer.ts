@@ -8,6 +8,7 @@ const states: MyStates = {
   main: {
     OPEN_UNESCAPED: { match: /{{{/, push: "unescapedMustache" },
     OPEN: { match: /{{/, push: "mustache" },
+    ESCAPED_MUSTACHE: { match: /\\\{\{/ },
     CONTENT: { fallback: true, lineBreaks: true },
   },
   mustache: {
