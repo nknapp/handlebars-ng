@@ -142,42 +142,36 @@ export const handlebarsSpec = [
   },
   {
     $schema: "../schema/testcase.json",
-    description: "Escape mustache expression",
-    template: "abc \\{{ cde",
+    description: "Escaped mustache expression",
+    template: "\\{{abc}} \\{{{cde}}}",
     input: {},
+    output: "{{abc}} {{{cde}}}",
     ast: {
       type: "Program",
       body: [
         {
           type: "ContentStatement",
-          original: "abc {{ cde",
-          value: "abc {{ cde",
-          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 11 } },
+          original: "\\{{abc}} \\{{{cde}}}",
+          value: "{{abc}} {{{cde}}}",
+          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 19 } },
         },
       ],
       strip: {},
-      loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 11 } },
+      loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 19 } },
     },
     originalAst: {
       type: "Program",
       body: [
         {
           type: "ContentStatement",
-          original: "abc ",
-          value: "abc ",
-          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 5 } },
-        },
-        {
-          type: "ContentStatement",
-          original: "{{ cde",
-          value: "{{ cde",
-          loc: { start: { line: 1, column: 5 }, end: { line: 1, column: 11 } },
+          original: "{{abc}} {{{cde}}}",
+          value: "{{abc}} {{{cde}}}",
+          loc: { start: { line: 1, column: 1 }, end: { line: 1, column: 19 } },
         },
       ],
       strip: {},
-      loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 11 } },
+      loc: { start: { line: 1, column: 1 }, end: { line: 1, column: 19 } },
     },
-    output: "abc {{ cde",
     filename: "03-template-syntax/escaped-content.hb-spec.json",
   },
 ];

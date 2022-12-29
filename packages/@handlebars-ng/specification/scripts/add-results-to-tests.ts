@@ -6,6 +6,7 @@ import path from "node:path";
 import { promisify, isDeepStrictEqual } from "node:util";
 import type { HandlebarsTest } from "../types/tests";
 import prettier from "prettier";
+import { Normalizer } from "@/utils/Normalizer";
 
 const writeFile = promisify(fs.writeFile);
 const readFile = promisify(fs.readFile);
@@ -36,6 +37,7 @@ function addOutput(testcase: HandlebarsTest): void {
 
 function addAst(testcase: HandlebarsTest): void {
   const ast = Handlebars.parse(testcase.template);
+  new Normalizer().accept(ast);
   if (testcase.ast == null) {
     testcase.ast = ast as Program;
   } else if (!deepEqual(ast, testcase.ast)) {

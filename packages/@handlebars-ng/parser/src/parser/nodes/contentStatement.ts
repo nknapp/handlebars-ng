@@ -6,10 +6,11 @@ export const contentStatement: ParserContext["content"] = (context) => {
   const firstToken = tokens[0];
   const lastToken = tokens[tokens.length - 1];
   const combinedValues = tokens.map((token) => token.value).join("");
+  const combinedOriginals = tokens.map((token) => token.original).join("");
 
   return {
     type: "ContentStatement",
-    original: combinedValues,
+    original: combinedOriginals,
     loc: context.tokens.loc(firstToken, lastToken),
     value: combinedValues,
   };
