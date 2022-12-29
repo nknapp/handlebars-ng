@@ -1,3 +1,8 @@
+---
+title: "Template Syntax"
+layout: "@/layouts/MarkdownLayout.astro"
+---
+
 # Template Syntax
 
 A template (Program) consists of zero or more Statements
@@ -20,15 +25,17 @@ Content is copied "as is" to the output.
 [](./content.hb-spec.json)
 
 An exception are escaped mustache statements.
-If a mustache token (`{{` or `{{{`) is prefixed with `\`, the backslash is removed from the output, but the `{{` remains.
+If a mustache token ("`{{`" or "`{{{`") is prefixed with `\`, the backslash is removed from the output, but the `{{` remains.
 
 [](./escaped-content.hb-spec.json)
+
+## Mustache-Statment
 
 ```handlebars
 {{path.expression}}
 ```
 
-In the output, it will be replaced by the result of the path expression.
+In the output, it will be replaced by the result of the path expression, escaping output as HTML by default.
 
 A path expression can have following the following forms:
 

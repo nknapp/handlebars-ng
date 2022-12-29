@@ -43,6 +43,11 @@ const prettyInput = prettier.format(JSON.stringify(spec.input), {
       </dd>
       <dt>AST</dt>
       <dd><Code code={prettyAst} lang={"json"}/></dd>
+      {spec.originalAst && 
+      <>
+      <dt class="text-red-800">Warning: The original Handlebars implementation has a deviating AST (which the author of this document considers to be wrong):</dt>
+        <dd><Code code={prettier.format(JSON.stringify(spec.originalAst), { parser: "json" })} lang={"json"}/></dd>
+      </>}
     </dl>
   </main>
 </div>
