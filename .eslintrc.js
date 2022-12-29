@@ -18,7 +18,10 @@ const baseConfigTs = {
 const scriptsRules = { "no-console": "off" };
 const baseRulesTs = {
   "no-unused": "off",
-  "@typescript-eslint/no-unused-vars": "error",
+  "@typescript-eslint/no-unused-vars": [
+    "error",
+    { varsIgnorePattern: "[iI]gnored" },
+  ],
 };
 
 const testsTypeScript = ["packages/*/*/src/**/*.test.ts"];

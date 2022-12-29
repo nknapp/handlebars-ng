@@ -24,34 +24,20 @@ export class TokenStream {
     return this.currentToken;
   }
 
-  eatAny(...types: TokenType[]): Token {
-    if (this.lookAhead == null)
-      throw new Error(
-        `Expected any of '${types.join(", ")}', but received end of file.`
-      );
-    this.currentToken = this.lookAhead;
-    if (!types.includes(this.currentToken.type))
-      throw new Error(
-        `Expected any of '${types.join(", ")}', but received '${
-          this.currentToken.type
-        }'`
-      );
-    this.lookAhead = this.tokens.next().value;
-    return this.currentToken;
-  }
-
   *keepEating(...types: TokenType[]): Generator<Token> {
     while (
       this.lookAhead?.type != null &&
       types.includes(this.lookAhead.type)
     ) {
-      yield this.eatAny(...types);
+      this.currentToken = this.lookAhead;
+      this.lookAhead = this.tokens.next().value;
+      yield this.currentToken;
     }
   }
 
-  ignore(type: TokenType): void {
-    while (this.lookAhead?.type === type) {
-      this.lookAhead = this.tokens.next().value;
+  ignore(...types: TokenType[]): void {
+    for (const ignoredToken of this.keepEating(...types)) {
+      // ignore token
     }
   }
 
