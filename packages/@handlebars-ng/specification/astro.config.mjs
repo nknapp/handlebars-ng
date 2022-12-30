@@ -1,6 +1,5 @@
 import { defineConfig } from "astro/config";
 import { injectTestcases } from "./astro-plugins/inject-testcase.mjs";
-import shikiTheme from 'shiki/themes/github-light.json';
 
 // https://astro.build/config
 import tailwind from "@astrojs/tailwind";
@@ -35,9 +34,6 @@ export default defineConfig({
     remarkPlugins: [injectTestcases],
     extendDefaultPlugins: true,
     syntaxHighlight: 'shiki',
-    shikiConfig: {
-      // theme: shikiTheme
-    }
   },
   outDir: "dist",
   site: "https://handlebars-ng.knappi.org/",
