@@ -36,7 +36,7 @@ export default defineConfig({
     extendDefaultPlugins: true,
     syntaxHighlight: 'shiki',
     shikiConfig: {
-      theme: shikiTheme
+      // theme: shikiTheme
     }
   },
   outDir: "dist",
