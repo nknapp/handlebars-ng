@@ -1,0 +1,25 @@
+---
+
+import Layout from "@/layouts/default/DefaultLayout.astro";
+
+const specPages = await Astro.glob("./*/*.(mdx|md)");
+---
+
+<Layout title="The Handlebars language">
+    <meta slot="additionalHead" http-equiv="refresh" content="0;URL='/spec/01-introduction'" />   
+  <main>
+    <ul>
+    {
+      specPages.map((page) => {
+        return (
+          <li class="p-1">
+            <a
+              href={page.url}
+            >{page.frontmatter.title as string}</a>
+          </li>
+        );
+      })
+    }
+    </ul>
+  </main>
+</Layout>

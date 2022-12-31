@@ -1,0 +1,28 @@
+---
+export interface Props {
+  header: string;
+  action?: {
+    href: string;
+    label: string;
+  };
+}
+
+const { action, header } = Astro.props;
+---
+
+<div class={"bg-white box-sh p-2"}>
+  <header class="text-2xl mb-2">{header}</header>
+  <p class="mb-4"><slot /></p>
+  {
+    action && (
+      <div class="mb-2">
+        <a
+          class="p-2 bg-orange-400 border-orange-900 border-2 hover:shadow-md hover:bg-orange-300 rounded-lg"
+          href={action.href}
+        >
+         {action.label}
+        </a>
+      </div>
+    )
+  }
+</div>

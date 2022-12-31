@@ -1,15 +1,14 @@
 ---
-import { Sidebar } from "@/components/Sidebar";
-import { SidebarButton } from "@/components/SidebarButton";
-import SidebarItem from "@/components/SidebarItem.astro";
+import Navbar from "./Navbar.astro";
+import { Sidebar } from "./Sidebar";
 
 interface Props {
   title: string;
+  section: string;
 }
 
-const specPages = await Astro.glob("../pages/spec/**/*.(mdx|md)");
-
-const { title } = Astro.props;
+const { title, section } = Astro.props;
+const sidebarEnabled = Astro.slots.has("sidebar");
 ---
 
 <!DOCTYPE html>
@@ -19,46 +18,23 @@ const { title } = Astro.props;
     <meta name="viewport" content="width=device-width, minimum-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+    <slot name="additionalHead" />
     <title>{title}</title>
   </head>
-  <body class="pt-12 ">
+  <body class="pt-12">
     <div class="max-w-5xl mx-auto lg:shadow-xl">
-      <div
-        class="max-w-5xl mx-auto fixed top-0 w-full bg-amber-100 text-lg font-bold"
-      >
-        <div class="flex space-between items-center h-12 px-4">
-          <SidebarButton client:load />
-          <div class="w-2"></div>
-          <a href="/">
-            <img src="/favicon.svg" class="h-8 mr-2 inline"> The Handlebars Language
-          </a>
-          
-        </div>
-      </div>
-      <div class="fixed top-0 pt-12 w-0 h-full overflow-visible">
-        <Sidebar client:load>
-          <ul class="sticky top-1">
-            {
-              specPages.map((page) => {
-                return (
-                  <li class="p-1">
-                    <SidebarItem
-                      href={page.url}
-                      text={page.frontmatter.title as string}
-                    />
-                  </li>
-                );
-              })
-            }
-          </ul>
-        </Sidebar>
-      </div>
-      <div class="lg:ml-64">
-        <div class="content p-4">
-          <div class="font-bold bg-red-100 text-red-900 p-2">
-            This project is in an early work-in-progress stage.
-            <a href="https://github.com/nknapp/handlebars-ng">Contribute</a>
+      <Navbar sidebarEnabled={sidebarEnabled} title={section}/>
+      {
+        sidebarEnabled && (
+          <div class="fixed top-0 pt-12 w-0 h-full overflow-visible">
+            <Sidebar client:load>
+              <slot name="sidebar" />
+            </Sidebar>
           </div>
+        )
+      }
+      <div class={sidebarEnabled ? "lg:ml-64" : ""}>
+        <div class="content p-4">
           <slot />
         </div>
       </div>

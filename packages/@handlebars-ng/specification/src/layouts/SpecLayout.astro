@@ -1,0 +1,18 @@
+---
+import TableOfContents from "@/components/sidebar/TableOfContents.astro";
+import type { MarkdownLayoutProps } from "astro";
+import Layout from "./default/DefaultLayout.astro";
+
+type Props = MarkdownLayoutProps<{
+  title: string;
+}>;
+
+const { frontmatter } = Astro.props;
+---
+
+<Layout title={frontmatter.title} section="Language specification">
+  <div slot="sidebar">
+    <TableOfContents />
+  </div>
+  <slot />
+</Layout>

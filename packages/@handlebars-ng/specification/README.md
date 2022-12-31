@@ -56,7 +56,6 @@ We use [tailwind](https://docs.astro.build/de/guides/integrations-guide/tailwind
 
 The whole specification is very much work in progress. Apart from specs and tests, the following things are still missing:
 
-- A lot of markdown-styling is still missing. The [MarkdownLayout.astro](src/layouts/MarkdownLayout.astro) is used by pages and missing styles should be added
-  there as we proceed with the spec.
+- A lot of markdown-styling is still missing. The [SpecLayout.astro](src/layouts/SpecLayout.astro) is used by specification pages and missing styles should be added there as we proceed with the spec.
 - We should generate a JSON file that contains the same data as the export of the specification module. It can then be used by implementations in
   other languages.

@@ -1,0 +1,20 @@
+---
+import SidebarItem from "./TocItem.astro";
+
+const specPages = await Astro.glob("../../pages/spec/**/*.(mdx|md)");
+---
+
+<ul class="sticky top-1">
+  {
+    specPages.map((page) => {
+      return (
+        <li class="p-1">
+          <SidebarItem
+            href={page.url}
+            text={page.frontmatter.title as string}
+          />
+        </li>
+      );
+    })
+  }
+</ul>

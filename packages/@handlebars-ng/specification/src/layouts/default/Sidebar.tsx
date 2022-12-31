@@ -1,4 +1,4 @@
-import { showSidebar, toggleSidebar } from "@/store/sidebar";
+import { showSidebar, toggleSidebar } from "@/layouts/default/sidebar-store";
 import { useStore } from "@nanostores/solid";
 import type { Component, JSXElement } from "solid-js";
 
