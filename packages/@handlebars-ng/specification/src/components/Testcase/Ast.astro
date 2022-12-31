@@ -1,0 +1,13 @@
+---
+import prettier from "prettier";
+
+import { Code } from "astro/components";
+
+export interface Props {
+  ast: Record<never, unknown>
+}
+
+const {ast} = Astro.props
+const prettyAst = prettier.format(JSON.stringify(ast), { parser: "json" });
+---
+<Code code={prettyAst} lang={"json"} />

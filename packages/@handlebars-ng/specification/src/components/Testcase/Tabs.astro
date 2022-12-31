@@ -1,0 +1,83 @@
+---
+---
+
+<dl data-my-tab>
+  <nav class="flex" data-my-tab-headers></nav>
+  <div data-my-tab-contents>
+    <slot />
+  </div>
+</dl>
+<script>
+  for (const tab of document.querySelectorAll("[data-my-tab]")) {
+    const headerEl = tab.querySelector<HTMLElement>("[data-my-tab-headers]");
+    const contentEl = tab.querySelector<HTMLElement>("[data-my-tab-contents]");
+    if (headerEl != null && contentEl != null) {
+      const headers = Array.from(
+        tab.querySelectorAll<HTMLElement>("[data-my-tab-contents] > header")
+      );
+      headers.forEach((header) => {
+        console.log(header, headerEl);
+        contentEl.removeChild(header);
+        headerEl.appendChild(header);
+      });
+
+      const contents = Array.from(
+        tab.querySelectorAll<HTMLElement>("[data-my-tab-contents] > div")
+      );
+
+      headerEl.addEventListener("click", ({ target }) => {
+        if (!(target instanceof Node)) return;
+        const clickedIndex = headers.findIndex((el) => el.contains(target));
+        updateActive(clickedIndex);
+      });
+
+      const maxContentsHeight = Math.max(
+        ...contents.map((el) => el.getBoundingClientRect().height)
+      );
+      for (const content of contents) {
+        content.style.minHeight = maxContentsHeight + "px";
+      }
+      contentEl.classList.add("tabs-ready");
+
+      updateActive(0);
+
+      function updateActive(newIndex: number) {
+        for (let i = 0; i < headers.length; i++) {
+          if (i === newIndex) {
+            headers[i]!.classList.add("active");
+            contents[i]!.classList.add("active");
+          } else {
+            headers[i]!.classList.remove("active");
+            contents[i]!.classList.remove("active");
+          }
+        }
+      }
+    }
+  }
+</script>
+<style is:global>
+  [data-my-tab] > [data-my-tab-headers] {
+    @apply flex gap-1;
+  }
+
+  [data-my-tab] > [data-my-tab-headers] > header {
+    @apply px-8 py-2 cursor-pointer;
+    @apply bg-orange-200;
+  }
+
+  [data-my-tab] > [data-my-tab-headers] > header.active {
+    @apply outline outline-orange-600 outline-2 -outline-offset-2;
+  }
+
+  [data-my-tab] > [data-my-tab-contents].tabs-ready {
+    @apply bg-orange-50 border p-2;
+  }
+
+  [data-my-tab] > [data-my-tab-contents].tabs-ready > div {
+    display: none;
+  }
+
+  [data-my-tab] > [data-my-tab-contents].tabs-ready > div.active {
+    display: block;
+  }
+</style>

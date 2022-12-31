@@ -99,7 +99,7 @@ function createTestcaseNode(linkNode, identifier, file) {
   };
 }
 
-function createImports(identigierToTestcaseUrl) {
+function createImports(identifierToTestcaseUrl) {
   return {
     type: "mdxjsEsm",
     data: {
@@ -107,7 +107,7 @@ function createImports(identigierToTestcaseUrl) {
         type: "Program",
         body: [
           createComponentImport(),
-          ...Object.entries(identigierToTestcaseUrl).map(([variable, url]) => {
+          ...Object.entries(identifierToTestcaseUrl).map(([variable, url]) => {
             return createTestcaseImport(variable, url);
           }),
         ],
@@ -131,7 +131,7 @@ function createComponentImport() {
     ],
     source: {
       type: "Literal",
-      value: "@/components/Testcase.astro",
+      value: "@/components/Testcase/index.astro",
     },
   };
 }
