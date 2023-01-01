@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import * as Handlebars from "handlebars";
-import { parseSpec } from "./utils/parseSpec";
-import { Normalizer } from "./utils/Normalizer";
+import { loadTestcases } from "./utils/testcases";
+import { Normalizer } from "./utils/AstNormalizer";
 
-const testCases = await parseSpec();
+const testCases = await loadTestcases();
 
 describe("The spec", () => {
   for (const testCase of testCases) {

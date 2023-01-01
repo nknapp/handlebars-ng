@@ -6,8 +6,7 @@
     "paths": {
       "@/*": [
         "src/*"
-      ],
-      "handlebars": ["types/handlebars"]
+      ]
     },
     "jsx": "preserve",
     "jsxImportSource": "solid-js"
@@ -16,5 +15,5 @@
     "src/**/*",
     "scripts/**/*",
     "types/*"
-, "types/handlebars/originalAst.d.ts", "types/handlebars/originalAst.d.ts"  ]
+  ]
 }

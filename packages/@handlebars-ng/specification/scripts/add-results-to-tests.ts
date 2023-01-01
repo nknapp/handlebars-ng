@@ -1,26 +1,23 @@
-import { specDir, specFilesRelativeToSpecDir } from "@/utils/parseSpec";
+import { specDir, specFilesRelativeToSpecDir } from "@/utils/testcases";
 import Handlebars from "handlebars";
 import type { Program } from "../types/ast";
 import fs from "node:fs";
 import path from "node:path";
-import { promisify, isDeepStrictEqual } from "node:util";
+import { promisify } from "node:util";
 import type { HandlebarsTest } from "../types/tests";
 import prettier from "prettier";
-import { Normalizer } from "@/utils/Normalizer";
+import { Normalizer } from "@/utils/AstNormalizer";
+import { deepEqualJson } from "@/utils/deepEqualJson";
 
-const writeFile = promisify(fs.writeFile);
-const readFile = promisify(fs.readFile);
-
-for (const file of await specFilesRelativeToSpecDir()) {
+async function addResultToFile(file: string) {
   const absoluteFile = path.resolve(specDir, file);
-
   const testcase = JSON.parse(await readFile(absoluteFile, "utf-8"));
   const newTestcase = { ...testcase };
 
   addOutput(newTestcase);
   addAst(newTestcase);
 
-  if (!deepEqual(testcase, newTestcase)) {
+  if (!deepEqualJson(testcase, newTestcase)) {
     console.log("Updating " + file);
     const formatted = prettier.format(JSON.stringify(newTestcase), {
       parser: "json",
@@ -40,18 +37,16 @@ function addAst(testcase: HandlebarsTest): void {
   new Normalizer().accept(ast);
   if (testcase.ast == null) {
     testcase.ast = ast as Program;
-  } else if (!deepEqual(ast, testcase.ast)) {
+  } else if (!deepEqualJson(ast, testcase.ast)) {
     testcase.originalAst = ast;
   } else {
     delete testcase.originalAst;
   }
 }
 
-// isDeepStrictEqual does not work properly for ASTs because the prototypes are different.
-// we convert to a plain object but parsing the stringified version.
-function deepEqual(obj1: unknown, obj2: unknown): boolean {
-  const plainObj1 = JSON.parse(JSON.stringify(obj1));
-  const plainObj2 = JSON.parse(JSON.stringify(obj2));
+const writeFile = promisify(fs.writeFile);
+const readFile = promisify(fs.readFile);
 
-  return isDeepStrictEqual(plainObj1, plainObj2);
+for (const file of await specFilesRelativeToSpecDir()) {
+  await addResultToFile(file);
 }

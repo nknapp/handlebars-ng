@@ -1,9 +1,13 @@
 const sourcesTypeScript = [
-  "packages/@handlebars-ng/*/src/**/*.ts",
-  "packages/@handlebars-ng/*/src/**/*.tsx",
-  "packages/@handlebars-ng/**/*.d.ts",
+  "packages/**/src/**/*.tsx",
+  "packages/**/src/**/*.ts",
+  "packages/**/*.d.ts",
+
 ];
-const scriptsTypeScript = ["packages/@handlebars-ng/*/scripts/**/*.ts"];
+const scriptsTypeScript = [
+  "packages/**/scripts/**/*.ts",
+  "packages/**/astro-plugins/**/*.ts",
+];
 const baseConfigTs = {
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -24,8 +28,8 @@ const baseRulesTs = {
   ],
 };
 
-const testsTypeScript = ["packages/*/*/src/**/*.test.ts"];
-const nodeTypeScript = ["packages/*/*/vite.config.ts"];
+const testsTypeScript = ["packages/**/src/**/*.test.ts"];
+const nodeTypeScript = ["packages/**/vite.config.ts"];
 const nodeJavaScript = [".eslintrc.js", "*.cjs"];
 const nodeModuleJavaScript = ["*.mjs"];
 

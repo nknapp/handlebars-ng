@@ -1,0 +1,17 @@
+{
+  "$schema": "../schema/testcase.json",
+  "description": "An empty template yields an empty result",
+  "template": "",
+  "ast": {
+    "type": "Program",
+    "body": [],
+    "strip": {},
+    "loc": {
+      "start": { "line": 1, "column": 0 },
+      "end": { "line": 1, "column": 1 }
+    }
+  },
+  "input": {},
+  "output": "",
+  "originalAst": { "type": "Program", "body": [], "strip": {} }
+}

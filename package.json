@@ -1,6 +1,7 @@
 {
   "workspaces": [
-    "packages/@handlebars-ng/*"
+    "packages/@handlebars-ng/*",
+    "packages/handlebars-ng.knappi.org"
   ],
   "license": "MIT",
   "private": true,
