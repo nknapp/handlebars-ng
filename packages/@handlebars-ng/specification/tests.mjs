@@ -121,61 +121,6 @@ export const handlebarsSpec = [
   },
   {
     $schema: "../schema/testcase.json",
-    description: "A simple template without mustaches",
-    template: "hello\nworld",
-    input: {},
-    output: "hello\nworld",
-    ast: {
-      type: "Program",
-      body: [
-        {
-          type: "ContentStatement",
-          original: "hello\nworld",
-          value: "hello\nworld",
-          loc: { start: { line: 1, column: 0 }, end: { line: 2, column: 5 } },
-        },
-      ],
-      strip: {},
-      loc: { start: { line: 1, column: 0 }, end: { line: 2, column: 5 } },
-    },
-    filename: "04-content-statement/content.hb-spec.json",
-  },
-  {
-    $schema: "../schema/testcase.json",
-    description: "Escaped mustache expression",
-    template: "\\{{abc}} \\{{{cde}}}",
-    input: {},
-    output: "{{abc}} {{{cde}}}",
-    ast: {
-      type: "Program",
-      body: [
-        {
-          type: "ContentStatement",
-          original: "\\{{abc}} \\{{{cde}}}",
-          value: "{{abc}} {{{cde}}}",
-          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 19 } },
-        },
-      ],
-      strip: {},
-      loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 19 } },
-    },
-    originalAst: {
-      type: "Program",
-      body: [
-        {
-          type: "ContentStatement",
-          original: "{{abc}} {{{cde}}}",
-          value: "{{abc}} {{{cde}}}",
-          loc: { start: { line: 1, column: 1 }, end: { line: 1, column: 19 } },
-        },
-      ],
-      strip: {},
-      loc: { start: { line: 1, column: 1 }, end: { line: 1, column: 19 } },
-    },
-    filename: "04-content-statement/escaped-content.hb-spec.json",
-  },
-  {
-    $schema: "../schema/testcase.json",
     description: "A simple mustache with html-escaped output",
     template: "{{ value }}",
     input: { value: "abc & < > \" ' ` = 123" },
@@ -233,5 +178,60 @@ export const handlebarsSpec = [
       loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 13 } },
     },
     filename: "05-mustache-statement/unescaped-mustache.hb-spec.json",
+  },
+  {
+    $schema: "../schema/testcase.json",
+    description: "A simple template without mustaches",
+    template: "hello\nworld",
+    input: {},
+    output: "hello\nworld",
+    ast: {
+      type: "Program",
+      body: [
+        {
+          type: "ContentStatement",
+          original: "hello\nworld",
+          value: "hello\nworld",
+          loc: { start: { line: 1, column: 0 }, end: { line: 2, column: 5 } },
+        },
+      ],
+      strip: {},
+      loc: { start: { line: 1, column: 0 }, end: { line: 2, column: 5 } },
+    },
+    filename: "04-content-statement/content.hb-spec.json",
+  },
+  {
+    $schema: "../schema/testcase.json",
+    description: "Escaped mustache expression",
+    template: "\\{{abc}} \\{{{cde}}}",
+    input: {},
+    output: "{{abc}} {{{cde}}}",
+    ast: {
+      type: "Program",
+      body: [
+        {
+          type: "ContentStatement",
+          original: "\\{{abc}} \\{{{cde}}}",
+          value: "{{abc}} {{{cde}}}",
+          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 19 } },
+        },
+      ],
+      strip: {},
+      loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 19 } },
+    },
+    originalAst: {
+      type: "Program",
+      body: [
+        {
+          type: "ContentStatement",
+          original: "{{abc}} {{{cde}}}",
+          value: "{{abc}} {{{cde}}}",
+          loc: { start: { line: 1, column: 1 }, end: { line: 1, column: 19 } },
+        },
+      ],
+      strip: {},
+      loc: { start: { line: 1, column: 1 }, end: { line: 1, column: 19 } },
+    },
+    filename: "04-content-statement/escaped-content.hb-spec.json",
   },
 ];
