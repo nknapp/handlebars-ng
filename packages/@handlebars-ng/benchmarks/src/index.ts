@@ -48,9 +48,8 @@ function measure(
   objectUnderTest: ObjectUnderTest,
   test: PerformanceTest
 ): Measurement {
-  const benchmark = new FunctionBenchmark(
-    objectUnderTest.createRunner(test).run
-  );
-  benchmark.run(2000);
+  const testFn = objectUnderTest.createRunner(test).run;
+  const benchmark = new FunctionBenchmark(testFn);
+  benchmark.run(2000, 1000);
   return benchmark.getStats();
 }

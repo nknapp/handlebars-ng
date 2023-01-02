@@ -2,4 +2,4 @@ import { runAllTests } from "src/index";
 
 const stats = await runAllTests();
 
-console.log(stats);
+console.dir(stats, { depth: 5 });
