@@ -19,7 +19,7 @@ jobs:
 
   deploy-site:
     if: github.ref == 'refs/heads/main'
-    needs: build-site
+    needs: test-and-build
     runs-on: ubuntu-latest
     permissions:
       contents: read
