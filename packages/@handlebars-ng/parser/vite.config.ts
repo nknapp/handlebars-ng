@@ -11,7 +11,7 @@ export default defineConfig({
       entry: {
         index: "src/index.ts",
       },
-      formats: ["es", "cjs"],
+      formats: ["es"],
       name: "handlebars-parser",
     },
 

@@ -1,8 +1,10 @@
 {
-  "name": "benchmarks",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "@handlebars-ng/benchmarks",
+  "version": "0.0.1",
   "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "perf": "vite-node scripts/run-performance-tests.ts",
     "dev:unit": "vitest --ui",

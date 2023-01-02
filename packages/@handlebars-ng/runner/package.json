@@ -1,11 +1,13 @@
 {
   "name": "@handlebars-ng/runner",
-  "version": "1.0.0",
+  "type": "module",
+  "version": "0.0.1",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
+    "perf": "vite-node src/performance-test.ts",
     "build": "vite build",
     "test:unit": "vitest --run",
     "test:types": "tsc --noEmit",
@@ -13,7 +15,6 @@
     "dev": "concurrently -k npm:dev:*",
     "dev:unit": "vitest --ui",
     "dev:types": "tsc --watch"
-
   },
   "devDependencies": {
     "@handlebars-ng/specification": "0.0.1",
@@ -22,5 +23,9 @@
     "vite": "^4.0.1",
     "vite-plugin-dts": "^1.7.1",
     "vitest": "^0.25.8"
+  },
+  "dependencies": {
+    "@handlebars-ng/benchmarks": "0.0.1",
+    "@handlebars-ng/parser": "0.0.1"
   }
 }

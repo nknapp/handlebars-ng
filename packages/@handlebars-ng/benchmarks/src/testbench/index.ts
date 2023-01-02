@@ -3,7 +3,7 @@ import {
   NamedPerformanceTest,
   ObjectUnderTest,
   PerformanceTest,
-} from "src/types/types";
+} from "../types/types";
 import { FunctionBenchmark } from "./FunctionBenchmark";
 
 export class TestBench {
