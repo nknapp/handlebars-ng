@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "ESNext",
@@ -13,7 +14,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": false,
     "noImplicitReturns": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
   },
-  "include": ["src", "../../../node_modules/vitest/globals.d.ts"]
+  "include": ["src", "scripts", "../../../node_modules/vitest/globals.d.ts"]
 }

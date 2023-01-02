@@ -5440,6 +5440,11 @@ isobject@^3.0.1:
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha512-WhB9zCku7EGTj/HQQRz5aUQEUeoQZH2bWcltRErOpymJ4boYE6wL9Tbr23krRPSZ+C5zqNSrSw+Cc7sZZ4b7vg==
 
+isomorphic-performance@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/isomorphic-performance/-/isomorphic-performance-4.0.0.tgz#a61db01303f00de6d05bdbca2a6589521392cccc"
+  integrity sha512-JswtNSyuVRpLvbo4HeoAw80AieEJ6DbNxkp9RiDRC+9FRZfjcqhDczmpggIXKsEn8Pj9HAc3iORoEEORxSavyw==
+
 jake@^10.8.5:
   version "10.8.5"
   resolved "https://registry.yarnpkg.com/jake/-/jake-10.8.5.tgz#f2183d2c59382cb274226034543b9c03b8164c46"
@@ -7772,6 +7777,11 @@ react-is@^18.0.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
+
+react-native-performance@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-performance/-/react-native-performance-4.0.0.tgz#43a5a44d042037288234c829e790b113b5253c43"
+  integrity sha512-GgRNl52ivoq8gNSzFlapIc8ywszGJtQsoUZxo4bvt+xGcUIYecp93oDt88x4te637qjeT+FabXTtau66EFbf7g==
 
 read-cache@^1.0.0:
   version "1.0.0"

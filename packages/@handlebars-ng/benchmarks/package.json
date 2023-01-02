@@ -4,12 +4,20 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "vite-node src/index.ts"
+    "perf": "vite-node scripts/run-performance-tests.ts",
+    "dev:unit": "vitest --ui",
+    "test:unit": "vitest --run",
+    "test:types": "tsc --noEmit",
+    "build": "vite build",
+    "test-and-build": "yarn test:unit && yarn test:types && yarn build"
   },
   "dependencies": {
     "@handlebars-ng/parser": "0.0.1",
+    "@handlebars-ng/runner": "1.0.0",
     "@handlebars-ng/specification": "0.0.1",
-    "@types/node": "^18.11.13"
+    "@types/node": "^18.11.13",
+    "isomorphic-performance": "^4.0.0",
+    "react-native-performance": "^4.0.0"
   },
   "devDependencies": {
     "handlebars": "^4.7.7",

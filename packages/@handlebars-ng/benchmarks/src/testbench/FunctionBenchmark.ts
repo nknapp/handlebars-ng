@@ -1,4 +1,5 @@
-import { performance } from "node:perf_hooks";
+import { performance } from "isomorphic-performance";
+import { Measurement } from "../types/types";
 
 export type FunctionUnderTest = () => Promise<unknown> | unknown;
 
@@ -21,7 +22,7 @@ export class FunctionBenchmark {
     }
   }
 
-  getStats() {
+  getStats(): Measurement {
     const count = this.durations.length;
     return {
       count,
