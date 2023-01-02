@@ -16,13 +16,10 @@ This project is a mono-repo. The directory [packages/@handlebars-ng](packages/%4
 
 ## Contributing
 
-When the repo is setup up and working, you can contribute by adding new sections to the specification and fixing the resulting failing
+You can contribute by adding new sections to the specification and fixing the resulting failing
 tests in the parser and runner.
 
 ## Work in progress
 
-- We need Github-Actions set up for this project. The may still be errors and incomplete setup.
-
-## Related links:
-
-- https://supunsetunga.medium.com/writing-a-parser-getting-started-44ba70bb6cc9
+- We need to set up a publishing progress and maybe some browser tests.
+- Should we put this unter the `@handlebars`-scope in npm? And move it to then `handlebars-lang` org? I am reluctant doing that unless I know that this project will get some drive from other people as well.
