@@ -38,15 +38,7 @@ export interface Measurement {
   diagnosis: Diagnosis;
 }
 
-export interface NamedMeaseurement extends Measurement {
-  test: string;
-  objectUnderTest: string;
-}
-
 export interface TestResult {
-  name: string;
-  originalParser: Measurement;
-  originalRunner: Measurement;
-  nextGeneParser: Measurement;
-  nextGeneRunner: Measurement;
+  testName: string;
+  measurements: Record<string, Measurement>;
 }

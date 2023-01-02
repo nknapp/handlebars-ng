@@ -12,17 +12,12 @@
     "test-and-build": "yarn test:unit && yarn test:types && yarn build"
   },
   "dependencies": {
-    "@handlebars-ng/parser": "0.0.1",
-    "@handlebars-ng/runner": "1.0.0",
-    "@handlebars-ng/specification": "0.0.1",
-    "@types/node": "^18.11.13",
+    "handlebars": "^4.7.7",
     "isomorphic-performance": "^4.0.0",
     "react-native-performance": "^4.0.0"
   },
   "devDependencies": {
-    "handlebars": "^4.7.7",
     "typescript": "^4.9.4",
-    "vite-node": "^0.25.6",
     "vitest": "^0.25.6"
   }
 }

@@ -1,7 +1,7 @@
-import { ObjectUnderTest } from "src/types/types";
+import { ObjectUnderTest } from "../types/types";
 import Handlebars from "handlebars";
 
-export const originalParser: ObjectUnderTest = {
+const parser: ObjectUnderTest = {
   name: "original parser",
   createRunner(test) {
     const hbsInstance = Handlebars.create();
@@ -13,7 +13,7 @@ export const originalParser: ObjectUnderTest = {
   },
 };
 
-export const originalRunner: ObjectUnderTest = {
+const runner: ObjectUnderTest = {
   name: "original runner",
   createRunner(test) {
     const hbsInstance = Handlebars.create();
@@ -25,4 +25,9 @@ export const originalRunner: ObjectUnderTest = {
       },
     };
   },
+};
+
+export const originalHandlebars = {
+  parser,
+  runner,
 };
