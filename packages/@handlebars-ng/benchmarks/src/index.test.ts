@@ -25,8 +25,8 @@ describe("benchmarks", () => {
 
     it("with the tests in the first column", () => {
       const firstCol = result.map((cols) => cols[0]);
-      expect(firstCol).toContain("./mustaches.perf.ts");
-      expect(firstCol).toContain("./unescaped-mustaches.perf.ts");
+      expect(firstCol).toContain("mustaches.perf.ts");
+      expect(firstCol).toContain("unescaped-mustaches.perf.ts");
     });
 
     it("returns average and stdDev in the cells", () => {

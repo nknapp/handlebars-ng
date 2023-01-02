@@ -1,0 +1,30 @@
+---
+title: Benchmarks
+layout: "@/layouts/MdxLayout.astro"
+---
+
+import { BenchmarkTable } from "@/components/benchmarks/BenchmarkTable.tsx";
+
+# Benchmarks
+
+These benchmarks are generated as part of the CI pipeline.
+We compare the original Handlebars parser with the next-generation parser,
+and the Handlebars compiler (template execution) with the next-generation runner
+
+# Parser
+
+<BenchmarkTable tableName="parser" />
+
+# Runner
+
+<BenchmarkTable tableName="runner" />
+
+# Contributing tests
+
+Although this project is still in a very early stage, it would be nice to have some real-life templates
+to run the benchmarks. If you want to contribute tests, feel free to create an MR. Just add a subfolder to [this folder](https://github.com/nknapp/handlebars-ng/tree/main/packages/%40handlebars-ng/benchmarks/src/tests) and add files there.
+
+The template of the test must be released under an Open Source license, so do not use templates from your private projects.
+Otherwise, have a look at [generate-benchmarks.ts](https://github.com/nknapp/handlebars-ng/tree/main/packages/handlebars-ng.knappi.org/scripts/generate-benchmarks.ts)
+
+You can use the same tools to run benchmarks yourself (when the project has advanced a little and was published to npm...)

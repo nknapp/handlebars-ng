@@ -1,0 +1,13 @@
+---
+import TableOfContents from "./TableOfContents.astro";
+import TocHeader from "./TocHeader.astro";
+
+const path = Astro.url.pathname
+---
+
+<TocHeader href="/spec/" text="Language Specification" />
+{path.startsWith("/spec/") && <TableOfContents /> }
+
+<hr class="text-black my-4"/>
+
+<TocHeader href="/benchmarks/" text="Benchmarks" />

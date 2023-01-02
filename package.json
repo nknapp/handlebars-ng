@@ -11,6 +11,7 @@
     "test-and-build": "lerna run test-and-build",
     "dev": "lerna run dev --parallel",
     "dev:site": "cd packages/handlebars-ng.knappi.org && yarn dev:server",
+    "preview:site": "cd packages/handlebars-ng.knappi.org && yarn preview",
     "prepare": "husky install"
   },
   "devDependencies": {

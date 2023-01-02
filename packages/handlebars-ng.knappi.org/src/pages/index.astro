@@ -8,14 +8,19 @@ import Home from "@/layouts/Home.astro";
     header="Clear language definition"
     action={{ label: "To the specification", href: "/spec/" }}
   >
-    A concise language definition, with language-independent test cases, so you can implement your own compatible parser and runtime.
+    A concise language definition, with language-independent test cases, so you
+    can implement your own compatible parser and runtime.
   </Card>
   <Card header="Compatibilty">
-    Parser and runtime are tested against the spec, which is derived from Handlebars 4.x. The new Handlebars should be compatible
-    for most use-cases.
+    Parser and runtime are tested against the spec, which is derived from
+    Handlebars 4.x. The new Handlebars should be compatible for most use-cases.
   </Card>
-  <Card header="Performance">
-    We use a custom parser and a visitor-based runtime, which should be faster than Handlebars 4.x. Automated performance-tests
-    will be made (TODO) and visualized.
+  <Card
+    header="Performance"
+    action={{ label: "Benchmarks", href: "/benchmarks/" }}
+  >
+    We use a custom parser and a visitor-based runtime, which should be faster
+    than Handlebars 4.x. Automated performance-tests will be made (TODO) and
+    visualized.
   </Card>
 </Home>

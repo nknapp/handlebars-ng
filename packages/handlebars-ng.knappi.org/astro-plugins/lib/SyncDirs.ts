@@ -2,6 +2,7 @@ import { isGitIgnoredSync, globby } from "globby";
 import chokidar from "chokidar";
 import fs from "fs/promises";
 import path from "path";
+import mkdirp from "make-dir";
 
 export interface SyncedFile {
   relativePath: string;
@@ -88,25 +89,6 @@ export class SyncDirs {
       }
 
       await fs.unlink(absolutePath);
-    }
-  }
-}
-
-async function mkdirp(directory: string) {
-  try {
-    await fs.mkdir(directory);
-  } catch (error) {
-    switch (error.code) {
-      case "EEXIST":
-        // ignore existing directory
-        return;
-      case "ENOENT":
-        console.log("create parent dir of ", directory);
-        await mkdirp(path.dirname(directory));
-        await fs.mkdir(directory);
-        return;
-      default:
-        throw error;
     }
   }
 }

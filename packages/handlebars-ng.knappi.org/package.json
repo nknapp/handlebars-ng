@@ -5,9 +5,11 @@
   "private": true,
   "scripts": {
     "test:types": "tsc --noEmit",
+    "generate:perf": "vite-node scripts/generate-benchmarks.ts",
+    "prebuild": "VITE_FORCE=true yarn generate:perf",
     "build": "astro build",
     "test-and-build": "yarn test:types && yarn build",
-    "dev:server": "astro dev",
+    "dev:server": "yarn generate:perf && astro dev",
     "dev:unit": "vitest --ui",
     "dev": "concurrently -k npm:dev:*",
     "preview": "astro preview",
@@ -25,6 +27,9 @@
     "@astrojs/prism": "^1.0.2",
     "@astrojs/solid-js": "^1.2.3",
     "@astrojs/tailwind": "^2.1.3",
+    "@handlebars-ng/benchmarks": "0.0.1",
+    "@handlebars-ng/parser": "0.0.1",
+    "@handlebars-ng/runner": "0.0.1",
     "@handlebars-ng/specification": "0.0.1",
     "@nanostores/solid": "^0.3.2",
     "astro": "^1.6.15",
@@ -43,11 +48,12 @@
     "globby": "^13.1.3",
     "handlebars": "^4.7.7",
     "json-schema-to-typescript": "^11.0.2",
+    "make-dir": "^3.1.0",
     "prettier": "^2.8.1",
     "ts-json-schema-generator": "^1.1.2",
     "typescript": "^4.9.4",
     "vite": "^4.0.1",
-    "vite-node": "^0.25.7",
+    "vite-node": "^0.26.3",
     "vite-plugin-dts": "^1.7.1"
   }
 }

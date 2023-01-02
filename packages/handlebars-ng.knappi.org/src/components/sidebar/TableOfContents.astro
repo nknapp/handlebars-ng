@@ -1,18 +1,18 @@
 ---
-import SidebarItem from "./TocItem.astro";
+import TocItem from "./TocItem.astro";
 
-const specPages = await Astro.glob("../../pages/spec/**/*.(mdx|md)");
+const allPages = await Astro.glob("../../pages/spec/**/*.(mdx|md)");
+const specPages = allPages.filter((page) => {
+  return page.url !== "/spec";
+});
 ---
 
-<ul class="sticky top-1">
+<ul class="sticky top-1 pl-1">
   {
     specPages.map((page) => {
       return (
         <li class="p-1">
-          <SidebarItem
-            href={page.url}
-            text={page.frontmatter.title as string}
-          />
+          <TocItem href={page.url} text={page.frontmatter.title as string} />
         </li>
       );
     })

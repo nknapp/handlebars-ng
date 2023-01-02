@@ -1,6 +1,5 @@
 ---
 import SidebarContents from "@/components/sidebar/SidebarContents.astro";
-
 import type { MarkdownLayoutProps } from "astro";
 import Layout from "./default/DefaultLayout.astro";
 
@@ -11,7 +10,7 @@ type Props = MarkdownLayoutProps<{
 const { frontmatter } = Astro.props;
 ---
 
-<Layout title={frontmatter.title} section="Language specification">
+<Layout title={frontmatter.title} section={frontmatter.title}>
   <div slot="sidebar">
     <SidebarContents />
   </div>

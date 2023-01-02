@@ -134,4 +134,17 @@ const sidebarEnabled = Astro.slots.has("sidebar");
   .content .testcase {
     @apply my-4;
   }
+
+  .content table {
+    @apply border border-collapse;
+  }
+
+  .content th, .content td {
+    @apply p-2 text-left;
+  }
+
+  .content th {
+    @apply bg-slate-100;
+    
+  }
 </style>

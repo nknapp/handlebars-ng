@@ -9,7 +9,7 @@ async function getAllTests(): Promise<NamedPerformanceTest[]> {
     const module = (await moduleFn()) as { default: PerformanceTest };
     const test = module.default;
     return {
-      name,
+      name: name.replace(/^\.\//, ""),
       ...test,
     };
   });

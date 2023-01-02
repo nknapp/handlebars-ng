@@ -1,0 +1,13 @@
+---
+export interface Props {
+  text?: string;
+  href?: string | undefined;
+}
+
+const { href, text } = Astro.props;
+
+const active = href != null && Astro.url.pathname.startsWith(href)
+const activeClass = active ? "font-bold" : ""
+---
+
+<header class={"text-lg "+ activeClass}><a class="text-black underline" href={href}>{text}</a></header>
