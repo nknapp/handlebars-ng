@@ -4,20 +4,18 @@ import Home from "@/layouts/Home.astro";
 ---
 
 <Home title="Handlebars - the next generation" logo="/images/logo-large.png">
-    <Card header="A new parser">
-      Implemented in clean code, thoroughly tested.
-    </Card>
-    <Card header="A new runtime">
-      Faster than before. Secure. 
-    </Card>
-    <Card header="Performance tests">
-      Visible performance tests to make sure it does not get slow again.
-      (TODO)
-    </Card>
-    <Card
-      header="Language Specification"
-      action={{ label: "Read the spec", href: "/spec/" }}
-    >
-      A concise language definition, with language-independent test cases.
-    </Card>
+  <Card
+    header="Clear language definition"
+    action={{ label: "To the specification", href: "/spec/" }}
+  >
+    A concise language definition, with language-independent test cases, so you can implement your own compatible parser and runtime.
+  </Card>
+  <Card header="Compatibilty">
+    Parser and runtime are tested against the spec, which is derived from Handlebars 4.x. The new Handlebars should be compatible
+    for most use-cases.
+  </Card>
+  <Card header="Performance">
+    We use a custom parser and a visitor-based runtime, which should be faster than Handlebars 4.x. Automated performance-tests
+    will be made (TODO) and visualized.
+  </Card>
 </Home>
