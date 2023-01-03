@@ -83,7 +83,7 @@ type Direction = "left" | "right" | "down" | "up";
 
 class SwipeDetector extends TouchHandler {
   startPos: Point | null = null;
-  threshold = 200;
+  threshold = 100;
   onSwipe: (dir: Direction) => void;
 
   constructor(onSwipe: (dir: Direction) => void) {
