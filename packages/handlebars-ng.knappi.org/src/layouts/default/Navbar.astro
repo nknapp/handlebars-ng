@@ -1,7 +1,13 @@
 ---
 import { SidebarButton } from "./SidebarButton";
 
-const { sidebarEnabled, title } = Astro.props;
+interface Props {
+  sidebarEnabled: boolean
+  section: string;
+}
+
+
+const { sidebarEnabled, section } = Astro.props;
 ---
 
 <div class="flex space-between items-center h-12">
@@ -10,8 +16,8 @@ const { sidebarEnabled, title } = Astro.props;
   <a href="/">
     <img src="/favicon.svg" class="h-8 mr-2 inline" />
   </a>
-  <div class="flex flex-col">
-    <div class="text-xs">Handlebars - the next generation</div>
-    <div class="font-bold lg:text-lg">{title}</div>
+  <div class="flex flex-col lg:flex-row lg:items-center lg:gap-8">
+    <div class="text-xs lg:text-lg">Handlebars - the next generation</div>
+    <div class="font-bold lg:text-lg">{section}</div>
   </div>
 </div>
