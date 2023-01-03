@@ -4,19 +4,14 @@ import { SidebarButton } from "./SidebarButton";
 const { sidebarEnabled, title } = Astro.props;
 ---
 
-<div
-  class="max-w-5xl mx-auto fixed top-0 w-full bg-amber-100"
->
-  <div class="flex space-between items-center h-12 px-4">
-    {sidebarEnabled && <SidebarButton client:load />}
-    <div class="w-2"></div>
-    <a href="/">
-      <img src="/favicon.svg" class="h-8 mr-2 inline" />       
-    </a>
-    <div class="flex flex-col">
-      <div class="text-xs">Handlebars - the next generation</div>
-      <div class="font-bold text-lg">{title}</div>
-    </div>
-
+<div class="flex space-between items-center h-12">
+  {sidebarEnabled && <SidebarButton client:load />}
+  <div class="w-2"></div>
+  <a href="/">
+    <img src="/favicon.svg" class="h-8 mr-2 inline" />
+  </a>
+  <div class="flex flex-col">
+    <div class="text-xs">Handlebars - the next generation</div>
+    <div class="font-bold text-lg">{title}</div>
   </div>
 </div>

@@ -21,25 +21,38 @@ const sidebarEnabled = Astro.slots.has("sidebar");
     <slot name="additionalHead" />
     <title>{title}</title>
   </head>
-  <body class="pt-12 h-full">
-    <div class="max-w-5xl mx-auto lg:shadow-xl min-h-full">
-      <Navbar sidebarEnabled={sidebarEnabled} title={section}/>
-      {
-        sidebarEnabled && (
-          <div class="fixed top-0 pt-12 w-0 h-full overflow-visible">
-            <Sidebar client:load>
-              <slot name="sidebar" />
-            </Sidebar>
-          </div>
-        )
-      }
-      <div class={sidebarEnabled ? "lg:ml-64" : ""}>
-        <div class="content p-4">
+  <body class="max-w-5xl mx-auto h-full">
+    <div class="h-full flex flex-col lg:shadow-xl">
+      <header class="bg-amber-100 px-4">
+        <Navbar
+          sidebarEnabled={sidebarEnabled}
+          section={section}
+          title={title}
+        />
+      </header>
+      <div class="bg-white flex-1 flex">
+        {
+          sidebarEnabled && (
+            <aside class="w-0 lg:w-64 flex-shrink-0 flex-grow-0 overflow-visible">
+              <Sidebar client:load>
+                <slot name="sidebar" />
+              </Sidebar>
+            </aside>
+          )
+        }
+        <main class="content flex-1 p-4">
           <slot />
-        </div>
+        </main>
       </div>
+      <footer class="bg-amber-100 px-4 h-10 flex-shrink-0 flex-grow-0 flex items-center justify-end ">
+        <a href="/impress">Impress</a>
+      </footer>
     </div>
-    <script defer data-domain="handlebars-ng.knappi.org" src="https://plausible.io/js/script.js"></script>
+    <script
+      defer
+      data-domain="handlebars-ng.knappi.org"
+      src="https://plausible.io/js/script.js"
+    ></script>
   </body>
 </html>
 <style is:global>
@@ -123,11 +136,11 @@ const sidebarEnabled = Astro.slots.has("sidebar");
     content: " ";
   }
 
-  .content a {
+  a {
     @apply underline underline-offset-4;
   }
 
-  .content a:hover {
+  a:hover {
     background-color: rgba(127, 127, 127, 0.1);
     outline: 5px solid rgba(127, 127, 127, 0.1);
   }
@@ -140,12 +153,12 @@ const sidebarEnabled = Astro.slots.has("sidebar");
     @apply border border-collapse;
   }
 
-  .content th, .content td {
+  .content th,
+  .content td {
     @apply p-2 text-left;
   }
 
   .content th {
     @apply bg-slate-100;
-    
   }
 </style>
