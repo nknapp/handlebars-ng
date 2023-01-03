@@ -21,8 +21,8 @@ const sidebarEnabled = Astro.slots.has("sidebar");
     <slot name="additionalHead" />
     <title>{title}</title>
   </head>
-  <body class="max-w-5xl mx-auto h-full">
-    <div class="h-full flex flex-col lg:shadow-xl">
+  <body class="max-w-5xl mx-auto h-min-full">
+    <div class="h-min-full flex flex-col lg:shadow-xl">
       <header class="bg-amber-100 px-4">
         <Navbar
           sidebarEnabled={sidebarEnabled}
@@ -30,17 +30,17 @@ const sidebarEnabled = Astro.slots.has("sidebar");
           title={title}
         />
       </header>
-      <div class="bg-white flex-1 flex">
+      <div class="relative h-full bg-white">
         {
           sidebarEnabled && (
-            <aside class="w-0 lg:w-64 flex-shrink-0 flex-grow-0 overflow-visible">
+            <aside class="absolute w-0 lg:w-64 overflow-visible h-full">
               <Sidebar client:load>
                 <slot name="sidebar" />
               </Sidebar>
             </aside>
           )
         }
-        <main class="content flex-1 p-4">
+        <main class="content lg:ml-64  p-4">
           <slot />
         </main>
       </div>
