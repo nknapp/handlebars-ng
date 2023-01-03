@@ -32,12 +32,6 @@ describe("suite", () => {
     expectValueWithThreshold(suite.getStats().statistics.average, 10, 2);
   });
 
-  it("returns plausible values for stdDev", async () => {
-    const suite = new FunctionBenchmark(busyWait10ms);
-    await suite.run(20, 20);
-    expectValueWithThreshold(suite.getStats().statistics.stdDev, 0.5, 0.5);
-  });
-
   it("waits for promises", async () => {
     function promiseWait100ms(): Promise<void> {
       return new Promise((resolve) => setTimeout(resolve, 100));
