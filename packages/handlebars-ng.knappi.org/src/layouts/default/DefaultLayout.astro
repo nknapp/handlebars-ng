@@ -21,8 +21,8 @@ const sidebarEnabled = Astro.slots.has("sidebar");
     <slot name="additionalHead" />
     <title>{title}</title>
   </head>
-  <body class="pt-12">
-    <div class="max-w-5xl mx-auto lg:shadow-xl">
+  <body class="pt-12 h-full">
+    <div class="max-w-5xl mx-auto lg:shadow-xl min-h-full">
       <Navbar sidebarEnabled={sidebarEnabled} title={section}/>
       {
         sidebarEnabled && (
@@ -39,6 +39,7 @@ const sidebarEnabled = Astro.slots.has("sidebar");
         </div>
       </div>
     </div>
+    <script defer data-domain="handlebars-ng.knappi.org" src="https://plausible.io/js/script.js"></script>
   </body>
 </html>
 <style is:global>

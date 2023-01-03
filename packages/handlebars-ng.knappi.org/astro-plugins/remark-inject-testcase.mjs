@@ -1,7 +1,7 @@
 import path from "path";
 
 
-const specDir = path.resolve("spec");
+const specDir = path.resolve("src/pages/spec");
 const TestCaseComponentName = "InjectedTestCase";
 
 /**
