@@ -3,6 +3,7 @@ import { useStore } from "@nanostores/solid";
 import type { Component } from "solid-js";
 
 export const SidebarButton: Component = () => {
+
   const sideBarVisible = useStore(showSidebar);
   const rotated = "transform rotate-90"
   const baseStyle = "transition duration-300"
@@ -16,3 +17,4 @@ export const SidebarButton: Component = () => {
       </button>
   );
 };
+
