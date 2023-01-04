@@ -1,5 +1,6 @@
 ---
-import WorkInProgress from '@/components/WorkInProgress.astro';
+import Footer from "@/components/Footer.astro";
+import WorkInProgress from "@/components/WorkInProgress.astro";
 
 interface Props {
   title: string;
@@ -10,7 +11,7 @@ const { title, logo } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, minimum-scale=1" />
@@ -18,19 +19,37 @@ const { title, logo } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body class="mx-2">
-    <h1 class="text-orange-900 font-bold text-center text-4xl my-8 mx-2">{title}</h1>
-    <div class="max-w-5xl mx-auto">
-      <div class="flex justify-center mb-8">
-        <img class="w-64" alt="logo" src={logo} />
+  <body>
+    <div class="min-h-screen relative bg-white pb-10 pt-10">
+      <h1 class="text-orange-900 font-bold text-center text-4xl mb-8 mx-2">
+        {title}
+      </h1>
+      <div class="max-w-5xl mx-auto">
+        <div class="flex justify-center mb-16">
+          <img class="w-64" alt="logo" src={logo} />
+        </div>
+        <div class="mb-2">
+          <WorkInProgress />
+        </div>
+        <div class="grid lg:grid-flow-col auto-rows-min auto-cols-fr gap-2">
+          <slot />
+        </div>
       </div>
-      <div class="mb-2">
-        <WorkInProgress />
-      </div>
-      <div class="grid lg:grid-flow-col auto-rows-min auto-cols-fr gap-2">
-        <slot />
-      </div>
+      <footer
+        class="border-t border-slate-300 bg-slate-100 text-orange-900 flex-shrink-0 flex-grow-0 w-full bottom-0 absolute"
+      >
+        <div
+          class="max-w-5xl mx-auto w-full py-8 px-4 lg:px-8 flex items-center justify-start h-10"
+        >
+          <Footer />
+        </div>
+      </footer>
     </div>
+    <script
+      defer
+      data-domain="handlebars-ng.knappi.org"
+      src="https://plausible.io/js/script.js"
+    ></script>
   </body>
 </html>
 <style is:global>

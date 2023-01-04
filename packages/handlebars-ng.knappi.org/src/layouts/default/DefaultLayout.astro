@@ -1,4 +1,5 @@
 ---
+import Footer from "@/components/Footer.astro";
 import Navbar from "./Navbar.astro";
 import { Sidebar } from "./Sidebar";
 
@@ -48,7 +49,7 @@ const sidebarEnabled = Astro.slots.has("sidebar");
         <div
           class="max-w-5xl mx-auto  w-full py-8 px-4 lg:px-8 flex items-center justify-start h-10"
         >
-          <a href="/impress">Impress</a>
+          <Footer />
         </div>
       </footer>
     </div>
