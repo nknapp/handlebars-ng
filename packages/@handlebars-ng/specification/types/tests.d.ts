@@ -12,6 +12,10 @@ export interface HandlebarsTest {
    * The AST created by the original Handlebars parser, in case it is different from "ast"
    */
   originalAst: unknown;
+  /**
+   * The original Handlebars parser cannot parse the template in this test
+   */
+  originalParseError: boolean;
 }
 
 export interface ExportedHandlebarsTest extends HandlebarsTest {

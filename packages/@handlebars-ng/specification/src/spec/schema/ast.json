@@ -5,11 +5,19 @@
     "ContentStatement": {
       "additionalProperties": false,
       "properties": {
+        "leftStripped": {
+          "const": true,
+          "type": "boolean"
+        },
         "loc": {
           "$ref": "#/definitions/SourceLocation"
         },
         "original": {
           "type": "string"
+        },
+        "rightStripped": {
+          "const": true,
+          "type": "boolean"
         },
         "type": {
           "const": "ContentStatement",

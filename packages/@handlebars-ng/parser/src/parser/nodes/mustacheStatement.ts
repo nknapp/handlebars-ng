@@ -8,9 +8,11 @@ export function mustacheStatement(
 ): ParserContext["mustache"] {
   return (context) => {
     const open = context.tokens.eat(openToken);
+    const stripLeft = context.tokens.eatOptional("STRIP");
     context.tokens.ignore("SPACE");
     const path = context.pathExpression(context);
     context.tokens.ignore("SPACE");
+    const stripRight = context.tokens.eatOptional("STRIP");
     const close = context.tokens.eat(closeToken);
 
     return {
@@ -18,7 +20,7 @@ export function mustacheStatement(
       path,
       escaped,
       params: [],
-      strip: { close: false, open: false },
+      strip: { close: stripRight != null, open: stripLeft != null },
       loc: context.tokens.loc(open, close),
     };
   };

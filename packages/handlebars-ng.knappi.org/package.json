@@ -10,7 +10,7 @@
     "build": "astro build",
     "test-and-build": "VITE_FORCE=true yarn generate && yarn test:types && yarn build",
     "dev:server": "yarn generate:perf && astro dev",
-    "dev:unit": "vitest --ui",
+    "dev:types": "tsc --noEmit --watch",
     "dev": "concurrently -k npm:dev:*",
     "preview": "astro preview",
     "astro": "astro"

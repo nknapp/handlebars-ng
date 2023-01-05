@@ -1,0 +1,117 @@
+{
+  "$schema": "../schema/testcase.json",
+  "description": "White space should be removed when control characters are in place",
+  "template": "|- {{{~name}}} | {{{name~}}} -|- {{{~name~}}} -|",
+  "input": { "name": "joe" },
+  "output": "|-joe | joe-|-joe-|",
+  "ast": {
+    "type": "Program",
+    "body": [
+      {
+        "type": "ContentStatement",
+        "original": "|- ",
+        "value": "|- ",
+        "loc": {
+          "start": { "line": 1, "column": 0 },
+          "end": { "line": 1, "column": 3 }
+        }
+      },
+      {
+        "type": "MustacheStatement",
+        "path": {
+          "type": "PathExpression",
+          "data": false,
+          "depth": 0,
+          "parts": ["name"],
+          "original": "name",
+          "loc": {
+            "start": { "line": 1, "column": 7 },
+            "end": { "line": 1, "column": 11 }
+          }
+        },
+        "params": [],
+        "escaped": false,
+        "strip": { "open": true, "close": false },
+        "loc": {
+          "start": { "line": 1, "column": 3 },
+          "end": { "line": 1, "column": 14 }
+        }
+      },
+      {
+        "type": "ContentStatement",
+        "original": " | ",
+        "value": " | ",
+        "loc": {
+          "start": { "line": 1, "column": 14 },
+          "end": { "line": 1, "column": 17 }
+        }
+      },
+      {
+        "type": "MustacheStatement",
+        "path": {
+          "type": "PathExpression",
+          "data": false,
+          "depth": 0,
+          "parts": ["name"],
+          "original": "name",
+          "loc": {
+            "start": { "line": 1, "column": 20 },
+            "end": { "line": 1, "column": 24 }
+          }
+        },
+        "params": [],
+        "escaped": false,
+        "strip": { "open": false, "close": true },
+        "loc": {
+          "start": { "line": 1, "column": 17 },
+          "end": { "line": 1, "column": 28 }
+        }
+      },
+      {
+        "type": "ContentStatement",
+        "original": " -|- ",
+        "value": " -|- ",
+        "loc": {
+          "start": { "line": 1, "column": 29 },
+          "end": { "line": 1, "column": 45 }
+        }
+      },
+      {
+        "type": "MustacheStatement",
+        "path": {
+          "type": "PathExpression",
+          "data": false,
+          "depth": 0,
+          "parts": ["name"],
+          "original": "name",
+          "loc": {
+            "start": { "line": 1, "column": 37 },
+            "end": { "line": 1, "column": 41 }
+          }
+        },
+        "params": [],
+        "escaped": false,
+        "strip": { "open": true, "close": true },
+        "loc": {
+          "start": { "line": 1, "column": 33 },
+          "end": { "line": 1, "column": 45 }
+        }
+      },
+      {
+        "type": "ContentStatement",
+        "original": " -|",
+        "value": " -|",
+        "loc": {
+          "start": { "line": 1, "column": 39 },
+          "end": { "line": 1, "column": 42 }
+        }
+      }
+    ],
+    "strip": {},
+    "loc": {
+      "start": { "line": 1, "column": 0 },
+      "end": { "line": 1, "column": 42 }
+    }
+  },
+  "originalParseError": true
+}

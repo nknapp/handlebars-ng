@@ -11,10 +11,10 @@ MustacheStatement =
     UnescapedMustacheStatement
 
 HtmlEscapedMustacheStatement =
-    "{{" PathExpression "}}"
+    "{{" [ "~" ] PathExpression [ "~" ] "}}"
 
 UnescapedMustacheStatement =
-    "{{{" PathExpression "}}}"
+    "{{{" [ "~" ] PathExpression [ "~" ] "}}}"
 ```
 
 ## Html escaped Mustache Statement
@@ -39,3 +39,12 @@ Character    Substitute
 When using `{{{` and `}}}`, the resolved value copied to the output as-is.
 
 [](./unescaped-mustache.hb-spec.json)
+
+## White space control
+
+A "~" at the beginning or at the end of a mustache statements declares that white space before (or respectively after) the mustache
+must be removed from the output.
+
+[](./white-space-control-escaped.hb-spec.json)
+
+[](./white-space-control-unescaped.hb-spec.json)

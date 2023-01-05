@@ -24,6 +24,14 @@ export class TokenStream {
     return this.currentToken;
   }
 
+  eatOptional(type: TokenType): Token | null {
+    if (this.lookAhead == null) return null;
+    if (this.lookAhead.type !== type) return null;
+    this.currentToken = this.lookAhead;
+    this.lookAhead = this.tokens.next().value;
+    return this.currentToken;
+  }
+
   *keepEating(...types: TokenType[]): Generator<Token> {
     while (
       this.lookAhead?.type != null &&

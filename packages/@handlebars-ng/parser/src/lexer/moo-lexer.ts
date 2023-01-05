@@ -4,6 +4,12 @@ import { TokenType } from "./model";
 type MyRules = { [x in TokenType]?: Rules[string] };
 type MyStates = { [x: string]: MyRules };
 
+const mustacheRules: MyRules = {
+  SPACE: / +/,
+  ID: /\w+/,
+  STRIP: "~",
+};
+
 const states: MyStates = {
   main: {
     OPEN_UNESCAPED: { match: /{{{/, push: "unescapedMustache" },
@@ -16,16 +22,14 @@ const states: MyStates = {
       match: /}}/,
       pop: 1,
     },
-    SPACE: / +/,
-    ID: /\w+/,
+    ...mustacheRules,
   },
   unescapedMustache: {
     CLOSE_UNESCAPED: {
       match: /}}}/,
       pop: 1,
     },
-    SPACE: / +/,
-    ID: /\w+/,
+    ...mustacheRules,
   },
 };
 

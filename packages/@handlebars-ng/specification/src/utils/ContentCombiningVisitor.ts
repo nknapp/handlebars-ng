@@ -1,6 +1,6 @@
 import Handlebars from "handlebars";
 
-export class Normalizer extends Handlebars.Visitor {
+export class ContentCombiningVisitor extends Handlebars.Visitor {
   override acceptArray(arr: hbs.AST.Node[]): void {
     combineContentStatements(arr);
   }

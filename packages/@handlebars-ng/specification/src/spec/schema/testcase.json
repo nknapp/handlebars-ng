@@ -5,11 +5,19 @@
     "ContentStatement": {
       "additionalProperties": false,
       "properties": {
+        "leftStripped": {
+          "const": true,
+          "type": "boolean"
+        },
         "loc": {
           "$ref": "#/definitions/SourceLocation"
         },
         "original": {
           "type": "string"
+        },
+        "rightStripped": {
+          "const": true,
+          "type": "boolean"
         },
         "type": {
           "const": "ContentStatement",
@@ -52,6 +60,10 @@
         "originalAst": {
           "description": "The AST created by the original Handlebars parser, in case it is different from \"ast\""
         },
+        "originalParseError": {
+          "description": "The original Handlebars parser cannot parse the template in this test",
+          "type": "boolean"
+        },
         "output": {
           "type": "string"
         },
@@ -66,7 +78,8 @@
         "ast",
         "input",
         "output",
-        "originalAst"
+        "originalAst",
+        "originalParseError"
       ],
       "type": "object"
     },

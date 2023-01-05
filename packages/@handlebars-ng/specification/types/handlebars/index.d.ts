@@ -364,6 +364,8 @@ declare namespace hbs {
       type: "ContentStatement";
       value: string;
       original: string;
+      rightStripped?: true;
+      leftStripped?: true;
     }
 
     interface CommentStatement extends Statement {
