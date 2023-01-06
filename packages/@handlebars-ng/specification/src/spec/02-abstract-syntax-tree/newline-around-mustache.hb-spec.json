@@ -9,8 +9,8 @@
     "body": [
       {
         "type": "ContentStatement",
-        "original": "\n",
         "value": "\n",
+        "original": "\n",
         "loc": {
           "start": { "line": 1, "column": 0 },
           "end": { "line": 2, "column": 0 }
@@ -18,20 +18,20 @@
       },
       {
         "type": "MustacheStatement",
+        "escaped": true,
+        "params": [],
         "path": {
           "type": "PathExpression",
+          "original": "a",
           "data": false,
           "depth": 0,
           "parts": ["a"],
-          "original": "a",
           "loc": {
             "start": { "line": 2, "column": 2 },
             "end": { "line": 2, "column": 3 }
           }
         },
-        "params": [],
-        "escaped": true,
-        "strip": { "open": false, "close": false },
+        "strip": { "close": false, "open": false },
         "loc": {
           "start": { "line": 2, "column": 0 },
           "end": { "line": 2, "column": 5 }
@@ -39,8 +39,8 @@
       },
       {
         "type": "ContentStatement",
-        "original": "\n",
         "value": "\n",
+        "original": "\n",
         "loc": {
           "start": { "line": 2, "column": 5 },
           "end": { "line": 3, "column": 0 }

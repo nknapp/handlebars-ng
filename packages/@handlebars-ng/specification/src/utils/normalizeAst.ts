@@ -1,3 +1,4 @@
+import type { Program } from "types/ast";
 import { ContentCombiningVisitor } from "./ContentCombiningVisitor";
 
 /**
@@ -6,18 +7,18 @@ import { ContentCombiningVisitor } from "./ContentCombiningVisitor";
  * * Make sure properties are sorted in a canonical way.
  * * Combine multiple consecutive content-nodes into one.
  */
-export function normalizeAst(ast: hbs.AST.Program): hbs.AST.Program {
+export function normalizeAst(ast: Program): Program {
   let copy = JSON.parse(JSON.stringify(ast));
   new ContentCombiningVisitor().accept(copy);
   copy = sortProps(copy);
   return copy;
 }
 
-function sortProps(ast: hbs.AST.Program): hbs.AST.Program {
+function sortProps(ast: Program): Program {
   return JSON.parse(JSON.stringify(ast), propertySortingReviver);
 }
 
-function propertySortingReviver(key: string, value: unknown) {
+function propertySortingReviver(ignoredKey: string, value: unknown) {
   if (Array.isArray(value)) return value;
   if (typeof value === "object" && value != null) {
     const sortedEntries = Object.entries(value).sort(

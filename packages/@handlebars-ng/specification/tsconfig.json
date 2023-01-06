@@ -1,20 +1,32 @@
 {
-  "extends": "astro/tsconfigs/strictest",
   "compilerOptions": {
+    "target": "ESNext",
     "baseUrl": ".",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ESNext"],
+    "moduleResolution": "Node",
+    "strict": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "noEmit": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitReturns": true,
     "skipLibCheck": true,
     "paths": {
       "@/*": ["src/*"],
       "handlebars": ["types/handlebars"]
     },
-    "jsx": "preserve",
-    "jsxImportSource": "solid-js"
+
   },
   "include": [
     "src/**/*",
     "scripts/**/*",
     "types/*",
     "types/handlebars/originalAst.d.ts",
-    "types/handlebars/originalAst.d.ts"
+    "types/handlebars/originalAst.d.ts",
+    "../../../node_modules/vitest/globals.d.ts"
   ]
 }

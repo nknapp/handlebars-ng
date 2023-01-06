@@ -9,8 +9,8 @@
     "body": [
       {
         "type": "ContentStatement",
-        "original": "hello\nworld",
         "value": "hello\nworld",
+        "original": "hello\nworld",
         "loc": {
           "start": { "line": 1, "column": 0 },
           "end": { "line": 2, "column": 5 }

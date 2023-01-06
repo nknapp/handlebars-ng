@@ -9,8 +9,8 @@
     "body": [
       {
         "type": "ContentStatement",
-        "original": "|- ",
         "value": "|- ",
+        "original": "|- ",
         "loc": {
           "start": { "line": 1, "column": 0 },
           "end": { "line": 1, "column": 3 }
@@ -18,20 +18,20 @@
       },
       {
         "type": "MustacheStatement",
+        "escaped": false,
+        "params": [],
         "path": {
           "type": "PathExpression",
+          "original": "name",
           "data": false,
           "depth": 0,
           "parts": ["name"],
-          "original": "name",
           "loc": {
             "start": { "line": 1, "column": 7 },
             "end": { "line": 1, "column": 11 }
           }
         },
-        "params": [],
-        "escaped": false,
-        "strip": { "open": true, "close": false },
+        "strip": { "close": false, "open": true },
         "loc": {
           "start": { "line": 1, "column": 3 },
           "end": { "line": 1, "column": 14 }
@@ -39,8 +39,8 @@
       },
       {
         "type": "ContentStatement",
-        "original": " | ",
         "value": " | ",
+        "original": " | ",
         "loc": {
           "start": { "line": 1, "column": 14 },
           "end": { "line": 1, "column": 17 }
@@ -48,20 +48,20 @@
       },
       {
         "type": "MustacheStatement",
+        "escaped": false,
+        "params": [],
         "path": {
           "type": "PathExpression",
+          "original": "name",
           "data": false,
           "depth": 0,
           "parts": ["name"],
-          "original": "name",
           "loc": {
             "start": { "line": 1, "column": 20 },
             "end": { "line": 1, "column": 24 }
           }
         },
-        "params": [],
-        "escaped": false,
-        "strip": { "open": false, "close": true },
+        "strip": { "close": true, "open": false },
         "loc": {
           "start": { "line": 1, "column": 17 },
           "end": { "line": 1, "column": 28 }
@@ -69,8 +69,8 @@
       },
       {
         "type": "ContentStatement",
-        "original": " -|- ",
         "value": " -|- ",
+        "original": " -|- ",
         "loc": {
           "start": { "line": 1, "column": 29 },
           "end": { "line": 1, "column": 45 }
@@ -78,20 +78,20 @@
       },
       {
         "type": "MustacheStatement",
+        "escaped": false,
+        "params": [],
         "path": {
           "type": "PathExpression",
+          "original": "name",
           "data": false,
           "depth": 0,
           "parts": ["name"],
-          "original": "name",
           "loc": {
             "start": { "line": 1, "column": 37 },
             "end": { "line": 1, "column": 41 }
           }
         },
-        "params": [],
-        "escaped": false,
-        "strip": { "open": true, "close": true },
+        "strip": { "close": true, "open": true },
         "loc": {
           "start": { "line": 1, "column": 33 },
           "end": { "line": 1, "column": 45 }
@@ -99,8 +99,8 @@
       },
       {
         "type": "ContentStatement",
-        "original": " -|",
         "value": " -|",
+        "original": " -|",
         "loc": {
           "start": { "line": 1, "column": 39 },
           "end": { "line": 1, "column": 42 }
