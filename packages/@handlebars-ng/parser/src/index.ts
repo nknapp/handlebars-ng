@@ -1,7 +1,7 @@
 import { AnyNode, Program } from "./model/ast";
 import { HandlebarsLexer } from "./lexer";
 import { HandlebarsParser } from "./parser/HandlebarsParser";
-import { Traverser } from "./visitor/Traverser";
+import { Traverser } from "./traverser/Traverser";
 
 const parser = new HandlebarsParser();
 
