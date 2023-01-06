@@ -2,14 +2,14 @@
 import { ObjectUnderTest, TestBench } from "@handlebars-ng/benchmarks";
 import { originalHandlebars } from "@handlebars-ng/benchmarks";
 import { tests } from "@handlebars-ng/benchmarks";
-import { parse } from ".";
+import { parseWithoutProcessing } from ".";
 
 const parserNg: ObjectUnderTest = {
   name: "ng parser",
   createRunner(test) {
     return {
       run: () => {
-        parse(test.template);
+        parseWithoutProcessing(test.template);
       },
     };
   },

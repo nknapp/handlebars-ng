@@ -247,94 +247,8 @@ export const handlebarsSpec = [
       body: [
         {
           type: "ContentStatement",
-          value: "|- ",
-          original: "|- ",
-          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 3 } },
-        },
-        {
-          type: "MustacheStatement",
-          escaped: true,
-          params: [],
-          path: {
-            type: "PathExpression",
-            original: "name",
-            data: false,
-            depth: 0,
-            parts: ["name"],
-            loc: {
-              start: { line: 1, column: 6 },
-              end: { line: 1, column: 10 },
-            },
-          },
-          strip: { open: true, close: false },
-          loc: { start: { line: 1, column: 3 }, end: { line: 1, column: 12 } },
-        },
-        {
-          type: "ContentStatement",
-          value: " | ",
-          original: " | ",
-          loc: { start: { line: 1, column: 12 }, end: { line: 1, column: 15 } },
-        },
-        {
-          type: "MustacheStatement",
-          escaped: true,
-          params: [],
-          path: {
-            type: "PathExpression",
-            original: "name",
-            data: false,
-            depth: 0,
-            parts: ["name"],
-            loc: {
-              start: { line: 1, column: 17 },
-              end: { line: 1, column: 21 },
-            },
-          },
-          strip: { open: false, close: true },
-          loc: { start: { line: 1, column: 15 }, end: { line: 1, column: 24 } },
-        },
-        {
-          type: "ContentStatement",
-          value: " -|- ",
-          original: " -|- ",
-          loc: { start: { line: 1, column: 24 }, end: { line: 1, column: 29 } },
-        },
-        {
-          type: "MustacheStatement",
-          escaped: true,
-          params: [],
-          path: {
-            type: "PathExpression",
-            original: "name",
-            data: false,
-            depth: 0,
-            parts: ["name"],
-            loc: {
-              start: { line: 1, column: 32 },
-              end: { line: 1, column: 36 },
-            },
-          },
-          strip: { open: true, close: true },
-          loc: { start: { line: 1, column: 29 }, end: { line: 1, column: 39 } },
-        },
-        {
-          type: "ContentStatement",
-          value: " -|",
-          original: " -|",
-          loc: { start: { line: 1, column: 39 }, end: { line: 1, column: 42 } },
-        },
-      ],
-      strip: {},
-      loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 42 } },
-    },
-    originalAst: {
-      type: "Program",
-      body: [
-        {
-          type: "ContentStatement",
           value: "|-",
           original: "|- ",
-          leftStripped: true,
           loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 3 } },
         },
         {
@@ -383,8 +297,6 @@ export const handlebarsSpec = [
           type: "ContentStatement",
           value: "-|-",
           original: " -|- ",
-          leftStripped: true,
-          rightStripped: true,
           loc: { start: { line: 1, column: 24 }, end: { line: 1, column: 29 } },
         },
         {
@@ -409,7 +321,6 @@ export const handlebarsSpec = [
           type: "ContentStatement",
           value: "-|",
           original: " -|",
-          rightStripped: true,
           loc: { start: { line: 1, column: 39 }, end: { line: 1, column: 42 } },
         },
       ],
@@ -431,7 +342,7 @@ export const handlebarsSpec = [
       body: [
         {
           type: "ContentStatement",
-          value: "|- ",
+          value: "|-",
           original: "|- ",
           loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 3 } },
         },
@@ -479,7 +390,7 @@ export const handlebarsSpec = [
         },
         {
           type: "ContentStatement",
-          value: " -|- ",
+          value: "-|-",
           original: " -|- ",
           loc: { start: { line: 1, column: 28 }, end: { line: 1, column: 33 } },
         },
@@ -503,7 +414,7 @@ export const handlebarsSpec = [
         },
         {
           type: "ContentStatement",
-          value: " -|",
+          value: "-|",
           original: " -|",
           loc: { start: { line: 1, column: 45 }, end: { line: 1, column: 48 } },
         },

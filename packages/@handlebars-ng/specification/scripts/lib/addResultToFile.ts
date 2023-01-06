@@ -22,14 +22,14 @@ export async function addResultToFile(file: string) {
 }
 
 function adjustTestcase(testcase: HandlebarsTest): void {
-  testcase.ast = normalizeAst(testcase.ast);
-  if (testcase.originalAst != null) {
-    testcase.originalAst = normalizeAst(testcase.originalAst as Program);
-  }
-
   if (!testcase.originalParseError) {
     addOutput(testcase);
     addAstOrOriginalAst(testcase);
+  }
+
+  testcase.ast = normalizeAst(testcase.ast);
+  if (testcase.originalAst != null) {
+    testcase.originalAst = normalizeAst(testcase.originalAst as Program);
   }
 }
 

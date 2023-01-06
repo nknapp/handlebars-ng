@@ -1,4 +1,5 @@
 import type { Program } from "types/ast";
+import { CleanupVisitor } from "./CleanupVisitor";
 import { ContentCombiningVisitor } from "./ContentCombiningVisitor";
 
 /**
@@ -10,6 +11,7 @@ import { ContentCombiningVisitor } from "./ContentCombiningVisitor";
 export function normalizeAst(ast: Program): Program {
   let copy = JSON.parse(JSON.stringify(ast));
   new ContentCombiningVisitor().accept(copy);
+  new CleanupVisitor().accept(copy);
   copy = sortProps(copy);
   return copy;
 }

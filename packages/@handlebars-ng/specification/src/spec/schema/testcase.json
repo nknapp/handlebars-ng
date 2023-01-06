@@ -44,6 +44,10 @@
         "ast": {
           "$ref": "#/definitions/Program"
         },
+        "astWithoutProcessing": {
+          "$ref": "#/definitions/Program",
+          "description": "The AST created by \"parseWithoutProcessing\", in case it is differenct from \"ast\""
+        },
         "description": {
           "type": "string"
         },
