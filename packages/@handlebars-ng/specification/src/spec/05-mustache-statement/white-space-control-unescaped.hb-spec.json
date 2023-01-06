@@ -31,7 +31,7 @@
             "end": { "line": 1, "column": 11 }
           }
         },
-        "strip": { "close": false, "open": true },
+        "strip": { "open": true, "close": false },
         "loc": {
           "start": { "line": 1, "column": 3 },
           "end": { "line": 1, "column": 14 }
@@ -61,7 +61,7 @@
             "end": { "line": 1, "column": 24 }
           }
         },
-        "strip": { "close": true, "open": false },
+        "strip": { "open": false, "close": true },
         "loc": {
           "start": { "line": 1, "column": 17 },
           "end": { "line": 1, "column": 28 }
@@ -72,8 +72,8 @@
         "value": " -|- ",
         "original": " -|- ",
         "loc": {
-          "start": { "line": 1, "column": 29 },
-          "end": { "line": 1, "column": 45 }
+          "start": { "line": 1, "column": 28 },
+          "end": { "line": 1, "column": 33 }
         }
       },
       {
@@ -91,7 +91,7 @@
             "end": { "line": 1, "column": 41 }
           }
         },
-        "strip": { "close": true, "open": true },
+        "strip": { "open": true, "close": true },
         "loc": {
           "start": { "line": 1, "column": 33 },
           "end": { "line": 1, "column": 45 }
@@ -102,15 +102,15 @@
         "value": " -|",
         "original": " -|",
         "loc": {
-          "start": { "line": 1, "column": 39 },
-          "end": { "line": 1, "column": 42 }
+          "start": { "line": 1, "column": 45 },
+          "end": { "line": 1, "column": 48 }
         }
       }
     ],
     "strip": {},
     "loc": {
       "start": { "line": 1, "column": 0 },
-      "end": { "line": 1, "column": 42 }
+      "end": { "line": 1, "column": 48 }
     }
   },
   "originalParseError": true

@@ -43,11 +43,13 @@ const propertyOrder: Array<typeof OTHER | string> = [
   "value",
   "original",
   OTHER,
-  "loc",
   "line",
   "column",
   "start",
   "end",
+  "open",
+  "close",
+  "loc",
 ];
 const orderLookup = new Map(propertyOrder.map((prop, index) => [prop, index]));
 
