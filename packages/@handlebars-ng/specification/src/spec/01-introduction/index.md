@@ -38,51 +38,59 @@ This is a simple example of a test-case:
 
 [](./example.hb-spec.json)
 
-In the test-case, the AST of the template is represented in a normalized form:
+### Normalization
 
-- Consecutive `ContentStatement` nodes are merged into a single node.
+In the test-case, the AST of the template is represented in a normalized form.
+Implementations can have a different AST as long as the normalized form is the same.
+The normalized AST yields the same output as the original AST.
 
-  - The `value` property of the new node is the concatenation of all nodes
-  - The `original` property of the new node is the concationation of all nodes
-  - `loc.start` is taken from the first node
-  - `loc.end` is taken from the last node
-  - `loc.source` is taken from the first node. It should be the same in all nodes.
+#### Merge consecutive `ContentStatement`s
 
-  ```typescript
-  function merge(c1: ContentStatement, c2: ContentStatement): ContentStatement {
-    return {
-      type: "ContentStatement",
-      original: c1.original + c2.original,
-      value: c1.value + c2.value,
-      loc: {
-        start: c1.loc.start,
-        end: c2.loc.end,
-        source: c1.loc.source,
-      },
-    };
-  }
-  ```
+Consecutive `ContentStatement` nodes are merged into a single node.
 
-- Properties in the normalized AST are sorted by their index in the following list.
-  All not-listed properties are considered "OTHERS_LEXICAL" and are sorted lexically among themselves.
+- The `value` property of the new node is the concatenation of all nodes
+- The `original` property of the new node is the concationation of all nodes
+- `loc.start` is taken from the first node
+- `loc.end` is taken from the last node
+- `loc.source` is taken from the first node. It should be the same in all nodes.
 
-  ```js
-  "type",
-  "value",
-  "original",
-  OTHERS_LEXICAL,
-  "loc",
-  // used inside "loc"
-  "start",
-  "end",
-  "source",
-  // used inside "loc.start" and "loc.end"
-  "line",
-  "column",
-  // used inside "trim"
-  "open",
-  "close",
-  ```
+```typescript
+function merge(c1: ContentStatement, c2: ContentStatement): ContentStatement {
+  return {
+    type: "ContentStatement",
+    original: c1.original + c2.original,
+    value: c1.value + c2.value,
+    loc: {
+      start: c1.loc.start,
+      end: c2.loc.end,
+      source: c1.loc.source,
+    },
+  };
+}
+```
+
+#### Property order
+
+Properties in the normalized AST are sorted by their index in the following list.
+All not-listed properties are considered "OTHERS_LEXICAL" and are sorted lexically among themselves.
+
+```js
+"type",
+"value",
+"original",
+OTHERS_LEXICAL,
+"loc",
+// used inside "loc"
+"start",
+"end",
+"source",
+// used inside "loc.start" and "loc.end"
+"line",
+"column",
+// used inside "trim"
+"open",
+"close",
+```
 
 Some test-cases do not pass for the current Handlebars.js 4.x implementation for one of the following reasons:
 
@@ -91,3 +99,9 @@ Some test-cases do not pass for the current Handlebars.js 4.x implementation for
 
 In such cases, we need to discuss whether this is a bug in Handlebars.js or should be changed in the spec. For now we simply
 document the differences.
+
+## Machine-readable data
+
+- [all-tests.json](../tests/all-tests.json) - All test-cases of the spec in one large JSON files
+- [ast.json](../schema/ast.json) - JSON-schema of the Abstract Syntax Tree (AST)
+- [testcase.json](../schema/testcase.json) - JSON-schema of a testcase

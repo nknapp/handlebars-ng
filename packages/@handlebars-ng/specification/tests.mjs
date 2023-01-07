@@ -487,3 +487,5 @@ export const handlebarsSpec = [
     originalParseError: true,
   },
 ];
+
+export default handlebarsSpec;
