@@ -16,6 +16,6 @@ export const BenchmarkResult: Component<{name: keyof typeof benchmarks}> = ({nam
 
     return <div>
         <BenchmarkTable table={result.table as string[][]} />
-        <BenchmarkChart client:only benchmarkResults={result.graph as GraphData} />
+        <BenchmarkChart benchmarkResults={result.graph as GraphData} />
     </div>
 }
