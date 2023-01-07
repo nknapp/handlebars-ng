@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { FunctionBenchmark } from "./FunctionBenchmark";
-import { performance } from "node:perf_hooks";
 import { expectValueWithThreshold } from "./statistics.test-helper";
+import { busyWaitMs } from "src/utils/tests/busyWait";
 
 describe("suite", () => {
   it("runs a function multiple times", () => {
@@ -27,7 +27,7 @@ describe("suite", () => {
   });
 
   it("returns plausible values for average", async () => {
-    const suite = new FunctionBenchmark(busyWait10ms);
+    const suite = new FunctionBenchmark(busyWaitMs(10));
     await suite.run(20, 20);
     expectValueWithThreshold(suite.getStats().statistics.average, 10, 2);
   });
@@ -42,10 +42,3 @@ describe("suite", () => {
     expectValueWithThreshold(suite.getStats().statistics.average, 100, 20);
   });
 });
-
-function busyWait10ms() {
-  const start = performance.now();
-  while (performance.now() - start < 10) {
-    /* busy wait */
-  }
-}

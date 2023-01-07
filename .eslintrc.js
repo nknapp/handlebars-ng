@@ -2,7 +2,6 @@ const sourcesTypeScript = [
   "packages/**/src/**/*.tsx",
   "packages/**/src/**/*.ts",
   "packages/**/*.d.ts",
-
 ];
 const scriptsTypeScript = [
   "packages/**/scripts/**/*.ts",
@@ -60,6 +59,9 @@ module.exports = {
     {
       files: testsTypeScript,
       env: { jest: true },
+      rules: {
+        "@typescript-eslint/no-non-null-assertion": "off",
+      },
     },
     {
       files: nodeJavaScript,

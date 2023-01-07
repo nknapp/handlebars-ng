@@ -28,7 +28,7 @@ const ngParser: ObjectUnderTest = {
 };
 
 const ngRunner: ObjectUnderTest = {
-  name: "ngrunner",
+  name: "ng-runner",
   createRunner(test) {
     const ast = parse(test.template);
     const compiledTemplate = compile(ast);
@@ -40,7 +40,7 @@ const ngRunner: ObjectUnderTest = {
   },
 };
 
-async function writeTable(filename: string, ...testees: ObjectUnderTest[]) {
+async function writeData(filename: string, ...testees: ObjectUnderTest[]) {
   if (!force && existsSync(filename)) {
     console.log(
       "Skipping performance generation for existing file: " + filename
@@ -51,17 +51,20 @@ async function writeTable(filename: string, ...testees: ObjectUnderTest[]) {
   for (const testee of testees) {
     bench.addTestee(testee);
   }
-  const table = bench.addTests(tests).run().asTable();
+  bench.addTests(tests).run();
+  const table = bench.asTable();
+  const graph = bench.asGraphData();
+
   await mkdirp(path.dirname(filename));
-  fs.writeFile(filename, JSON.stringify(table));
+  fs.writeFile(filename, JSON.stringify({ table, graph }));
 }
 
-await writeTable(
+await writeData(
   "src/__generated__/benchmarks/parser.json",
   ngParser,
   originalHandlebars.parser
 );
-await writeTable(
+await writeData(
   "src/__generated__/benchmarks/runner.json",
   ngRunner,
   originalHandlebars.runner

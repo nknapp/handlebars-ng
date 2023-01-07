@@ -1,4 +1,5 @@
 import {
+  GraphData,
   Measurement,
   NamedPerformanceTest,
   ObjectUnderTest,
@@ -8,11 +9,15 @@ import { FunctionBenchmark } from "./FunctionBenchmark";
 
 export class TestBench {
   testees: ObjectUnderTest[] = [];
-  results: Record<`${string}-${string}`, Measurement> = {};
+  results: Record<string, Measurement> = {};
   tests: NamedPerformanceTest[] = [];
-  cycles = 2000;
-  warmupCycles = 1000;
+  cycles;
+  warmupCycles;
   done = false;
+
+  constructor({ cycles = 2000, warmupCycles = 1000 } = {}) {
+    (this.cycles = cycles), (this.warmupCycles = warmupCycles);
+  }
 
   addTests(newTests: NamedPerformanceTest[]): this {
     this.tests.push(...newTests);
@@ -47,7 +52,10 @@ export class TestBench {
 
   asTable(): string[][] {
     if (!this.done) throw new Error("Call 'run' before retrieving the result");
-    const format = new Intl.NumberFormat("en-US", { maximumFractionDigits: 4 });
+    const format = new Intl.NumberFormat("en-US", {
+      maximumFractionDigits: 3,
+      minimumFractionDigits: 3,
+    });
     const rows: string[][] = [];
     const headers = ["ms", ...this.testees.map((t) => t.name)];
     for (const test of this.tests) {
@@ -62,6 +70,24 @@ export class TestBench {
       rows.push(cols);
     }
     return [headers, ...rows];
+  }
+
+  asGraphData(): GraphData {
+    return {
+      datasets: this.testees.map((testee) => {
+        return {
+          label: testee.name,
+          data: this.tests.map((test) => {
+            const result = this.getResult(testee, test);
+            return [
+              result.statistics.average - result.statistics.stdDev,
+              result.statistics.average + result.statistics.stdDev,
+            ];
+          }),
+        };
+      }),
+      tests: this.tests.map((test) => test.name),
+    };
   }
 
   private putResult(

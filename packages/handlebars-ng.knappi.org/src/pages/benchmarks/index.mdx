@@ -3,7 +3,7 @@ title: Benchmarks
 layout: "@/layouts/MdxLayout.astro"
 ---
 
-import { BenchmarkTable } from "@/components/benchmarks/BenchmarkTable.tsx";
+import { BenchmarkResult } from "@/components/benchmarks/BenchmarkResult.tsx";
 
 # Benchmarks
 
@@ -13,11 +13,11 @@ and the Handlebars compiler (template execution) with the next-generation runner
 
 # Parser
 
-<BenchmarkTable tableName="parser" />
+<BenchmarkResult client:only name="parser" />
 
 # Runner
 
-<BenchmarkTable tableName="runner" />
+<BenchmarkResult client:only name="runner" />
 
 # Contributing tests
 

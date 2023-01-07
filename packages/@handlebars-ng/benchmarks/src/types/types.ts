@@ -42,3 +42,13 @@ export interface TestResult {
   testName: string;
   measurements: Record<string, Measurement>;
 }
+
+export interface GraphData {
+  datasets: GraphDataSet[];
+  tests: string[];
+}
+
+export interface GraphDataSet {
+  label: string;
+  data: Array<[min: number, max: number]>;
+}

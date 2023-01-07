@@ -1,22 +1,12 @@
 import type { Component } from "solid-js";
-import parserBenchmarkTable from '@/__generated__/benchmarks/parser.json'
-import runnerBenchmarkTable from '@/__generated__/benchmarks/runner.json'
 import { BenchmarkGithubLink } from "./BenchmarkGithubLink";
 
-const tables = {
-  parser: parserBenchmarkTable,
-  runner: runnerBenchmarkTable,
-} as const;
-
-export const BenchmarkTable: Component<{ tableName: keyof typeof tables }> = ({
-  tableName,
-}) => {
-  const table = tables[tableName];
+export const BenchmarkTable: Component<{ table: string[][] }> = ({ table }) => {
   if (table[0] == null) {
     throw new Error("Table has no header");
   }
   return (
-    <table>
+    <table class="w-full">
       <thead>
         <tr>
           {table[0].map((cell) => (
@@ -27,7 +17,9 @@ export const BenchmarkTable: Component<{ tableName: keyof typeof tables }> = ({
       <tbody>
         {table.slice(1).map((row) => (
           <tr>
-            <th><BenchmarkGithubLink filename={row[0] ?? ""} /></th>
+            <th>
+              <BenchmarkGithubLink filename={row[0] ?? ""} />
+            </th>
             {row.slice(1).map((cell) => (
               <td>{cell}</td>
             ))}
