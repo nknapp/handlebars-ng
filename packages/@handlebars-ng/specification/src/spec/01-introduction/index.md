@@ -63,4 +63,31 @@ In the test-case, the AST of the template is represented in a normalized form:
   }
   ```
 
-- The order of properties
+- Properties in the normalized AST are sorted by their index in the following list.
+  All not-listed properties are considered "OTHERS_LEXICAL" and are sorted lexically among themselves.
+
+  ```js
+  "type",
+  "value",
+  "original",
+  OTHERS_LEXICAL,
+  "loc",
+  // used inside "loc"
+  "start",
+  "end",
+  "source",
+  // used inside "loc.start" and "loc.end"
+  "line",
+  "column",
+  // used inside "trim"
+  "open",
+  "close",
+  ```
+
+Some test-cases do not pass for the current Handlebars.js 4.x implementation for one of the following reasons:
+
+- The AST deviates from the expected AST. The test-case will then contain a `originalAst` that contains the generated AST.
+- The parser cannot parse the template. The tst-case will then have a `originalParseError: true` property.
+
+In such cases, we need to discuss whether this is a bug in Handlebars.js or should be changed in the spec. For now we simply
+document the differences.

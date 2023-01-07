@@ -1,22 +1,24 @@
 import { Program } from "types/ast";
 
 const OTHERS_LEXICAL = Symbol("other properties (sorted lexically)");
+
+// When this changes, it should also be change in the spec (01-introduction)
 const propertyOrder: Array<typeof OTHERS_LEXICAL | string> = [
   "type",
   "value",
   "original",
   OTHERS_LEXICAL,
   "loc",
-  // inside "trim"
-  "open",
-  "close",
-  // inside "loc"
+  // used inside "loc"
   "start",
   "end",
   "source",
-  // inside "loc.start" and "loc.end"
+  // used inside "loc.start" and "loc.end"
   "line",
   "column",
+  // used inside "trim"
+  "open",
+  "close",
 ];
 
 export function enforcePropertyOrder(ast: Program): Program {
