@@ -37,3 +37,30 @@ There is also a documented JSON schema for the test-case and for the AST.
 This is a simple example of a test-case:
 
 [](./example.hb-spec.json)
+
+In the test-case, the AST of the template is represented in a normalized form:
+
+- Consecutive `ContentStatement` nodes are merged into a single node.
+
+  - The `value` property of the new node is the concatenation of all nodes
+  - The `original` property of the new node is the concationation of all nodes
+  - `loc.start` is taken from the first node
+  - `loc.end` is taken from the last node
+  - `loc.source` is taken from the first node. It should be the same in all nodes.
+
+  ```typescript
+  function merge(c1: ContentStatement, c2: ContentStatement): ContentStatement {
+    return {
+      type: "ContentStatement",
+      original: c1.original + c2.original,
+      value: c1.value + c2.value,
+      loc: {
+        start: c1.loc.start,
+        end: c2.loc.end,
+        source: c1.loc.source,
+      },
+    };
+  }
+  ```
+
+- The order of properties

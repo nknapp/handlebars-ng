@@ -1,4 +1,4 @@
-import type { ContentStatement } from "types/ast";
+import type { Program } from "types/ast";
 import { normalizeAst } from "./normalizeAst";
 
 describe("normalizeAst", () => {
@@ -7,6 +7,7 @@ describe("normalizeAst", () => {
       type: "Program",
       blockParams: [],
       loc: {
+        source: "",
         start: {
           line: 1,
           column: 0,
@@ -19,6 +20,7 @@ describe("normalizeAst", () => {
       body: [
         {
           loc: {
+            source: "",
             start: {
               line: 1,
               column: 0,
@@ -31,10 +33,10 @@ describe("normalizeAst", () => {
           type: "ContentStatement",
           value: "test",
           original: "test",
-        } as ContentStatement,
+        },
       ],
       strip: {},
-    });
+    } satisfies Program);
     expect(JSON.stringify(normalizedAst, null, 2)).toBe(
       `
 {
@@ -53,7 +55,8 @@ describe("normalizeAst", () => {
         "end": {
           "line": 2,
           "column": 7
-        }
+        },
+        "source": ""
       }
     }
   ],
@@ -66,7 +69,8 @@ describe("normalizeAst", () => {
     "end": {
       "line": 2,
       "column": 7
-    }
+    },
+    "source": ""
   }
 }`.trim()
     );
