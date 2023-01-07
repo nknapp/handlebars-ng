@@ -10,34 +10,20 @@ import path from "path";
 
 // https://astro.build/config
 import solidJs from "@astrojs/solid-js";
-import { hbsSpec } from "./astro-plugins/sync-handlebars-spec.ts";
+import { hbsSpec } from "./astro-plugins/sync-handlebars-spec";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 
 // https://astro.build/config
 export default defineConfig({
   integrations: [hbsSpec(), tailwind(), mdx(), solidJs()],
-  vite: {
-    resolve: {
-      alias: {
-        "@": path.resolve("src")
-      }
-    },
-    build: {
-      rollupOptions: {
-        output: {
-          entryFileNames: 'entry.[hash].js',
-          chunkFileNames: 'chunks/chunk.[hash].js',
-          assetFileNames: 'assets/asset.[hash][extname]',
-        },
-      },
-    },  },
   srcDir: "./src",
   markdown: {
     remarkPlugins: [injectTestcases],
+    rehypePlugins: [[rehypeAutolinkHeadings, { behavior: "wrap" }]],
     extendDefaultPlugins: true,
-    syntaxHighlight: 'shiki',
+    syntaxHighlight: "shiki",
   },
   outDir: "dist",
   site: "https://handlebars-ng.knappi.org/",
-  base: "/"
+  base: "/",
 });
-

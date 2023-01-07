@@ -2,6 +2,9 @@
 import Footer from "@/components/Footer.astro";
 import Navbar from "./Navbar.astro";
 import { Sidebar } from "./Sidebar";
+import chevronRight from "heroicons/24/outline/chevron-right.svg";
+import iconLink from "heroicons/24/outline/link.svg";
+import { cssUrls } from "@/utils/cssUrls";
 
 interface Props {
   title: string;
@@ -32,7 +35,7 @@ const sidebarEnabled = Astro.slots.has("sidebar");
       <div class="max-w-5xl mx-auto relative pb-16 flex-1">
         {
           sidebarEnabled && (
-            <aside class="absolute w-0 lg:w-64 overflow-visible h-full">
+            <aside class="absolute w-0 lg:w-64 overflow-visible h-full z-50">
               <Sidebar client:load>
                 <slot name="sidebar" />
               </Sidebar>
@@ -47,7 +50,7 @@ const sidebarEnabled = Astro.slots.has("sidebar");
         class="border-t border-slate-300 bg-slate-100 text-orange-900 flex-shrink-0 flex-grow-0 w-full bottom-0 absolute"
       >
         <div
-          class="max-w-5xl mx-auto  w-full py-8 px-4 lg:px-8 flex items-center justify-start h-10"
+          class="max-w-5xl mx-auto w-full py-8 px-4 lg:px-8 flex items-center justify-start h-10"
         >
           <Footer />
         </div>
@@ -60,14 +63,39 @@ const sidebarEnabled = Astro.slots.has("sidebar");
     ></script>
   </body>
 </html>
-<style is:global>
+<style is:global lang="scss" define:vars={cssUrls({ iconLink, chevronRight })}>
   html {
     font-family: system-ui, sans-serif;
     background-color: #f6f6f6;
   }
+
   code {
     font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
       DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+  }
+
+  .content {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      @apply relative;
+      &:target::before {
+        @apply w-4 block absolute -left-4 h-[1.25em];
+        background: var(--chevronRight) 0% 50% no-repeat;
+        content: " ";
+      }
+
+      a {
+        @apply no-underline hover:bg-transparent hover:outline-none;
+        &:hover::after {
+          @apply ml-4 w-4 h-4 inline-block;
+          background: var(--iconLink) 0% 50% no-repeat;
+          content: " ";
+        }
+      }
+    }
   }
 
   .content h1 {
@@ -142,12 +170,7 @@ const sidebarEnabled = Astro.slots.has("sidebar");
   }
 
   a {
-    @apply underline underline-offset-4;
-  }
-
-  a:hover {
-    background-color: rgba(127, 127, 127, 0.1);
-    outline: 5px solid rgba(127, 127, 127, 0.1);
+    @apply underline underline-offset-4 hover:bg-slate-500/10 hover:outline outline-4 outline-slate-500/10 rounded-sm;
   }
 
   .content .testcase {
