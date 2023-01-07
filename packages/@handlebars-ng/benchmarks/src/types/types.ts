@@ -16,33 +16,6 @@ export interface Runner {
   run(): Promise<void> | void;
 }
 
-export interface Statistics {
-  count: number;
-  average: number;
-  stdDev: number;
-  min: number;
-  per25: number;
-  per50: number;
-  per75: number;
-  max: number;
-}
-
-export interface Diagnosis {
-  sum: number;
-  total: number;
-  overheadPercent: number;
-}
-
-export interface Measurement {
-  statistics: Statistics;
-  diagnosis: Diagnosis;
-}
-
-export interface TestResult {
-  testName: string;
-  measurements: Record<string, Measurement>;
-}
-
 export interface GraphData {
   datasets: GraphDataSet[];
   tests: string[];

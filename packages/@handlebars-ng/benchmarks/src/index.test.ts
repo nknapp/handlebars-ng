@@ -1,72 +1,48 @@
-import { TestBench } from "./index";
-import { originalHandlebars } from "./index";
-import { tests } from "./index";
-import { statistics } from "./testbench/statistics";
-import { Measurement } from "./types/types";
+import { TestBench, tests } from "./index";
+import { ObjectUnderTest } from "./types/types";
+import { busyWaitMs } from "./utils/tests/busyWait";
 
 describe("benchmarks", () => {
-  describe("asTable returns a table", () => {
-    let result: string[][] = [];
+  it("asTable returns a table", async () => {
+    const bench = new TestBench({ time: 500, warmupTime: 20 })
+      .addTests(tests)
+      .addTestee(randomBusy("twenty", 20, 5))
+      .addTestee(randomBusy("ten", 10, 5));
+    await bench.run();
 
-    beforeAll(() => {
-      result = new TestBench({ cycles: 10, warmupCycles: 5 })
-        .addTests(tests)
-        .addTestee(originalHandlebars.parser)
-        .addTestee(originalHandlebars.runner)
-        .run()
-        .asTable();
-    });
-
-    it("with the testees in the first header-row", () => {
-      expect(result[0]).toEqual(["ms", "original parser", "original runner"]);
-    });
-
-    it("with the result rows", () => {
-      expect(result.length).toBeGreaterThan(0);
-    });
-
-    it("with the tests in the first column", () => {
-      const firstCol = result.map((cols) => cols[0]);
-      expect(firstCol).toContain("mustaches.perf.ts");
-      expect(firstCol).toContain("unescaped-mustaches.perf.ts");
-    });
-
-    it("returns average and stdDev in the cells", () => {
-      for (const row of result.slice(1)) {
-        for (const col of row.slice(1)) {
-          expect(col).toMatch(/^[\d.]+ \(\u00B1 [\d.]+\)$/);
-        }
-      }
-    });
+    expect(bench.asTable()).toEqual([
+      ["ms", "twenty", "ten"],
+      ["mustaches.perf.ts", roughMeanStd("20 (± 5)"), roughMeanStd("10 (± 5)")],
+      [
+        "unescaped-mustaches.perf.ts",
+        roughMeanStd("20 (± 5)"),
+        roughMeanStd("10 (± 5)"),
+      ],
+    ]);
   });
 
-  it("asGraphData", () => {
-    const testBench = new TestBench()
+  it("asGraphData", async () => {
+    const testBench = new TestBench({ time: 500 })
       .addTests(tests)
-      .addTestee(originalHandlebars.parser)
-      .addTestee(originalHandlebars.runner)
-      .run();
+      .addTestee(randomBusy("twenty", 20, 5))
+      .addTestee(randomBusy("ten", 10, 5));
 
-    let counter = 0;
-    for (const key of Object.keys(testBench.results)) {
-      testBench.results[key] = createResult(counter++);
-    }
-    const result = testBench.asGraphData();
+    await testBench.run();
 
-    expect(result).toEqual({
+    expect(testBench.asGraphData()).toEqual({
       datasets: [
         {
-          label: "original parser",
+          label: "twenty",
           data: [
-            [-2, 2],
-            [0, 4],
+            [roughly(15), roughly(25)],
+            [roughly(15), roughly(25)],
           ],
         },
         {
-          label: "original runner",
+          label: "ten",
           data: [
-            [-1, 3],
-            [1, 5],
+            [roughly(5), roughly(15)],
+            [roughly(5), roughly(15)],
           ],
         },
       ],
@@ -75,14 +51,90 @@ describe("benchmarks", () => {
   });
 });
 
-function createResult(counter: number): Measurement {
+function randomBusy(name: string, mean: number, sd: number): ObjectUnderTest {
   return {
-    diagnosis: {
-      sum: 0,
-      overheadPercent: 0,
-      total: 0,
+    name,
+    createRunner() {
+      return {
+        run() {
+          const r = Math.floor(Math.random() * 3);
+          switch (r) {
+            case 0:
+              busyWaitMs(mean - sd)();
+              return;
+            case 1:
+              busyWaitMs(mean)();
+              return;
+            case 2:
+              busyWaitMs(mean + sd)();
+              return;
+            default:
+              throw new Error("Unexpected result: " + r);
+          }
+        },
+      };
     },
-    statistics: statistics([counter - 2, counter, counter + 2]),
   };
-  throw new Error("Function not implemented.");
+}
+
+export interface AsymmetricMatcherInterface<T> {
+  $$typeof: symbol;
+  asymmetricMatch(other: T): boolean;
+  toString(): string;
+  getExpectedType?(): string;
+  toAsymmetricMatcher?(): string;
+}
+
+function roughly(expected: number, threshold: number = expected / 2): number {
+  const matcher: AsymmetricMatcherInterface<number> = {
+    $$typeof: Symbol.for("jest.asymmetricMatcher"),
+    asymmetricMatch(other: number) {
+      return Math.abs(other - expected) <= threshold;
+    },
+    toString() {
+      return "Expected";
+    },
+    getExpectedType() {
+      return "number";
+    },
+    toAsymmetricMatcher() {
+      return "roughly " + expected + " \u00B1" + threshold;
+    },
+  };
+  return matcher as unknown as number;
+}
+
+function roughMeanStd(expectedMeanStdDev: string, threshold?: string): number {
+  const [expectedMean, expectedStdDev] = parseMeanStdDev(expectedMeanStdDev);
+  const [thresholdMean, thresholdStdDev] = threshold
+    ? parseMeanStdDev(threshold)
+    : [expectedMean / 2, expectedStdDev / 2];
+
+  const matcher: AsymmetricMatcherInterface<string> = {
+    $$typeof: Symbol.for("jest.asymmetricMatcher"),
+    asymmetricMatch(received: string) {
+      const [receivedMean, receivedStdDev] = parseMeanStdDev(received);
+      return (
+        Math.abs(receivedMean - expectedMean) <= thresholdMean &&
+        Math.abs(receivedStdDev - expectedStdDev) <= thresholdStdDev
+      );
+    },
+    toString() {
+      return "Expected";
+    },
+    getExpectedType() {
+      return "number";
+    },
+    toAsymmetricMatcher() {
+      return "roughly " + expectedMeanStdDev;
+    },
+  };
+  return matcher as unknown as number;
+}
+
+function parseMeanStdDev(meanStdDev: string): [mean: number, stdDev: number] {
+  const match = meanStdDev.match(/[-\d.]+/g)?.map(Number);
+  if (match == null || match.length < 2)
+    throw new Error("Could not find two numbers in string");
+  return [match[0], match[1]];
 }

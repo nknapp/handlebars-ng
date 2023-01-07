@@ -1,22 +1,22 @@
 import {
   GraphData,
-  Measurement,
   NamedPerformanceTest,
   ObjectUnderTest,
-  PerformanceTest,
 } from "../types/types";
-import { FunctionBenchmark } from "./FunctionBenchmark";
+
+import { Bench, TaskResult } from "tinybench";
 
 export class TestBench {
   testees: ObjectUnderTest[] = [];
-  results: Record<string, Measurement> = {};
   tests: NamedPerformanceTest[] = [];
-  cycles;
-  warmupCycles;
+  results: Record<string, TaskResult> = {};
   done = false;
+  time: number;
+  warmupTime: number;
 
-  constructor({ cycles = 2000, warmupCycles = 1000 } = {}) {
-    (this.cycles = cycles), (this.warmupCycles = warmupCycles);
+  constructor({ time = 2000, warmupTime = 1000 } = {}) {
+    this.time = time;
+    this.warmupTime = warmupTime;
   }
 
   addTests(newTests: NamedPerformanceTest[]): this {
@@ -29,25 +29,24 @@ export class TestBench {
     return this;
   }
 
-  run(): this {
+  async run(): Promise<void> {
     if (this.done) throw new Error("Testbench can only be used once");
+    const bench = new Bench({
+      warmupTime: this.warmupTime,
+      time: this.time,
+    });
     for (const test of this.tests) {
       for (const testee of this.testees) {
-        this.putResult(testee, test, this.measure(testee, test));
+        bench.add(this.taskName(testee, test), testee.createRunner(test).run);
+      }
+    }
+    await bench.run();
+    for (const task of bench.tasks) {
+      if (task.result != null) {
+        this.results[task.name] = task.result;
       }
     }
     this.done = true;
-    return this;
-  }
-
-  private measure(
-    objectUnderTest: ObjectUnderTest,
-    test: PerformanceTest
-  ): Measurement {
-    const testFn = objectUnderTest.createRunner(test).run;
-    const benchmark = new FunctionBenchmark(testFn);
-    benchmark.run(this.cycles, this.warmupCycles);
-    return benchmark.getStats();
   }
 
   asTable(): string[][] {
@@ -63,8 +62,8 @@ export class TestBench {
       cols.push(test.name);
       for (const testee of this.testees) {
         const result = this.getResult(testee, test);
-        const average = format.format(result.statistics.average);
-        const stdDev = format.format(result.statistics.stdDev);
+        const average = format.format(result.mean);
+        const stdDev = format.format(result.sd);
         cols.push(average + " (\u00B1 " + stdDev + ")");
       }
       rows.push(cols);
@@ -79,10 +78,7 @@ export class TestBench {
           label: testee.name,
           data: this.tests.map((test) => {
             const result = this.getResult(testee, test);
-            return [
-              result.statistics.average - result.statistics.stdDev,
-              result.statistics.average + result.statistics.stdDev,
-            ];
+            return [result.mean - result.sd, result.mean + result.sd];
           }),
         };
       }),
@@ -90,18 +86,14 @@ export class TestBench {
     };
   }
 
-  private putResult(
-    testee: ObjectUnderTest,
-    test: NamedPerformanceTest,
-    measurement: Measurement
-  ): void {
-    this.results[`${testee.name}-${test.name}`] = measurement;
-  }
-
   private getResult(
     testee: ObjectUnderTest,
     test: NamedPerformanceTest
-  ): Measurement {
-    return this.results[`${testee.name}-${test.name}`];
+  ): TaskResult {
+    return this.results[this.taskName(testee, test)];
+  }
+
+  private taskName(testee: ObjectUnderTest, test: NamedPerformanceTest) {
+    return `${testee.name}-${test.name}`;
   }
 }
