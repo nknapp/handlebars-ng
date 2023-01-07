@@ -235,6 +235,68 @@ export const handlebarsSpec = [
     },
   },
   {
+    filename:
+      "05-mustache-statement/white-space-control-empty-nodes.hb-spec.json",
+    $schema: "../schema/testcase.json",
+    description:
+      "ContentStatements that become empty due to white-space control, are preserved.",
+    template: " {{~name~}} {{~name~}}",
+    input: { name: "joe" },
+    output: "joejoe",
+    ast: {
+      type: "Program",
+      body: [
+        {
+          type: "ContentStatement",
+          value: "",
+          original: " ",
+          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 1 } },
+        },
+        {
+          type: "MustacheStatement",
+          escaped: true,
+          params: [],
+          path: {
+            type: "PathExpression",
+            original: "name",
+            data: false,
+            depth: 0,
+            parts: ["name"],
+            loc: { start: { line: 1, column: 4 }, end: { line: 1, column: 8 } },
+          },
+          strip: { open: true, close: true },
+          loc: { start: { line: 1, column: 1 }, end: { line: 1, column: 11 } },
+        },
+        {
+          type: "ContentStatement",
+          value: "",
+          original: " ",
+          loc: { start: { line: 1, column: 11 }, end: { line: 1, column: 12 } },
+        },
+        {
+          type: "MustacheStatement",
+          escaped: true,
+          params: [],
+          path: {
+            type: "PathExpression",
+            original: "name",
+            data: false,
+            depth: 0,
+            parts: ["name"],
+            loc: {
+              start: { line: 1, column: 15 },
+              end: { line: 1, column: 19 },
+            },
+          },
+          strip: { open: true, close: true },
+          loc: { start: { line: 1, column: 12 }, end: { line: 1, column: 22 } },
+        },
+      ],
+      strip: {},
+      loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 22 } },
+    },
+  },
+  {
     filename: "05-mustache-statement/white-space-control-escaped.hb-spec.json",
     $schema: "../schema/testcase.json",
     description:
