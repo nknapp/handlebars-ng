@@ -4,25 +4,29 @@ import { busyWaitMs } from "./utils/tests/busyWait";
 
 describe("benchmarks", () => {
   it("asTable returns a table", async () => {
-    const bench = new TestBench({ time: 500, warmupTime: 20 })
+    const bench = new TestBench({
+      time: 500,
+      warmupTime: 20,
+      roundsPerExecution: 2,
+    })
       .addTests(tests)
       .addTestee(randomBusy("twenty", 20, 5))
       .addTestee(randomBusy("ten", 10, 5));
     await bench.run();
 
     expect(bench.asTable()).toEqual([
-      ["ms", "twenty", "ten"],
-      ["mustaches.perf.ts", roughMeanStd("20 (± 5)"), roughMeanStd("10 (± 5)")],
+      ["ms / 2 runs", "twenty", "ten"],
+      ["mustaches.perf.ts", roughMeanStd("40 (± 5)"), roughMeanStd("20 (± 5)")],
       [
         "unescaped-mustaches.perf.ts",
+        roughMeanStd("40 (± 5)"),
         roughMeanStd("20 (± 5)"),
-        roughMeanStd("10 (± 5)"),
       ],
     ]);
   });
 
   it("asGraphData", async () => {
-    const testBench = new TestBench({ time: 500 })
+    const testBench = new TestBench({ time: 500, roundsPerExecution: 2 })
       .addTests(tests)
       .addTestee(randomBusy("twenty", 20, 5))
       .addTestee(randomBusy("ten", 10, 5));
@@ -30,19 +34,20 @@ describe("benchmarks", () => {
     await testBench.run();
 
     expect(testBench.asGraphData()).toEqual({
+      unit: "ms / 2 runs",
       datasets: [
         {
           label: "twenty",
           data: [
-            [roughly(15), roughly(25)],
-            [roughly(15), roughly(25)],
+            [roughly(35), roughly(45)],
+            [roughly(35), roughly(45)],
           ],
         },
         {
           label: "ten",
           data: [
-            [roughly(5), roughly(15)],
-            [roughly(5), roughly(15)],
+            [roughly(15), roughly(25)],
+            [roughly(15), roughly(25)],
           ],
         },
       ],

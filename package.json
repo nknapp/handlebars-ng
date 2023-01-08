@@ -8,6 +8,7 @@
   "scripts": {
     "test:lint": "eslint .",
     "format": "prettier -w .",
+    "build": "lerna run build",
     "test-and-build": "lerna run test-and-build",
     "dev": "lerna run dev --parallel",
     "dev:site": "cd packages/handlebars-ng.knappi.org && yarn dev:server",

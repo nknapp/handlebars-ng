@@ -1,8 +1,10 @@
 import { ObjectUnderTest } from "../types/types";
 import Handlebars from "handlebars";
 
+const version = Handlebars.VERSION;
+
 const parser: ObjectUnderTest = {
-  name: "original parser",
+  name: `Handlebars ${version} (parser)`,
   testFn(test) {
     const hbsInstance = Handlebars.create();
     return () => {
@@ -12,7 +14,7 @@ const parser: ObjectUnderTest = {
 };
 
 const runner: ObjectUnderTest = {
-  name: "original runner",
+  name: `Handlebars ${version} (template execution)`,
   testFn(test) {
     const hbsInstance = Handlebars.create();
     const template = hbsInstance.compile(test.template);

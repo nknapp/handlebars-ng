@@ -43,7 +43,11 @@ async function writeData(filename: string, ...testees: ObjectUnderTest[]) {
     );
     return;
   }
-  const bench = new TestBench();
+  const bench = new TestBench({
+    roundsPerExecution: 1000,
+    time: 5000,
+    warmupTime: 500,
+  });
   for (const testee of testees) {
     bench.addTestee(testee);
   }

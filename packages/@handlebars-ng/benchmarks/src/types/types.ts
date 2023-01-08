@@ -13,6 +13,7 @@ export interface ObjectUnderTest {
 }
 
 export interface GraphData {
+  unit: string;
   datasets: GraphDataSet[];
   tests: string[];
 }

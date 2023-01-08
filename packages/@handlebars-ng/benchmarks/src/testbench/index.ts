@@ -63,7 +63,10 @@ export class TestBench {
       minimumFractionDigits: 3,
     });
     const rows: string[][] = [];
-    const headers = ["ms", ...this.testees.map((t) => t.name)];
+    const headers = [
+      `ms / ${this.roundsPerExecution} runs`,
+      ...this.testees.map((t) => t.name),
+    ];
     for (const test of this.tests) {
       const cols: string[] = [];
       cols.push(test.name);
@@ -80,6 +83,7 @@ export class TestBench {
 
   asGraphData(): GraphData {
     return {
+      unit: `ms / ${this.roundsPerExecution} runs`,
       datasets: this.testees.map((testee) => {
         return {
           label: testee.name,
