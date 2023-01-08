@@ -2,6 +2,10 @@ import { TestBench, tests } from "./index";
 import { ObjectUnderTest } from "./types/types";
 import { busyWaitMs } from "./utils/tests/busyWait";
 
+const someTests = tests.filter((test) =>
+  ["mustaches.perf.ts", "unescaped-mustaches.perf.ts"].includes(test.name)
+);
+
 describe("benchmarks", () => {
   it("asTable returns a table", async () => {
     const bench = new TestBench({
@@ -9,7 +13,7 @@ describe("benchmarks", () => {
       warmupTime: 20,
       roundsPerExecution: 2,
     })
-      .addTests(tests)
+      .addTests(someTests)
       .addTestee(randomBusy("twenty", 20, 5))
       .addTestee(randomBusy("ten", 10, 5));
     await bench.run();
@@ -27,7 +31,7 @@ describe("benchmarks", () => {
 
   it("asGraphData", async () => {
     const testBench = new TestBench({ time: 500, roundsPerExecution: 2 })
-      .addTests(tests)
+      .addTests(someTests)
       .addTestee(randomBusy("twenty", 20, 5))
       .addTestee(randomBusy("ten", 10, 5));
 

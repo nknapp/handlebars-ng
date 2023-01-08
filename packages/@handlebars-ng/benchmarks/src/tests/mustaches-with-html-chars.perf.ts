@@ -3,16 +3,22 @@ import { PerformanceTest } from "../types/types";
 export default {
   template: (
     "Lorem ipsum dolor sit amet, consetetur sadipscing elitr\n " +
-    "{{{a1}}}" +
+    "{{a1}}" +
     "Lorem ipsum dolor sit amet, consetetur sadipscing elitr\n" +
-    "{{{a2}}}" +
+    "{{a2}}" +
     "Lorem ipsum dolor sit amet, consetetur sadipscing elitr\n" +
-    "{{{a3}}}" +
+    "{{a3}}" +
     "Lorem ipsum dolor sit amet, consetetur sadipscing elitr\n" +
-    "{{{a4}}}" +
+    "{{a4}}" +
     "Lorem ipsum dolor sit amet, consetetur sadipscing elitr\n" +
-    "{{{a5}}}" +
+    "{{a5}}" +
     "Lorem ipsum dolor sit amet, consetetur sadipscing elitr\n"
   ).repeat(20),
-  input: { a1: "Nils", a2: "Test2", a3: "Test3", a4: "Test4", a5: "Test5" },
+  input: {
+    a1: "Nil<s Knapp<meier",
+    a2: "Tes>t2",
+    a3: "Tes=t3",
+    a4: 'Tes"t4',
+    a5: "Test'5",
+  },
 } satisfies PerformanceTest;

@@ -43,9 +43,9 @@ const hbsLexer: ObjectUnderTest = {
 const bench = new TestBench({
   time: 2000,
   warmupTime: 100,
-  roundsPerExecution: 1000,
+  roundsPerExecution: 1,
 })
-  .addTests([tests[0]])
+  .addTests(tests)
   .addTestee(originalHandlebars.parser)
   .addTestee(parserNg)
   .addTestee(hbsLexer)

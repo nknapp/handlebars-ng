@@ -1,5 +1,5 @@
 import { handlebarsSpec } from "@handlebars-ng/specification/tests";
-import { compile } from ".";
+import { compile } from "./index";
 import { Program } from "@handlebars-ng/specification/ast";
 
 describe("the runner runs templates from the spec", () => {

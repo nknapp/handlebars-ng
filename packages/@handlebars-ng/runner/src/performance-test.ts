@@ -16,7 +16,7 @@ const ngRunner: ObjectUnderTest = {
   },
 };
 
-const bench = new TestBench()
+const bench = new TestBench({ roundsPerExecution: 1 })
   .addTests(tests)
   .addTestee(originalHandlebars.runner)
   .addTestee(ngRunner);
