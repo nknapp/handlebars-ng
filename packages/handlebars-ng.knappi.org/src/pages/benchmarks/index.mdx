@@ -7,22 +7,33 @@ import { BenchmarkResult } from "@/components/benchmarks/BenchmarkResult.tsx";
 
 # Benchmarks
 
+The following benchmarks show the performance of the original Handlebars.js implementation
+and the implementation in this repo.
+
 These benchmarks are generated as part of the CI pipeline.
-We compare the original Handlebars parser with the next-generation parser,
-and the Handlebars compiler (template execution) with the next-generation runner
 
-_The benchmarks look very good, but please be aware that we have only implemented very basic features so far.
-I expect Handlebars NG to become slower when more features are implemented._
+## Disclaimer
 
-# Parser
+The benchmarks look like the Handlebars NG is much faster, but keep in mind that we have only implemented very basic features so far.
+I expect it to become slower when more features are implemented.
+
+Please also be aware that micro-benchmarks like this may not be expressive. I am not sure how valuable the results really are since the
+standard-deviation is very high in some tests.
+
+## How to read the data
+
+- The numbers in the table are "`mean (± sd)`" where `mean` is the average runtime of the test in milliseconds and `sd` is the standard deviation.
+- The charts show the range "`[ mean - sd, mean + sd ]`".
+
+## Parser
 
 <BenchmarkResult client:only name="parser" />
 
-# Runner
+## Runner
 
 <BenchmarkResult client:only name="runner" />
 
-# Contributing tests
+## Contributing tests
 
 Although this project is still in a very early stage, it would be nice to have some real-life templates
 to run the benchmarks. If you want to contribute tests, feel free to create an MR. Just add a subfolder to [this folder](https://github.com/nknapp/handlebars-ng/tree/main/packages/%40handlebars-ng/benchmarks/src/tests) and add files there.
