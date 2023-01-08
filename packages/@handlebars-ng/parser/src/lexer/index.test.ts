@@ -90,10 +90,43 @@ describe("Lexer", () => {
       expect(token.end).toEqual({ line, column });
     }
   );
+
+  it("multiple instances can work in parallel", () => {
+    const lexer1 = new HandlebarsLexer("a {{b")[Symbol.iterator]();
+    const lexer2 = new HandlebarsLexer("c")[Symbol.iterator]();
+
+    expect(lexer1.next()).toEqual({
+      done: false,
+      value: expect.objectContaining({ value: "a " }),
+    });
+
+    expect(lexer2.next()).toEqual({
+      done: false,
+      value: expect.objectContaining({ value: "c" }),
+    });
+
+    expect(lexer1.next()).toEqual({
+      done: false,
+      value: expect.objectContaining({ value: "{{" }),
+    });
+
+    expect(lexer2.next()).toEqual({
+      done: true,
+    });
+
+    expect(lexer1.next()).toEqual({
+      done: false,
+      value: expect.objectContaining({ value: "b" }),
+    });
+
+    expect(lexer1.next()).toEqual({
+      done: true,
+    });
+  });
 });
 
 function testTemplate(template: string, expectedValue: Token[]) {
   const lexer = new HandlebarsLexer(template);
   const tokens = [...lexer];
-  expect(tokens).toEqual(expectedValue);
+  expect(JSON.parse(JSON.stringify(tokens))).toEqual(expectedValue);
 }

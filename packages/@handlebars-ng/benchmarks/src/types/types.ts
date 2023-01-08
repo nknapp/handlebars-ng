@@ -9,11 +9,7 @@ export interface NamedPerformanceTest extends PerformanceTest {
 
 export interface ObjectUnderTest {
   name: string;
-  createRunner: (test: PerformanceTest) => Runner;
-}
-
-export interface Runner {
-  run(): Promise<void> | void;
+  testFn: (test: PerformanceTest) => () => void;
 }
 
 export interface GraphData {

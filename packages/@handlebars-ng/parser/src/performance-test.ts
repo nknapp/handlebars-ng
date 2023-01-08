@@ -2,24 +2,55 @@
 import { ObjectUnderTest, TestBench } from "@handlebars-ng/benchmarks";
 import { originalHandlebars } from "@handlebars-ng/benchmarks";
 import { tests } from "@handlebars-ng/benchmarks";
-import { parseWithoutProcessing } from ".";
+import { parse } from ".";
+import { HandlebarsLexer } from "./lexer";
+import { createHandlebarsMooLexer } from "./lexer/moo-lexer";
 
 const parserNg: ObjectUnderTest = {
   name: "ng parser",
-  createRunner(test) {
-    return {
-      run: () => {
-        parseWithoutProcessing(test.template);
-      },
+  testFn(test) {
+    return () => {
+      parse(test.template);
     };
   },
 };
 
-const result = new TestBench()
-  .addTests(tests)
+const mooLexer: ObjectUnderTest = {
+  name: "noo-lexer",
+  testFn(test) {
+    const lexer = createHandlebarsMooLexer();
+    return () => {
+      lexer.reset(test.template);
+      for (const ignoredToken of lexer) {
+        /* noop */
+      }
+    };
+  },
+};
+
+const hbsLexer: ObjectUnderTest = {
+  name: "hbs-lexer",
+  testFn(test) {
+    return () => {
+      const lexer = new HandlebarsLexer(test.template);
+      for (const ignoredToken of lexer) {
+        /* noop */
+      }
+    };
+  },
+};
+
+const bench = new TestBench({
+  time: 2000,
+  warmupTime: 100,
+  roundsPerExecution: 1000,
+})
+  .addTests([tests[0]])
   .addTestee(originalHandlebars.parser)
   .addTestee(parserNg)
-  .run()
-  .asTable();
+  .addTestee(hbsLexer)
+  .addTestee(mooLexer);
 
-console.table(result);
+await bench.run();
+
+console.table(bench.asTable());

@@ -13,10 +13,12 @@ export class TestBench {
   done = false;
   time: number;
   warmupTime: number;
+  roundsPerExecution: number;
 
-  constructor({ time = 2000, warmupTime = 1000 } = {}) {
+  constructor({ time = 2000, warmupTime = 1000, roundsPerExecution = 1 } = {}) {
     this.time = time;
     this.warmupTime = warmupTime;
+    this.roundsPerExecution = roundsPerExecution;
   }
 
   addTests(newTests: NamedPerformanceTest[]): this {
@@ -37,7 +39,12 @@ export class TestBench {
     });
     for (const test of this.tests) {
       for (const testee of this.testees) {
-        bench.add(this.taskName(testee, test), testee.createRunner(test).run);
+        const testFn = testee.testFn(test);
+        bench.add(this.taskName(testee, test), () => {
+          for (let i = 0; i < this.roundsPerExecution; i++) {
+            testFn();
+          }
+        });
       }
     }
     await bench.run();

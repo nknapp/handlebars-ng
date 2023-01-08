@@ -7,22 +7,20 @@ import { compile } from "./index";
 
 const ngRunner: ObjectUnderTest = {
   name: "ng runner",
-  createRunner(test) {
+  testFn(test) {
     const ast = parse(test.template);
     const compiledTemplate = compile(ast);
-    return {
-      run: () => {
-        compiledTemplate(test.input);
-      },
+    return () => {
+      compiledTemplate(test.input);
     };
   },
 };
 
-const result = new TestBench()
+const bench = new TestBench()
   .addTests(tests)
   .addTestee(originalHandlebars.runner)
-  .addTestee(ngRunner)
-  .run()
-  .asTable();
+  .addTestee(ngRunner);
 
-console.table(result);
+await bench.run();
+
+console.table(bench.asTable());

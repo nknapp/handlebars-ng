@@ -18,24 +18,20 @@ const force = import.meta.env.VITE_FORCE === "true";
 
 const ngParser: ObjectUnderTest = {
   name: "ng-parser",
-  createRunner(test) {
-    return {
-      run: () => {
-        parse(test.template);
-      },
+  testFn(test) {
+    return () => {
+      parse(test.template);
     };
   },
 };
 
 const ngRunner: ObjectUnderTest = {
   name: "ng-runner",
-  createRunner(test) {
+  testFn(test) {
     const ast = parse(test.template);
     const compiledTemplate = compile(ast);
-    return {
-      run: () => {
-        compiledTemplate(test.input);
-      },
+    return () => {
+      compiledTemplate(test.input);
     };
   },
 };
@@ -51,7 +47,8 @@ async function writeData(filename: string, ...testees: ObjectUnderTest[]) {
   for (const testee of testees) {
     bench.addTestee(testee);
   }
-  bench.addTests(tests).run();
+  await bench.addTests(tests).run();
+
   const table = bench.asTable();
   const graph = bench.asGraphData();
 

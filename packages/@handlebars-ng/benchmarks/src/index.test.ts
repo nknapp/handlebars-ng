@@ -54,24 +54,23 @@ describe("benchmarks", () => {
 function randomBusy(name: string, mean: number, sd: number): ObjectUnderTest {
   return {
     name,
-    createRunner() {
-      return {
-        run() {
-          const r = Math.floor(Math.random() * 3);
-          switch (r) {
-            case 0:
-              busyWaitMs(mean - sd)();
-              return;
-            case 1:
-              busyWaitMs(mean)();
-              return;
-            case 2:
-              busyWaitMs(mean + sd)();
-              return;
-            default:
-              throw new Error("Unexpected result: " + r);
-          }
-        },
+    testFn() {
+      let r = 0;
+      return () => {
+        r = (r + 1) % 3;
+        switch (r) {
+          case 0:
+            busyWaitMs(mean - sd)();
+            return;
+          case 1:
+            busyWaitMs(mean)();
+            return;
+          case 2:
+            busyWaitMs(mean + sd)();
+            return;
+          default:
+            throw new Error("Unexpected result: " + r);
+        }
       };
     },
   };

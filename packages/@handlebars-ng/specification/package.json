@@ -8,7 +8,7 @@
     "test:unit": "vitest --run",
     "build": "vite-node scripts/build-testcases.ts",
     "test-and-build": "yarn test:unit && yarn build && yarn test:types",
-    "generate": "concurrently npm:generate:*",
+    "generate": "yarn generate:ast-schema && yarn generate:spec-schema",
     "generate:ast-schema": "scripts/create-json-schema.sh types/ast.d.ts Program src/spec/schema/ast.json",
     "generate:spec-schema": "scripts/create-json-schema.sh types/tests.d.ts HandlebarsTest src/spec/schema/testcase.json",
     "dev:unit": "vitest --ui",

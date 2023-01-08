@@ -2,6 +2,7 @@ export type MustacheOpenType = "OPEN_UNESCAPED" | "OPEN";
 export type MustacheCloseType = "CLOSE_UNESCAPED" | "CLOSE";
 export type TokenType =
   | "CONTENT"
+  | "NEWLLINE"
   | "SPACE"
   | "ID"
   | "ESCAPED_MUSTACHE"

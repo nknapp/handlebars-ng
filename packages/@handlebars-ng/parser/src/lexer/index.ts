@@ -4,11 +4,15 @@ import { createHandlebarsMooLexer } from "./moo-lexer";
 
 export * from "./model";
 
+const availableMooLexers: Lexer[] = [];
+
 export class HandlebarsLexer {
-  private readonly lexer: Lexer;
+  lexer: Lexer;
+  template: string;
 
   constructor(template: string) {
-    this.lexer = createHandlebarsMooLexer();
+    this.template = template;
+    this.lexer = availableMooLexers.shift() ?? createHandlebarsMooLexer();
     this.lexer.reset(template);
   }
 
@@ -16,28 +20,26 @@ export class HandlebarsLexer {
     for (const token of this.lexer) {
       yield this.convertToken(token);
     }
+    availableMooLexers.push(this.lexer);
   }
 
   private convertToken(token: moo.Token): Token {
     const startColumn = token.col - 1;
+
+    const endColumn =
+      token.lineBreaks === 0
+        ? startColumn + token.text.length
+        : token.text.length - token.text.lastIndexOf("\n") - 1;
+
     return {
       type: token.type as TokenType,
       start: {
         column: startColumn,
         line: token.line,
       },
-      get end() {
-        if (token.lineBreaks === 0) {
-          return {
-            column: startColumn + token.text.length,
-            line: token.line,
-          };
-        } else {
-          return {
-            column: token.text.length - token.text.lastIndexOf("\n") - 1,
-            line: token.line + token.lineBreaks,
-          };
-        }
+      end: {
+        column: endColumn,
+        line: token.line + token.lineBreaks,
       },
       value: token.value,
       original: token.text,
