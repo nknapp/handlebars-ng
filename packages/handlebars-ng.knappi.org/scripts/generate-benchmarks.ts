@@ -44,7 +44,7 @@ async function writeData(filename: string, ...testees: ObjectUnderTest[]) {
     return;
   }
   const bench = new TestBench({
-    roundsPerExecution: 1000,
+    roundsPerExecution: 1,
     time: 5000,
     warmupTime: 500,
   });

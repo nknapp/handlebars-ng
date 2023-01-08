@@ -26,7 +26,7 @@ const sidebarEnabled = Astro.slots.has("sidebar");
     <title>{title}</title>
   </head>
   <body>
-    <div class="min-h-screen relative bg-white pb-10">
+    <div class="min-h-screen relative bg-white pb-16">
       <header class="border-b bg-orange-50">
         <div class="max-w-5xl mx-auto w-full px-4 py-4 lg:pr-8">
           <Navbar sidebarEnabled={sidebarEnabled} section={section} />
@@ -50,7 +50,7 @@ const sidebarEnabled = Astro.slots.has("sidebar");
         class="border-t border-slate-300 bg-slate-100 text-orange-900 flex-shrink-0 flex-grow-0 w-full bottom-0 absolute"
       >
         <div
-          class="max-w-5xl mx-auto w-full py-8 px-4 lg:px-8 flex items-center justify-start h-10"
+          class="max-w-5xl mx-auto w-full px-4 lg:px-8 flex items-center justify-start h-12"
         >
           <Footer />
         </div>

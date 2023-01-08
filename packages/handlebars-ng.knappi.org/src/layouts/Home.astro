@@ -20,7 +20,7 @@ const { title, logo } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
-    <div class="min-h-screen relative bg-white pb-10 pt-10">
+    <div class="min-h-screen relative bg-white pb-16 pt-10">
       <h1 class="text-orange-900 font-bold text-center text-4xl mb-8 mx-2">
         {title}
       </h1>
@@ -31,7 +31,7 @@ const { title, logo } = Astro.props;
         <div class="mb-2">
           <WorkInProgress />
         </div>
-        <div class="grid lg:grid-flow-col auto-rows-min auto-cols-fr gap-2">
+        <div class="grid lg:grid-flow-col auto-rows-min auto-cols-fr gap-2 pb-8">
           <slot />
         </div>
       </div>
@@ -39,7 +39,7 @@ const { title, logo } = Astro.props;
         class="border-t border-slate-300 bg-slate-100 text-orange-900 flex-shrink-0 flex-grow-0 w-full bottom-0 absolute"
       >
         <div
-          class="max-w-5xl mx-auto w-full py-8 px-4 lg:px-8 flex items-center justify-start h-10"
+          class="max-w-5xl mx-auto w-full px-4 lg:px-8 flex items-center justify-start h-16"
         >
           <Footer />
         </div>
