@@ -8,6 +8,7 @@ const mustacheRules: MyRules = {
   SPACE: / +/,
   ID: /\w+/,
   STRIP: "~",
+  DOT: ".",
 };
 
 const states: MyStates = {

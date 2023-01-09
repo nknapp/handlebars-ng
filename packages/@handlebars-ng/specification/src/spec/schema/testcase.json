@@ -5,19 +5,11 @@
     "ContentStatement": {
       "additionalProperties": false,
       "properties": {
-        "leftStripped": {
-          "const": true,
-          "type": "boolean"
-        },
         "loc": {
           "$ref": "#/definitions/SourceLocation"
         },
         "original": {
           "type": "string"
-        },
-        "rightStripped": {
-          "const": true,
-          "type": "boolean"
         },
         "type": {
           "const": "ContentStatement",
@@ -66,6 +58,10 @@
           "type": "boolean"
         },
         "output": {
+          "type": "string"
+        },
+        "possibleBug": {
+          "description": "If the output of Handlebars.js seems to be wrong, a description of this should be in this field.  That way, we can discuss the issues later. For now we should try to remain backwards compatible, so the \"output\" field should be what Handlebars 4.x is creating.",
           "type": "string"
         },
         "template": {

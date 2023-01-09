@@ -16,6 +16,12 @@ export interface HandlebarsTest {
    * The original Handlebars parser cannot parse the template in this test
    */
   originalParseError?: true;
+  /**
+   * If the output of Handlebars.js seems to be wrong, a description of this should be in this field.
+   * That way, we can discuss the issues later. For now we should try to remain backwards compatible, so the "output"
+   * field should be what Handlebars 4.x is creating.
+   */
+  possibleBug?: string;
 }
 
 export interface ExportedHandlebarsTest extends HandlebarsTest {

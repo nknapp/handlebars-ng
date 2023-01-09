@@ -26,8 +26,6 @@ export interface ContentStatement extends Node {
   type: "ContentStatement";
   value: string;
   original: string;
-  rightStripped?: true;
-  leftStripped?: true;
 }
 
 export interface StripFlags {

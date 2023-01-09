@@ -18,7 +18,7 @@ export class TokenStream {
     this.currentToken = this.lookAhead;
     if (this.currentToken.type !== type)
       throw new Error(
-        `Expected '${type}', but received '${this.currentToken}'`
+        `Expected '${type}', but received '${this.currentToken.type}'`
       );
     this.lookAhead = this.tokens.next().value;
     return this.currentToken;

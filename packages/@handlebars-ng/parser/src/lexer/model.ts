@@ -7,6 +7,7 @@ export type TokenType =
   | "ID"
   | "ESCAPED_MUSTACHE"
   | "STRIP"
+  | "DOT"
   | MustacheOpenType
   | MustacheCloseType;
 

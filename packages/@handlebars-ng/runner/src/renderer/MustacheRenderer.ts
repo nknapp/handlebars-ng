@@ -9,12 +9,22 @@ export class MustacheRenderer extends AbstractNodeRenderer<MustacheStatement> {
   }
 
   render(context: RenderContext): void {
-    const key = this.node.path.parts[0];
-    const value = String(context.input[key]);
+    const value = this.evaluateExpression(context);
     if (this.node.escaped) {
       renderHtmlEscaped(value, context);
     } else {
       context.output += value;
     }
+  }
+
+  // TODO: Extract to an ExpressionRenderer or something like that
+  evaluateExpression(context: RenderContext): string {
+    let currentObject: Record<string, unknown> = context.input;
+    for (const id of this.node.path.parts) {
+      if (typeof currentObject === "object" && currentObject != null) {
+        currentObject = currentObject[id] as Record<string, unknown>;
+      }
+    }
+    return String(currentObject);
   }
 }
