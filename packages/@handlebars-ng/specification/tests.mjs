@@ -487,6 +487,65 @@ export const handlebarsSpec = [
     originalParseError: true,
   },
   {
+    filename: "06-path-expression/id-in-square-brackets.hb-spec.json",
+    $schema: "../schema/testcase.json",
+    description:
+      "An id with special characters can be wrapped in square brackets",
+    template: "{{['].[ ].[0]}}",
+    input: { "'": { " ": ["success"] } },
+    output: "success",
+    ast: {
+      type: "Program",
+      body: [
+        {
+          type: "MustacheStatement",
+          escaped: true,
+          params: [],
+          path: {
+            type: "PathExpression",
+            original: "['].[ ].[0]",
+            data: false,
+            depth: 0,
+            parts: ["'", " ", "0"],
+            loc: {
+              start: { line: 1, column: 2 },
+              end: { line: 1, column: 13 },
+            },
+          },
+          strip: { open: false, close: false },
+          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 15 } },
+        },
+      ],
+      strip: {},
+      loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 15 } },
+    },
+    originalAst: {
+      type: "Program",
+      body: [
+        {
+          type: "MustacheStatement",
+          escaped: true,
+          params: [],
+          path: {
+            type: "PathExpression",
+            original: "'. .0",
+            data: false,
+            depth: 0,
+            parts: ["'", " ", "0"],
+            loc: {
+              start: { line: 1, column: 2 },
+              end: { line: 1, column: 13 },
+            },
+          },
+          strip: { open: false, close: false },
+          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 15 } },
+        },
+      ],
+      strip: {},
+      loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 15 } },
+    },
+  },
+  {
     filename: "06-path-expression/path-expression-dots.hb-spec.json",
     $schema: "../schema/testcase.json",
     description: "A path expressions with parts seperated by dots",
@@ -518,6 +577,74 @@ export const handlebarsSpec = [
       strip: {},
       loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 15 } },
     },
+  },
+  {
+    filename:
+      "06-path-expression/path-expression-resolves-to-nothing.hb-spec.json",
+    $schema: "../schema/testcase.json",
+    description:
+      "A path expressions that is resolved to nothing yields an empty string",
+    template: "{{person.name}}",
+    input: { person: "Max" },
+    ast: {
+      type: "Program",
+      body: [
+        {
+          type: "MustacheStatement",
+          escaped: true,
+          params: [],
+          path: {
+            type: "PathExpression",
+            original: "person.name",
+            data: false,
+            depth: 0,
+            parts: ["person", "name"],
+            loc: {
+              start: { line: 1, column: 2 },
+              end: { line: 1, column: 13 },
+            },
+          },
+          strip: { open: false, close: false },
+          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 15 } },
+        },
+      ],
+      strip: {},
+      loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 15 } },
+    },
+    output: "",
+  },
+  {
+    filename: "06-path-expression/path-expression-too-long.hb-spec.json",
+    $schema: "../schema/testcase.json",
+    description: "A path expression resolved on 'null' returns an empty string",
+    template: "{{person.name}}",
+    input: {},
+    ast: {
+      type: "Program",
+      body: [
+        {
+          type: "MustacheStatement",
+          escaped: true,
+          params: [],
+          path: {
+            type: "PathExpression",
+            original: "person.name",
+            data: false,
+            depth: 0,
+            parts: ["person", "name"],
+            loc: {
+              start: { line: 1, column: 2 },
+              end: { line: 1, column: 13 },
+            },
+          },
+          strip: { open: false, close: false },
+          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 15 } },
+        },
+      ],
+      strip: {},
+      loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 15 } },
+    },
+    output: "",
   },
 ];
 

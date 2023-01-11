@@ -2,8 +2,8 @@ import { MustacheCloseType, MustacheOpenType } from "../../lexer";
 import { ParserContext } from "../ParserContext";
 
 export function mustacheStatement(
-  openToken: MustacheOpenType,
-  closeToken: MustacheCloseType,
+  openToken: Set<MustacheOpenType>,
+  closeToken: Set<MustacheCloseType>,
   escaped: boolean
 ): ParserContext["mustache"] {
   return (context) => {

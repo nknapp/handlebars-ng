@@ -123,6 +123,15 @@ describe("Lexer", () => {
       done: true,
     });
   });
+
+  it("keeps square-brackets in the 'original' property of wrapped id tokens", () => {
+    const lexer = new HandlebarsLexer("{{ [ ]");
+    expect([...lexer].map((token) => token.original)).toEqual([
+      "{{",
+      " ",
+      "[ ]",
+    ]);
+  });
 });
 
 function testTemplate(template: string, expectedValue: Token[]) {

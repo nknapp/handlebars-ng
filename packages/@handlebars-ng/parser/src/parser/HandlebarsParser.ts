@@ -13,10 +13,10 @@ export class HandlebarsParser {
       tokens: new TokenStream(tokens[Symbol.iterator]()),
       program: program,
       statement: statement,
-      mustache: mustacheStatement("OPEN", "CLOSE", true),
+      mustache: mustacheStatement(new Set(["OPEN"]), new Set(["CLOSE"]), true),
       tripleMustache: mustacheStatement(
-        "OPEN_UNESCAPED",
-        "CLOSE_UNESCAPED",
+        new Set(["OPEN_UNESCAPED"]),
+        new Set(["CLOSE_UNESCAPED"]),
         false
       ),
       content: contentStatement,

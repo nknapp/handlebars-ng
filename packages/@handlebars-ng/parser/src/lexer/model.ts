@@ -5,6 +5,7 @@ export type TokenType =
   | "NEWLLINE"
   | "SPACE"
   | "ID"
+  | "SQUARE_WRAPPED_ID"
   | "ESCAPED_MUSTACHE"
   | "STRIP"
   | "DOT"

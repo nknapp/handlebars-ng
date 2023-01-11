@@ -23,6 +23,8 @@ export class MustacheRenderer extends AbstractNodeRenderer<MustacheStatement> {
     for (const id of this.node.path.parts) {
       if (typeof currentObject === "object" && currentObject != null) {
         currentObject = currentObject[id] as Record<string, unknown>;
+      } else {
+        return "";
       }
     }
     return String(currentObject);

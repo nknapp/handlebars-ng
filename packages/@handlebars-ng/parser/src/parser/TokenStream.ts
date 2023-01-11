@@ -12,13 +12,13 @@ export class TokenStream {
     this.lookAhead = this.tokens.next().value ?? null;
   }
 
-  eat(type: TokenType): Token {
+  eat(types: Set<TokenType>): Token {
     if (this.lookAhead == null)
-      throw new Error(`Expected '${type}', but received end of file.`);
+      throw new Error(`Expected '${types}', but received end of file.`);
     this.currentToken = this.lookAhead;
-    if (this.currentToken.type !== type)
+    if (!types.has(this.currentToken.type))
       throw new Error(
-        `Expected '${type}', but received '${this.currentToken.type}'`
+        `Expected '${types}', but received '${this.currentToken.type}'`
       );
     this.lookAhead = this.tokens.next().value;
     return this.currentToken;

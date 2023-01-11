@@ -1,0 +1,69 @@
+{
+  "$schema": "../schema/testcase.json",
+  "description": "An id with special characters can be wrapped in square brackets",
+  "template": "{{['].[ ].[0]}}",
+  "input": { "'": { " ": ["success"] } },
+  "output": "success",
+  "ast": {
+    "type": "Program",
+    "body": [
+      {
+        "type": "MustacheStatement",
+        "escaped": true,
+        "params": [],
+        "path": {
+          "type": "PathExpression",
+          "original": "['].[ ].[0]",
+          "data": false,
+          "depth": 0,
+          "parts": ["'", " ", "0"],
+          "loc": {
+            "start": { "line": 1, "column": 2 },
+            "end": { "line": 1, "column": 13 }
+          }
+        },
+        "strip": { "open": false, "close": false },
+        "loc": {
+          "start": { "line": 1, "column": 0 },
+          "end": { "line": 1, "column": 15 }
+        }
+      }
+    ],
+    "strip": {},
+    "loc": {
+      "start": { "line": 1, "column": 0 },
+      "end": { "line": 1, "column": 15 }
+    }
+  },
+  "originalAst": {
+    "type": "Program",
+    "body": [
+      {
+        "type": "MustacheStatement",
+        "escaped": true,
+        "params": [],
+        "path": {
+          "type": "PathExpression",
+          "original": "'. .0",
+          "data": false,
+          "depth": 0,
+          "parts": ["'", " ", "0"],
+          "loc": {
+            "start": { "line": 1, "column": 2 },
+            "end": { "line": 1, "column": 13 }
+          }
+        },
+        "strip": { "open": false, "close": false },
+        "loc": {
+          "start": { "line": 1, "column": 0 },
+          "end": { "line": 1, "column": 15 }
+        }
+      }
+    ],
+    "strip": {},
+    "loc": {
+      "start": { "line": 1, "column": 0 },
+      "end": { "line": 1, "column": 15 }
+    }
+  }
+}

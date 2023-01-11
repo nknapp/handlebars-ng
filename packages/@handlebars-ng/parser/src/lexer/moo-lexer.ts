@@ -7,6 +7,10 @@ type MyStates = { [x: string]: MyRules };
 const mustacheRules: MyRules = {
   SPACE: / +/,
   ID: /\w+/,
+  SQUARE_WRAPPED_ID: {
+    match: /\[[^[]*?\]/,
+    value: (text) => text.slice(1, -1),
+  },
   STRIP: "~",
   DOT: ".",
 };
