@@ -45,16 +45,22 @@ async function writeData(filename: string, ...testees: ObjectUnderTest[]) {
   }
   const bench = new TestBench({
     roundsPerExecution: 1,
-    time: 5000,
-    warmupTime: 500,
   });
   for (const testee of testees) {
     bench.addTestee(testee);
   }
-  await bench.addTests(tests).run();
+  await bench.addTests(tests).run({ iterations: 1000, warmupIterations: 100 });
 
-  const table = bench.asTable();
-  const graph = bench.asGraphData();
+  const format = new Intl.NumberFormat("en-US", {
+    maximumFractionDigits: 3,
+    minimumFractionDigits: 3,
+  });
+
+  const table = bench.asTable(
+    (result) =>
+      `x̄=${format.format(result.mean)} p99=${format.format(result.p99)}`
+  );
+  const graph = bench.asGraphData((result) => [result.mean, result.p99]);
 
   await mkdirp(path.dirname(filename));
   fs.writeFile(filename, JSON.stringify({ table, graph }));

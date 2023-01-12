@@ -11,7 +11,7 @@ import {
   Colors,
   Legend,
 } from "chart.js";
-import type { GraphData } from "@handlebars-ng/benchmarks/dist/types/types";
+import type { GraphData } from "@handlebars-ng/benchmarks";
 
 Chart.register(
   BarController,
@@ -35,7 +35,7 @@ export const BenchmarkChart: Component<{
 
       data: {
         labels: benchmarkResults.tests,
-        datasets: benchmarkResults.datasets
+        datasets: benchmarkResults.datasets,
       },
       plugins: {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -44,7 +44,7 @@ export const BenchmarkChart: Component<{
       },
       options: {
         animation: {
-            duration:0 
+          duration: 0,
         },
         indexAxis: "y",
         scales: {

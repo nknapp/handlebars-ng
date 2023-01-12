@@ -9,14 +9,12 @@ const someTests = tests.filter((test) =>
 describe("benchmarks", () => {
   it("asTable returns a table", async () => {
     const bench = new TestBench({
-      time: 500,
-      warmupTime: 20,
       roundsPerExecution: 2,
     })
       .addTests(someTests)
       .addTestee(randomBusy("twenty", 20, 5))
       .addTestee(randomBusy("ten", 10, 5));
-    await bench.run();
+    await bench.run({ iterations: 20, warmupIterations: 10 });
 
     expect(bench.asTable()).toEqual([
       ["ms / 2 runs", "twenty", "ten"],
@@ -30,12 +28,12 @@ describe("benchmarks", () => {
   });
 
   it("asGraphData", async () => {
-    const testBench = new TestBench({ time: 500, roundsPerExecution: 2 })
+    const testBench = new TestBench({ roundsPerExecution: 2 })
       .addTests(someTests)
       .addTestee(randomBusy("twenty", 20, 5))
       .addTestee(randomBusy("ten", 10, 5));
 
-    await testBench.run();
+    await testBench.run({ iterations: 20, warmupIterations: 10 });
 
     expect(testBench.asGraphData()).toEqual({
       unit: "ms / 2 runs",

@@ -6,18 +6,33 @@ import {
 
 import { Bench, TaskResult } from "tinybench";
 
+type ResultToSpan = (result: TaskResult) => [number, number];
+const meanPlusMinusStdDev: ResultToSpan = (result) => [
+  result.mean - result.sd,
+  result.mean + result.sd,
+];
+
+type ResultFormatter = (result: TaskResult) => string;
+
+const format = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 3,
+  minimumFractionDigits: 3,
+});
+
+const formatMeanStdDev: ResultFormatter = (result) => {
+  const average = format.format(result.mean);
+  const stdDev = format.format(result.sd);
+  return average + " (\u00B1 " + stdDev + ")";
+};
+
 export class TestBench {
   testees: ObjectUnderTest[] = [];
   tests: NamedPerformanceTest[] = [];
   results: Record<string, TaskResult> = {};
   done = false;
-  time: number;
-  warmupTime: number;
   roundsPerExecution: number;
 
-  constructor({ time = 2000, warmupTime = 1000, roundsPerExecution = 1 } = {}) {
-    this.time = time;
-    this.warmupTime = warmupTime;
+  constructor({ roundsPerExecution = 1 } = {}) {
     this.roundsPerExecution = roundsPerExecution;
   }
 
@@ -31,11 +46,11 @@ export class TestBench {
     return this;
   }
 
-  async run(): Promise<void> {
+  async run({ iterations = 2000, warmupIterations = 100 }): Promise<void> {
     if (this.done) throw new Error("Testbench can only be used once");
     const bench = new Bench({
-      warmupTime: this.warmupTime,
-      time: this.time,
+      iterations,
+      warmupIterations,
     });
     for (const test of this.tests) {
       for (const testee of this.testees) {
@@ -56,12 +71,8 @@ export class TestBench {
     this.done = true;
   }
 
-  asTable(): string[][] {
+  asTable(format: ResultFormatter = formatMeanStdDev): string[][] {
     if (!this.done) throw new Error("Call 'run' before retrieving the result");
-    const format = new Intl.NumberFormat("en-US", {
-      maximumFractionDigits: 3,
-      minimumFractionDigits: 3,
-    });
     const rows: string[][] = [];
     const headers = [
       `ms / ${this.roundsPerExecution} runs`,
@@ -72,16 +83,14 @@ export class TestBench {
       cols.push(test.name);
       for (const testee of this.testees) {
         const result = this.getResult(testee, test);
-        const average = format.format(result.mean);
-        const stdDev = format.format(result.sd);
-        cols.push(average + " (\u00B1 " + stdDev + ")");
+        cols.push(format(result));
       }
       rows.push(cols);
     }
     return [headers, ...rows];
   }
 
-  asGraphData(): GraphData {
+  asGraphData(toSpan: ResultToSpan = meanPlusMinusStdDev): GraphData {
     return {
       unit: `ms / ${this.roundsPerExecution} runs`,
       datasets: this.testees.map((testee) => {
@@ -89,7 +98,7 @@ export class TestBench {
           label: testee.name,
           data: this.tests.map((test) => {
             const result = this.getResult(testee, test);
-            return [result.mean - result.sd, result.mean + result.sd];
+            return toSpan(result);
           }),
         };
       }),

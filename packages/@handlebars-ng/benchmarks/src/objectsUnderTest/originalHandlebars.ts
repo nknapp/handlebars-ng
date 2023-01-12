@@ -14,7 +14,7 @@ const parser: ObjectUnderTest = {
 };
 
 const runner: ObjectUnderTest = {
-  name: `Handlebars ${version} (template execution)`,
+  name: `Handlebars ${version} (template)`,
   testFn(test) {
     const hbsInstance = Handlebars.create();
     const template = hbsInstance.compile(test.template);

@@ -4,4 +4,8 @@ export { tests } from "./tests";
 
 export { TestBench } from "./testbench";
 
-export type { ObjectUnderTest, NamedPerformanceTest } from "./types/types";
+export type {
+  ObjectUnderTest,
+  NamedPerformanceTest,
+  GraphData,
+} from "./types/types";

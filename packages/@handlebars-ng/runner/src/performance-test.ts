@@ -21,6 +21,6 @@ const bench = new TestBench({ roundsPerExecution: 1 })
   .addTestee(originalHandlebars.runner)
   .addTestee(ngRunner);
 
-await bench.run();
+await bench.run({ iterations: 200, warmupIterations: 100 });
 
 console.table(bench.asTable());

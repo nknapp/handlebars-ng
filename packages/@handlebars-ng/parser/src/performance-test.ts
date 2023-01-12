@@ -41,8 +41,6 @@ const hbsLexer: ObjectUnderTest = {
 };
 
 const bench = new TestBench({
-  time: 2000,
-  warmupTime: 100,
   roundsPerExecution: 1,
 })
   .addTests(tests)
@@ -51,6 +49,6 @@ const bench = new TestBench({
   .addTestee(hbsLexer)
   .addTestee(mooLexer);
 
-await bench.run();
+await bench.run({ iterations: 200, warmupIterations: 100 });
 
 console.table(bench.asTable());
