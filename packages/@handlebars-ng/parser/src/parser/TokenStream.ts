@@ -1,4 +1,4 @@
-import { HandlebarsLexer, Token, TokenType } from "../lexer";
+import { createLexer, Token, TokenType } from "../lexer";
 import { SourceLocation } from "../model/ast";
 import { ParseError } from "./ParseError";
 
@@ -11,7 +11,7 @@ export class TokenStream {
 
   constructor(template: string) {
     this.template = template;
-    const lexer = new HandlebarsLexer(template);
+    const lexer = createLexer(template);
     this.tokens = lexer[Symbol.iterator]();
     this.lookAhead = this.tokens.next().value ?? null;
   }

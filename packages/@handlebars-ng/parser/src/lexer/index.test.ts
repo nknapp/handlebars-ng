@@ -1,4 +1,4 @@
-import { HandlebarsLexer, Token } from "./index";
+import { createLexer, Token } from "./index";
 
 describe("Lexer", () => {
   describe("works for different templates", () => {
@@ -84,7 +84,7 @@ describe("Lexer", () => {
   ])(
     "'$text' ends in line $line and column $column",
     ({ text, line, column }) => {
-      const lexer = new HandlebarsLexer(text);
+      const lexer = createLexer(text);
       const token: Token = lexer[Symbol.iterator]().next().value;
       expect(token.original).toEqual(text);
       expect(token.end).toEqual({ line, column });
@@ -92,8 +92,8 @@ describe("Lexer", () => {
   );
 
   it("multiple instances can work in parallel", () => {
-    const lexer1 = new HandlebarsLexer("a {{b")[Symbol.iterator]();
-    const lexer2 = new HandlebarsLexer("c")[Symbol.iterator]();
+    const lexer1 = createLexer("a {{b")[Symbol.iterator]();
+    const lexer2 = createLexer("c")[Symbol.iterator]();
 
     expect(lexer1.next()).toEqual({
       done: false,
@@ -125,7 +125,7 @@ describe("Lexer", () => {
   });
 
   it("keeps square-brackets in the 'original' property of wrapped id tokens", () => {
-    const lexer = new HandlebarsLexer("{{ [ ]");
+    const lexer = createLexer("{{ [ ]");
     expect([...lexer].map((token) => token.original)).toEqual([
       "{{",
       " ",
@@ -135,7 +135,7 @@ describe("Lexer", () => {
 });
 
 function testTemplate(template: string, expectedValue: Token[]) {
-  const lexer = new HandlebarsLexer(template);
+  const lexer = createLexer(template);
   const tokens = [...lexer];
   expect(JSON.parse(JSON.stringify(tokens))).toEqual(expectedValue);
 }
