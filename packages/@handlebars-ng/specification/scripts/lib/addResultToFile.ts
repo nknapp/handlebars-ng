@@ -2,7 +2,7 @@ import Handlebars from "handlebars";
 import type { Program } from "../../types/ast";
 import fs from "node:fs/promises";
 
-import type { HandlebarsTest } from "../../types/tests";
+import type { SuccessTest } from "../../types/tests";
 import prettier from "prettier";
 import { jsonEquals } from "@/utils/jsonEquals";
 import { normalizeAst } from "@/utils/normalizeAst";
@@ -21,7 +21,7 @@ export async function addResultToFile(file: string) {
   }
 }
 
-function adjustTestcase(testcase: HandlebarsTest): void {
+function adjustTestcase(testcase: SuccessTest): void {
   if (!testcase.originalParseError) {
     addOutput(testcase);
     addAstOrOriginalAst(testcase);
@@ -33,13 +33,13 @@ function adjustTestcase(testcase: HandlebarsTest): void {
   }
 }
 
-function addOutput(testcase: HandlebarsTest): void {
+function addOutput(testcase: SuccessTest): void {
   if (testcase.output == null) {
     testcase.output = Handlebars.compile(testcase.template)(testcase.input);
   }
 }
 
-function addAstOrOriginalAst(testcase: HandlebarsTest): void {
+function addAstOrOriginalAst(testcase: SuccessTest): void {
   const ast = normalizeAst(Handlebars.parse(testcase.template) as Program);
   if (testcase.ast == null) {
     testcase.ast = ast;

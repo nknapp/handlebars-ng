@@ -1,5 +1,6 @@
 {
   "$schema": "../schema/testcase.json",
+  "type": "success",
   "description": "A path expressions that is resolved to nothing yields an empty string",
   "template": "{{person.name}}",
   "input": { "person": "Max" },

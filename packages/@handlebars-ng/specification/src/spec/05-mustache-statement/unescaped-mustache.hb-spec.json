@@ -1,5 +1,6 @@
 {
   "$schema": "../schema/testcase.json",
+  "type": "success",
   "description": "A simple mustache with unescaped output",
   "template": "{{{ value }}}",
   "input": { "value": "abc & < > \" ' ` = 123" },

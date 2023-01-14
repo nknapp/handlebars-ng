@@ -1,5 +1,6 @@
 {
   "$schema": "../schema/testcase.json",
+  "type": "success",
   "description": "A path expressions with parts seperated by dots",
   "template": "{{person.name}}",
   "input": { "person": { "name": "Max" } },

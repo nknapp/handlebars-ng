@@ -1,5 +1,6 @@
 {
   "$schema": "../schema/testcase.json",
+  "type": "success",
   "description": "ContentStatements that become empty due to white-space control, are preserved.",
   "template": " {{~name~}} {{~name~}}",
   "input": { "name": "joe" },

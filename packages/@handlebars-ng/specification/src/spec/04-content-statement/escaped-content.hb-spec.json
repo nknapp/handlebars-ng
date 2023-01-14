@@ -1,5 +1,6 @@
 {
   "$schema": "../schema/testcase.json",
+  "type": "success",
   "description": "Escaped mustache expression",
   "template": "\\{{abc}} \\{{{cde}}}",
   "input": {},

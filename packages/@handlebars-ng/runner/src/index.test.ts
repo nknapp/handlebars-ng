@@ -1,14 +1,16 @@
 import { handlebarsSpec } from "@handlebars-ng/specification/tests";
 import { compile } from "./index";
-import { Program } from "@handlebars-ng/specification/ast";
 
 describe("the runner runs templates from the spec", () => {
-  for (const testCase of handlebarsSpec) {
-    describe(testCase.filename, () => {
-      it(testCase.description, () => {
-        const result = compile(testCase.ast as Program)(testCase.input);
-        expect(result).toEqual(testCase.output);
+  for (const [filename, testCase] of Object.entries(handlebarsSpec)) {
+    if (testCase.type === "success") {
+      describe(filename, () => {
+        it(testCase.description, () => {
+          const compiledTemplate = compile(testCase.ast);
+          const result = compiledTemplate(testCase.input);
+          expect(result).toEqual(testCase.output);
+        });
       });
-    });
+    }
   }
 });

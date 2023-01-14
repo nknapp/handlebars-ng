@@ -1,5 +1,6 @@
 {
-  "$schema": "../spec.schema.json",
+  "$schema": "../schema/testcase.json",
+  "type": "success",
   "description": "A single newline",
   "template": "\n",
   "output": "\n",

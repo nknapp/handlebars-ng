@@ -1,5 +1,6 @@
 {
   "$schema": "../schema/testcase.json",
+  "type": "success",
   "description": "A simple template without mustaches",
   "template": "hello\nworld",
   "input": {},

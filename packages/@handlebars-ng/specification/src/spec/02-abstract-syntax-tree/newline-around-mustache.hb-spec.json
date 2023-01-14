@@ -1,5 +1,6 @@
 {
-  "$schema": "../spec.schema.json",
+  "$schema": "../schema/testcase.json",
+  "type": "success",
   "description": "Newlines around a mustache statement",
   "template": "\n{{a}}\n",
   "input": { "a": 2 },

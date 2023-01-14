@@ -1,5 +1,6 @@
 {
   "$schema": "../schema/testcase.json",
+  "type": "success",
   "description": "White space around path expressions is ignored (escaped mustache)",
   "template": "|- {{~  \t\nname  \t\n}} | {{  \t\nname  \t\n~}} -|- {{~  \t\nname  \t\n~}} -|",
   "input": { "name": "joe" },

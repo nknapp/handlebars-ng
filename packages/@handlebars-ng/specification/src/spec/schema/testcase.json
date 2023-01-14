@@ -1,5 +1,5 @@
 {
-  "$ref": "#/definitions/HandlebarsTest",
+  "$ref": "#/definitions/SuccessTest",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "ContentStatement": {
@@ -24,57 +24,6 @@
         "original",
         "type",
         "value"
-      ],
-      "type": "object"
-    },
-    "HandlebarsTest": {
-      "additionalProperties": false,
-      "properties": {
-        "$schema": {
-          "type": "string"
-        },
-        "ast": {
-          "$ref": "#/definitions/Program"
-        },
-        "description": {
-          "type": "string"
-        },
-        "helpers": {
-          "additionalProperties": {
-            "type": "string"
-          },
-          "type": "object"
-        },
-        "input": {
-          "additionalProperties": {},
-          "type": "object"
-        },
-        "originalAst": {
-          "description": "The AST created by the original Handlebars parser, in case it is different from \"ast\""
-        },
-        "originalParseError": {
-          "const": true,
-          "description": "The original Handlebars parser cannot parse the template in this test",
-          "type": "boolean"
-        },
-        "output": {
-          "type": "string"
-        },
-        "possibleBug": {
-          "description": "If the output of Handlebars.js seems to be wrong, a description of this should be in this field.  That way, we can discuss the issues later. For now we should try to remain backwards compatible, so the \"output\" field should be what Handlebars 4.x is creating.",
-          "type": "string"
-        },
-        "template": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "$schema",
-        "description",
-        "template",
-        "ast",
-        "input",
-        "output"
       ],
       "type": "object"
     },
@@ -245,6 +194,62 @@
       "required": [
         "open",
         "close"
+      ],
+      "type": "object"
+    },
+    "SuccessTest": {
+      "additionalProperties": false,
+      "properties": {
+        "$schema": {
+          "type": "string"
+        },
+        "ast": {
+          "$ref": "#/definitions/Program"
+        },
+        "description": {
+          "type": "string"
+        },
+        "helpers": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "input": {
+          "additionalProperties": {},
+          "type": "object"
+        },
+        "originalAst": {
+          "description": "The AST created by the original Handlebars parser, in case it is different from \"ast\""
+        },
+        "originalParseError": {
+          "const": true,
+          "description": "The original Handlebars parser cannot parse the template in this test",
+          "type": "boolean"
+        },
+        "output": {
+          "type": "string"
+        },
+        "possibleBug": {
+          "description": "If the output of Handlebars.js seems to be wrong, a description of this should be in this field. That way, we can discuss the issues later. For now we should try to remain backwards compatible, so the \"output\" field should be what Handlebars 4.x is creating.",
+          "type": "string"
+        },
+        "template": {
+          "type": "string"
+        },
+        "type": {
+          "const": "success",
+          "type": "string"
+        }
+      },
+      "required": [
+        "$schema",
+        "ast",
+        "description",
+        "input",
+        "output",
+        "template",
+        "type"
       ],
       "type": "object"
     }

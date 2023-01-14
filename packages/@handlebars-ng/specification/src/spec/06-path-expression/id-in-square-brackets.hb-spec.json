@@ -1,5 +1,6 @@
 {
   "$schema": "../schema/testcase.json",
+  "type": "success",
   "description": "An id with special characters can be wrapped in square brackets",
   "template": "{{['].[ ].[0]}}",
   "input": { "'": { " ": ["success"] } },

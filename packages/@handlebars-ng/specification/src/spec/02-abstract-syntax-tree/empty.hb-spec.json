@@ -1,6 +1,7 @@
 {
   "$schema": "../schema/testcase.json",
   "description": "An empty template yields an empty result",
+  "type": "success",
   "template": "",
   "ast": {
     "type": "Program",

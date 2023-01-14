@@ -1,5 +1,6 @@
 {
   "$schema": "../schema/testcase.json",
+  "type": "success",
   "description": "White space should be removed when control characters are in place",
   "template": "|- {{{~name}}} | {{{name~}}} -|- {{{~name~}}} -|",
   "input": { "name": "joe" },
