@@ -5,7 +5,7 @@ type MyRules = { [x in TokenType]?: Rules[string] };
 type MyStates = { [x: string]: MyRules };
 
 const mustacheRules: MyRules = {
-  SPACE: / +/,
+  SPACE: { match: /[ \t\n]/, lineBreaks: true },
   ID: /\w+/,
   SQUARE_WRAPPED_ID: {
     match: /\[[^[]*?\]/,

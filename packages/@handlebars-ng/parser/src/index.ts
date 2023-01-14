@@ -1,13 +1,11 @@
 import { AnyNode, Program } from "./model/ast";
-import { HandlebarsLexer } from "./lexer";
 import { HandlebarsParser } from "./parser/HandlebarsParser";
 import { Traverser } from "./traverser/Traverser";
 
 const parser = new HandlebarsParser();
 
 export function parseWithoutProcessing(template: string): Program {
-  const lexer = new HandlebarsLexer(template);
-  return parser.parse(lexer);
+  return parser.parse(template);
 }
 
 export function parse(template: string): Program {

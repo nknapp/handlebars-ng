@@ -6,15 +6,20 @@ via a `PathExpression`. In the most simple form, the `PathExpression` is the nam
 More complex expressions are possible and described in a later chapter (TODO).
 
 ```
+Whitespace = " " | "\t" | "\n"
+WhitespaceControl = "~"
+
 MustacheStatement =
     HtmlEscapedMustacheStatement |
     UnescapedMustacheStatement
 
 HtmlEscapedMustacheStatement =
-    "{{" [ "~" ] PathExpression [ "~" ] "}}"
+    "{{" MustacheContents "}}"
 
 UnescapedMustacheStatement =
-    "{{{" [ "~" ] PathExpression [ "~" ] "}}}"
+    "{{{" MustacheContents  "}}}"
+
+MustacheContents = [ WhitespaceControl ] { Whitespace } PathExpression { Whitespace } [ WhitespaceControl ]
 ```
 
 ## Html escaped Mustache Statement
@@ -55,4 +60,6 @@ Nodes with empty `value` property are preserved to allow tools to recreate the e
 
 []/./white-space-control-empty-nodes.hb-spec.json)
 
-## TODO: White space between mustaches and expressions is ignored
+## Ignored whitespace
+
+Whitespace around the PathExpression is ignored

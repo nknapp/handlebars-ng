@@ -1,24 +1,30 @@
-import { Token, TokenType } from "../lexer";
+import { HandlebarsLexer, Token, TokenType } from "../lexer";
 import { SourceLocation } from "../model/ast";
+import { ParseError } from "./ParseError";
 
 export class TokenStream {
   private tokens: Iterator<Token>;
+  private template: string;
 
   lookAhead: Token | null;
   currentToken: Token | null = null;
 
-  constructor(tokens: Iterator<Token>) {
-    this.tokens = tokens;
+  constructor(template: string) {
+    this.template = template;
+    const lexer = new HandlebarsLexer(template);
+    this.tokens = lexer[Symbol.iterator]();
     this.lookAhead = this.tokens.next().value ?? null;
   }
 
   eat(types: Set<TokenType>): Token {
     if (this.lookAhead == null)
-      throw new Error(`Expected '${types}', but received end of file.`);
+      throw new Error(`Expected '${[...types]}', but received end of file.`);
     this.currentToken = this.lookAhead;
     if (!types.has(this.currentToken.type))
-      throw new Error(
-        `Expected '${types}', but received '${this.currentToken.type}'`
+      throw new ParseError(
+        `Expected '${[...types]}', but received '${this.currentToken.type}'`,
+        this.currentToken.start,
+        this.template
       );
     this.lookAhead = this.tokens.next().value;
     return this.currentToken;

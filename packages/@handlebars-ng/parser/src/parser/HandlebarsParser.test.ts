@@ -1,65 +1,42 @@
-import { Token } from "../lexer";
 import { HandlebarsParser } from "./HandlebarsParser";
 import { Program, SourceLocation } from "../model/ast";
 
 describe("parser", () => {
   it("parses a simple content template", () => {
-    expectAst(
-      [
+    expectAst("abc", {
+      type: "Program",
+      loc: loc(1, 0, 1, 3),
+      body: [
         {
-          type: "CONTENT",
-          start: { column: 0, line: 1 },
-          end: { column: 3, line: 1 },
-          value: "abc",
+          type: "ContentStatement",
+          loc: loc(1, 0, 1, 3),
           original: "abc",
+          value: "abc",
         },
       ],
-      {
-        type: "Program",
-        loc: loc(1, 0, 1, 3),
-        body: [
-          {
-            type: "ContentStatement",
-            loc: loc(1, 0, 1, 3),
-            original: "abc",
-            value: "abc",
-          },
-        ],
-        strip: {},
-      }
-    );
+      strip: {},
+    });
   });
 
   it("parses a simple content template (different length)", () => {
-    expectAst(
-      [
+    expectAst("abcde", {
+      type: "Program",
+      loc: loc(1, 0, 1, 5),
+      body: [
         {
-          type: "CONTENT",
-          start: { column: 0, line: 1 },
-          end: { column: 5, line: 1 },
-          value: "abcde",
+          type: "ContentStatement",
+          loc: loc(1, 0, 1, 5),
           original: "abcde",
+          value: "abcde",
         },
       ],
-      {
-        type: "Program",
-        loc: loc(1, 0, 1, 5),
-        body: [
-          {
-            type: "ContentStatement",
-            loc: loc(1, 0, 1, 5),
-            original: "abcde",
-            value: "abcde",
-          },
-        ],
-        strip: {},
-      }
-    );
+      strip: {},
+    });
   });
 });
 
-function expectAst(tokens: Token[], expectedAst: Program) {
-  const ast = new HandlebarsParser().parse(tokens);
+function expectAst(template: string, expectedAst: Program) {
+  const ast = new HandlebarsParser().parse(template);
   expect(ast).toEqual(expectedAst);
 }
 

@@ -1,5 +1,4 @@
 import { Program } from "../model/ast";
-import { Token } from "../lexer";
 import { pathExpression } from "./nodes/pathExpression";
 import { contentStatement } from "./nodes/contentStatement";
 import { statement } from "./nodes/statement";
@@ -8,9 +7,9 @@ import { program } from "./nodes/program";
 import { TokenStream } from "./TokenStream";
 
 export class HandlebarsParser {
-  parse(tokens: Iterable<Token>): Program {
+  parse(template: string): Program {
     const context = {
-      tokens: new TokenStream(tokens[Symbol.iterator]()),
+      tokens: new TokenStream(template),
       program: program,
       statement: statement,
       mustache: mustacheStatement(new Set(["OPEN"]), new Set(["CLOSE"]), true),
