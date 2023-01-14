@@ -3,7 +3,7 @@ import { ObjectUnderTest, TestBench } from "@handlebars-ng/benchmarks";
 import { originalHandlebars } from "@handlebars-ng/benchmarks";
 import { tests } from "@handlebars-ng/benchmarks";
 import { parse } from ".";
-import { HandlebarsLexer } from "./lexer";
+import { createLexer } from "./lexer";
 import { createHandlebarsMooLexer } from "./lexer/moo-lexer";
 
 const parserNg: ObjectUnderTest = {
@@ -32,7 +32,7 @@ const hbsLexer: ObjectUnderTest = {
   name: "hbs-lexer",
   testFn(test) {
     return () => {
-      const lexer = new HandlebarsLexer(test.template);
+      const lexer = createLexer(test.template);
       for (const ignoredToken of lexer) {
         /* noop */
       }
