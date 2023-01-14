@@ -2,26 +2,32 @@ import Handlebars from "handlebars";
 import type { Program } from "../../types/ast";
 import fs from "node:fs/promises";
 
-import type { SuccessTest } from "../../types/tests";
-import prettier from "prettier";
+import type {
+  HandlebarsTest,
+  ParseErrorTest,
+  SuccessTest,
+} from "../../types/tests";
 import { jsonEquals } from "@/utils/jsonEquals";
 import { normalizeAst } from "@/utils/normalizeAst";
+import { writeTestcase } from "./writeTestcase";
 
 export async function addResultToFile(file: string) {
-  const testcase = JSON.parse(await fs.readFile(file, "utf-8"));
-
-  adjustTestcase(testcase);
-
-  const json = JSON.stringify(testcase);
-  const formatted = prettier.format(json, { parser: "json" });
-
-  if ((await fs.readFile(file, "utf-8")) !== formatted) {
-    console.log("Updating " + file);
-    await fs.writeFile(file, formatted);
+  const testcase = JSON.parse(
+    await fs.readFile(file, "utf-8")
+  ) as HandlebarsTest;
+  switch (testcase.type) {
+    case "success":
+      adjustSuccessTestcase(testcase);
+      break;
+    case "parseError":
+      adjustParseErrorTestcase(testcase);
+      break;
   }
+
+  writeTestcase(file, testcase);
 }
 
-function adjustTestcase(testcase: SuccessTest): void {
+function adjustSuccessTestcase(testcase: SuccessTest): void {
   if (!testcase.originalParseError) {
     addOutput(testcase);
     addAstOrOriginalAst(testcase);
@@ -48,4 +54,20 @@ function addAstOrOriginalAst(testcase: SuccessTest): void {
   } else {
     testcase.originalAst = ast;
   }
+}
+
+function adjustParseErrorTestcase(testcase: ParseErrorTest): void {
+  try {
+    Handlebars.parse(testcase.template);
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message !== testcase.expected.message) {
+        testcase.originalMessage = error.message;
+      }
+      return;
+    }
+  }
+  throw new Error(
+    `Expected Handlebars 4.x to fail parsing "${testcase.template}"`
+  );
 }

@@ -16,6 +16,6 @@ export const handlebarsSpec = ${JSON.stringify(testCases)};
 export default handlebarsSpec;
 `;
 
-const prettyCode = prettier.format(jsCode);
+const prettyCode = prettier.format(jsCode, { filepath: specMjsFile });
 await fs.writeFile(specMjsFile, prettyCode);
 cp.execSync("git add " + specMjsFile);

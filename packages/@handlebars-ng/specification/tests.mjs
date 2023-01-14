@@ -716,6 +716,316 @@ export const handlebarsSpec = {
       loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 15 } },
     },
   },
+  "06-path-expression/invalid-ids/char-code-123.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: "{ may not be used in an id",
+    template: "{{a{b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a{b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+  },
+  "06-path-expression/invalid-ids/char-code-124.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: "| may not be used in an id",
+    template: "{{a|b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a|b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+    originalMessage:
+      "Parse error on line 1:\n{{a|b}}\n---^\nExpecting 'CLOSE_RAW_BLOCK', 'CLOSE', 'CLOSE_UNESCAPED', 'OPEN_SEXPR', 'CLOSE_SEXPR', 'ID', 'OPEN_BLOCK_PARAMS', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', 'SEP', got 'CLOSE_BLOCK_PARAMS'",
+  },
+  "06-path-expression/invalid-ids/char-code-125.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: "} may not be used in an id",
+    template: "{{a}b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a}b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+    originalMessage:
+      "Parse error on line 1:\n{{a}b}}\n---^\nExpecting 'CLOSE_RAW_BLOCK', 'CLOSE', 'CLOSE_UNESCAPED', 'OPEN_SEXPR', 'CLOSE_SEXPR', 'ID', 'OPEN_BLOCK_PARAMS', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', 'SEP', got 'INVALID'",
+  },
+  "06-path-expression/invalid-ids/char-code-126.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: "~ may not be used in an id",
+    template: "{{a~b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a~b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+    originalMessage:
+      "Parse error on line 1:\n{{a~b}}\n---^\nExpecting 'CLOSE_RAW_BLOCK', 'CLOSE', 'CLOSE_UNESCAPED', 'OPEN_SEXPR', 'CLOSE_SEXPR', 'ID', 'OPEN_BLOCK_PARAMS', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', 'SEP', got 'INVALID'",
+  },
+  "06-path-expression/invalid-ids/char-code-33.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: "! may not be used in an id",
+    template: "{{a!b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a!b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+  },
+  "06-path-expression/invalid-ids/char-code-34.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: '" may not be used in an id',
+    template: '{{a"b}}',
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a\"b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+  },
+  "06-path-expression/invalid-ids/char-code-35.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: "# may not be used in an id",
+    template: "{{a#b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a#b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+  },
+  "06-path-expression/invalid-ids/char-code-37.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: "% may not be used in an id",
+    template: "{{a%b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a%b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+  },
+  "06-path-expression/invalid-ids/char-code-38.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: "& may not be used in an id",
+    template: "{{a&b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a&b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+  },
+  "06-path-expression/invalid-ids/char-code-39.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: "' may not be used in an id",
+    template: "{{a'b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a'b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+  },
+  "06-path-expression/invalid-ids/char-code-40.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: "( may not be used in an id",
+    template: "{{a(b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a(b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+  },
+  "06-path-expression/invalid-ids/char-code-41.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: ") may not be used in an id",
+    template: "{{a)b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a)b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+    originalMessage:
+      "Parse error on line 1:\n{{a)b}}\n---^\nExpecting 'CLOSE', 'OPEN_SEXPR', 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'CLOSE_SEXPR'",
+  },
+  "06-path-expression/invalid-ids/char-code-42.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: "* may not be used in an id",
+    template: "{{a*b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a*b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+  },
+  "06-path-expression/invalid-ids/char-code-43.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: "+ may not be used in an id",
+    template: "{{a+b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a+b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+  },
+  "06-path-expression/invalid-ids/char-code-44.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: ", may not be used in an id",
+    template: "{{a,b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a,b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+  },
+  "06-path-expression/invalid-ids/char-code-59.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: "; may not be used in an id",
+    template: "{{a;b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a;b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+  },
+  "06-path-expression/invalid-ids/char-code-60.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: "< may not be used in an id",
+    template: "{{a<b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a<b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+  },
+  "06-path-expression/invalid-ids/char-code-61.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: "= may not be used in an id",
+    template: "{{a=b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a=b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+    originalMessage:
+      "Parse error on line 1:\n{{a=b}}\n---^\nExpecting 'CLOSE_RAW_BLOCK', 'CLOSE', 'CLOSE_UNESCAPED', 'OPEN_SEXPR', 'CLOSE_SEXPR', 'ID', 'OPEN_BLOCK_PARAMS', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', 'SEP', got 'EQUALS'",
+  },
+  "06-path-expression/invalid-ids/char-code-62.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: "> may not be used in an id",
+    template: "{{a>b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a>b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+  },
+  "06-path-expression/invalid-ids/char-code-64.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: "@ may not be used in an id",
+    template: "{{a@b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a@b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+  },
+  "06-path-expression/invalid-ids/char-code-91.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: "[ may not be used in an id",
+    template: "{{a[b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a[b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+  },
+  "06-path-expression/invalid-ids/char-code-92.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: "\\ may not be used in an id",
+    template: "{{a\\b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a\\b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+  },
+  "06-path-expression/invalid-ids/char-code-93.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: "] may not be used in an id",
+    template: "{{a]b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a]b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+  },
+  "06-path-expression/invalid-ids/char-code-94.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: "^ may not be used in an id",
+    template: "{{a^b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a^b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+  },
+  "06-path-expression/invalid-ids/char-code-96.hb-spec.json": {
+    $schema: "../../schema/testcase.json",
+    type: "parseError",
+    description: "` may not be used in an id",
+    template: "{{a`b}}",
+    expected: {
+      message:
+        "Parse error on line 1:\n{{a`b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+      line: 1,
+      column: 3,
+    },
+  },
   "06-path-expression/path-expression-dots.hb-spec.json": {
     $schema: "../schema/testcase.json",
     type: "success",

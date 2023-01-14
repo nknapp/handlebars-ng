@@ -28,5 +28,3 @@ It may be wise to allow multiple templates in such a test-case. Otherwise we nee
 Ids with special charactares must be wrapped in `[` and `]`. It may than not include a closing `]`.
 
 [](./id-in-square-brackets.hb-spec.json)
-
-TODO: Although the documentation states that `"` and `'` are also allowed instead of square brackets, this causes a parse-error.

@@ -1,5 +1,5 @@
 {
-  "$ref": "#/definitions/SuccessTest",
+  "$ref": "#/definitions/HandlebarsTest",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "ContentStatement": {
@@ -26,6 +26,36 @@
         "value"
       ],
       "type": "object"
+    },
+    "ExpectedParseError": {
+      "additionalProperties": false,
+      "properties": {
+        "column": {
+          "type": "number"
+        },
+        "line": {
+          "type": "number"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "line",
+        "column",
+        "message"
+      ],
+      "type": "object"
+    },
+    "HandlebarsTest": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ParseErrorTest"
+        },
+        {
+          "$ref": "#/definitions/SuccessTest"
+        }
+      ]
     },
     "MustacheStatement": {
       "additionalProperties": false,
@@ -59,6 +89,43 @@
         "params",
         "path",
         "strip",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ParseErrorTest": {
+      "additionalProperties": false,
+      "properties": {
+        "$schema": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "expected": {
+          "$ref": "#/definitions/ExpectedParseError"
+        },
+        "originalMessage": {
+          "description": "The parse error that is returned by Handlebars 4.x, if different from expetation",
+          "type": "string"
+        },
+        "possibleBug": {
+          "description": "If the output of Handlebars.js seems to be wrong, a description of this should be in this field. That way, we can discuss the issues later. For now we should try to remain backwards compatible, so the \"output\" field should be what Handlebars 4.x is creating.",
+          "type": "string"
+        },
+        "template": {
+          "type": "string"
+        },
+        "type": {
+          "const": "parseError",
+          "type": "string"
+        }
+      },
+      "required": [
+        "$schema",
+        "description",
+        "expected",
+        "template",
         "type"
       ],
       "type": "object"

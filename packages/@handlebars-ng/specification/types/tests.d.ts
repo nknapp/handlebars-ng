@@ -31,6 +31,14 @@ export interface SuccessTest extends BaseHandlebarsTest {
 
 export interface ParseErrorTest extends BaseHandlebarsTest {
   type: "parseError";
+  expected: ExpectedParseError;
+  /**
+   * The parse error that is returned by Handlebars 4.x, if different from expetation
+   */
+  originalMessage?: string;
+}
+
+export interface ExpectedParseError {
   line: number;
   column: number;
   message: string;

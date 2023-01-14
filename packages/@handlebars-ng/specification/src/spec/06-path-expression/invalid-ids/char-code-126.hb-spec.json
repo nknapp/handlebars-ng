@@ -1,0 +1,12 @@
+{
+  "$schema": "../../schema/testcase.json",
+  "type": "parseError",
+  "description": "~ may not be used in an id",
+  "template": "{{a~b}}",
+  "expected": {
+    "message": "Parse error on line 1:\n{{a~b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+    "line": 1,
+    "column": 3
+  },
+  "originalMessage": "Parse error on line 1:\n{{a~b}}\n---^\nExpecting 'CLOSE_RAW_BLOCK', 'CLOSE', 'CLOSE_UNESCAPED', 'OPEN_SEXPR', 'CLOSE_SEXPR', 'ID', 'OPEN_BLOCK_PARAMS', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', 'SEP', got 'INVALID'"
+}

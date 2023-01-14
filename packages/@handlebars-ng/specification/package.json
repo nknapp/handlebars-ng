@@ -8,9 +8,10 @@
     "test:unit": "vitest --run",
     "build": "vite-node scripts/build-testcases.ts",
     "test-and-build": "yarn test:unit && yarn build && yarn test:types",
-    "generate": "yarn generate:ast-schema && yarn generate:spec-schema",
+    "generate": "concurrently npm:generate:*",
     "generate:ast-schema": "scripts/create-json-schema.sh types/ast.d.ts Program src/spec/schema/ast.json",
     "generate:spec-schema": "scripts/create-json-schema.sh types/tests.d.ts HandlebarsTest src/spec/schema/testcase.json",
+    "generate:invalid-id-tests": "vite-node scripts/generate-invalid-id-tests.ts",
     "dev:unit": "vitest --ui",
     "dev": "concurrently -k npm:dev:*",
     "auto-complete-tests": "vite-node scripts/add-results-to-tests.ts"
