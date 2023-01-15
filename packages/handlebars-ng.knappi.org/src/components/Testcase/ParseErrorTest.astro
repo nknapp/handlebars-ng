@@ -1,0 +1,47 @@
+---
+import type {
+  ParseErrorTest,
+  SuccessTest,
+} from "@handlebars-ng/specification/tests";
+import prettier from "prettier";
+
+import { Code } from "astro/components";
+import Tabs from "./Tabs.astro";
+import Ast from "./Ast.astro";
+
+interface Props {
+  spec: ParseErrorTest;
+  filename: string;
+}
+
+const { spec, filename } = Astro.props;
+---
+
+<div class="testcase border-amber-900 border-2">
+  <header class="bg-slate-200 p-2">
+    <div class="text-lg">{filename}</div>
+    <div>{spec.description}</div>
+  </header>
+  <div class="p-2">
+    <div>
+      <header>Template:</header>
+      <div class="invisible-chars" title={JSON.stringify(spec.template)}>
+        <Code code={spec.template} lang="handlebars" />
+      </div>
+      <div>Line: {spec.expected.line}, Column: {spec.expected.column}</div>
+      <div class="" title={JSON.stringify(spec.template)}>
+        <Code code={spec.expected.message} />
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  header {
+    @apply font-bold;
+  }
+  code,
+  pre {
+    @apply bg-white;
+    font-family: monospace;
+  }
+</style>

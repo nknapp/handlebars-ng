@@ -1,0 +1,72 @@
+---
+import type { SuccessTest } from "@handlebars-ng/specification/tests";
+import prettier from "prettier";
+
+import { Code } from "astro/components";
+import Tabs from "./Tabs.astro";
+import Ast from "./Ast.astro";
+
+interface Props {
+  spec: SuccessTest;
+  filename: string;
+}
+
+const { spec, filename } = Astro.props;
+
+const prettyInput = prettier.format(JSON.stringify(spec.input), {
+  parser: "json",
+});
+---
+
+<div class="testcase border-amber-900 border-2">
+  <header class="bg-slate-200 p-2">
+    <div class="text-lg">{filename}</div>
+    <div>{spec.description}</div>
+  </header>
+  <div class="p-2">
+    <div>
+      <header>Template:</header>
+      <div class="invisible-chars" title={JSON.stringify(spec.template)}>
+        <Code code={spec.template} lang="handlebars" />
+      </div>
+      {spec.originalAst && <div class="text-red-600 mb-2">Warning: The original Handlebars implementation has a
+        deviating AST (which the author of this document
+        considers to be wrong):</div>}
+      <div>
+        <Tabs>
+          <header>Input / Output</header>
+          <div title={JSON.stringify(spec.output)}>
+            <header>Input</header>
+            <div><Code code={prettyInput.trim()} lang={"json"} /></div>
+            <header>Output</header>
+            <div class="invisible-chars"><Code code={spec.output} /></div>
+          </div>
+          <header>AST</header>
+          <div>
+            <Ast ast={spec.ast} />
+          </div>
+          {
+            spec.originalAst && (
+              <>
+                <header>Original AST</header>
+                <div>
+                  <Ast ast={spec.originalAst} />
+                </div>
+              </>
+            )
+          }
+        </Tabs>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  header {
+    @apply font-bold;
+  }
+  code,
+  pre {
+    @apply bg-white;
+    font-family: monospace;
+  }
+</style>

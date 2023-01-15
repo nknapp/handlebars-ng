@@ -22,7 +22,8 @@ Identifiers may contain any unicode character except for the following.
 Whitespace ! " # % & ' ( ) * + , . / ; < = > @ [ \ ] ^ ` { | } ~
 ```
 
-TODO: Testing this requires a new kind of test-case (testing for parse-error). This should probably be a new json-schema.
+[Testcases for invalid ids](./invalid-ids/)
+
 It may be wise to allow multiple templates in such a test-case. Otherwise we need one file per illegal character.
 
 Ids with special charactares must be wrapped in `[` and `]`. It may than not include a closing `]`.
