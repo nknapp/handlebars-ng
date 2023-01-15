@@ -1,8 +1,11 @@
 import { Location } from "../lexer/model";
 
 export class ParseError extends Error {
+  location: Location;
+
   constructor(message: string, location: Location, template: string) {
     super(message + createMessageSuffix(template, location));
+    this.location = location;
   }
 }
 
@@ -16,6 +19,7 @@ function createMessageSuffix(template: string, location?: Location) {
 }
 
 class Snippet {
+  private readonly contextLines = 2;
   private template: string;
   private location: Location;
   private startLine: number;
@@ -25,8 +29,8 @@ class Snippet {
   constructor(template: string, location: Location) {
     this.template = template;
     this.location = location;
-    this.startLine = Math.max(location.line - 2, 1);
-    this.endLine = this.startLine + 5;
+    this.startLine = Math.max(location.line - this.contextLines, 1);
+    this.endLine = location.line + this.contextLines + 1;
     this.lineNumberPadding = String(this.endLine).length;
   }
 

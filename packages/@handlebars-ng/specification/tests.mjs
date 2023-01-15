@@ -716,6 +716,36 @@ export const handlebarsSpec = {
       loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 15 } },
     },
   },
+  "06-path-expression/id-may-contain-special-chars.hb-spec.json": {
+    $schema: "../schema/testcase.json",
+    type: "success",
+    description: "An id may contain special characters like umlauts",
+    template: "{{äöüß°$}}",
+    input: { "äöüß°$": "success" },
+    output: "success",
+    ast: {
+      type: "Program",
+      body: [
+        {
+          type: "MustacheStatement",
+          escaped: true,
+          params: [],
+          path: {
+            type: "PathExpression",
+            original: "äöüß°$",
+            data: false,
+            depth: 0,
+            parts: ["äöüß°$"],
+            loc: { start: { line: 1, column: 2 }, end: { line: 1, column: 8 } },
+          },
+          strip: { open: false, close: false },
+          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 10 } },
+        },
+      ],
+      strip: {},
+      loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 10 } },
+    },
+  },
   "06-path-expression/invalid-ids/char-code-123.hb-spec.json": {
     $schema: "../../schema/testcase.json",
     type: "parseError",
@@ -735,12 +765,10 @@ export const handlebarsSpec = {
     template: "{{a|b}}",
     expected: {
       message:
-        "Parse error on line 1:\n{{a|b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+        "Parse error on line 1:\n{{a|b}}\n---^\nExpecting 'CLOSE_RAW_BLOCK', 'CLOSE', 'CLOSE_UNESCAPED', 'OPEN_SEXPR', 'CLOSE_SEXPR', 'ID', 'OPEN_BLOCK_PARAMS', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', 'SEP', got 'CLOSE_BLOCK_PARAMS'",
       line: 1,
-      column: 3,
+      column: 4,
     },
-    originalMessage:
-      "Parse error on line 1:\n{{a|b}}\n---^\nExpecting 'CLOSE_RAW_BLOCK', 'CLOSE', 'CLOSE_UNESCAPED', 'OPEN_SEXPR', 'CLOSE_SEXPR', 'ID', 'OPEN_BLOCK_PARAMS', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', 'SEP', got 'CLOSE_BLOCK_PARAMS'",
   },
   "06-path-expression/invalid-ids/char-code-125.hb-spec.json": {
     $schema: "../../schema/testcase.json",
@@ -749,12 +777,10 @@ export const handlebarsSpec = {
     template: "{{a}b}}",
     expected: {
       message:
-        "Parse error on line 1:\n{{a}b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+        "Parse error on line 1:\n{{a}b}}\n---^\nExpecting 'CLOSE_RAW_BLOCK', 'CLOSE', 'CLOSE_UNESCAPED', 'OPEN_SEXPR', 'CLOSE_SEXPR', 'ID', 'OPEN_BLOCK_PARAMS', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', 'SEP', got 'INVALID'",
       line: 1,
-      column: 3,
+      column: 4,
     },
-    originalMessage:
-      "Parse error on line 1:\n{{a}b}}\n---^\nExpecting 'CLOSE_RAW_BLOCK', 'CLOSE', 'CLOSE_UNESCAPED', 'OPEN_SEXPR', 'CLOSE_SEXPR', 'ID', 'OPEN_BLOCK_PARAMS', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', 'SEP', got 'INVALID'",
   },
   "06-path-expression/invalid-ids/char-code-126.hb-spec.json": {
     $schema: "../../schema/testcase.json",
@@ -763,12 +789,10 @@ export const handlebarsSpec = {
     template: "{{a~b}}",
     expected: {
       message:
-        "Parse error on line 1:\n{{a~b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+        "Parse error on line 1:\n{{a~b}}\n---^\nExpecting 'CLOSE_RAW_BLOCK', 'CLOSE', 'CLOSE_UNESCAPED', 'OPEN_SEXPR', 'CLOSE_SEXPR', 'ID', 'OPEN_BLOCK_PARAMS', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', 'SEP', got 'INVALID'",
       line: 1,
-      column: 3,
+      column: 4,
     },
-    originalMessage:
-      "Parse error on line 1:\n{{a~b}}\n---^\nExpecting 'CLOSE_RAW_BLOCK', 'CLOSE', 'CLOSE_UNESCAPED', 'OPEN_SEXPR', 'CLOSE_SEXPR', 'ID', 'OPEN_BLOCK_PARAMS', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', 'SEP', got 'INVALID'",
   },
   "06-path-expression/invalid-ids/char-code-33.hb-spec.json": {
     $schema: "../../schema/testcase.json",
@@ -861,12 +885,10 @@ export const handlebarsSpec = {
     template: "{{a)b}}",
     expected: {
       message:
-        "Parse error on line 1:\n{{a)b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+        "Parse error on line 1:\n{{a)b}}\n---^\nExpecting 'CLOSE', 'OPEN_SEXPR', 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'CLOSE_SEXPR'",
       line: 1,
-      column: 3,
+      column: 4,
     },
-    originalMessage:
-      "Parse error on line 1:\n{{a)b}}\n---^\nExpecting 'CLOSE', 'OPEN_SEXPR', 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'CLOSE_SEXPR'",
   },
   "06-path-expression/invalid-ids/char-code-42.hb-spec.json": {
     $schema: "../../schema/testcase.json",
@@ -935,12 +957,10 @@ export const handlebarsSpec = {
     template: "{{a=b}}",
     expected: {
       message:
-        "Parse error on line 1:\n{{a=b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
+        "Parse error on line 1:\n{{a=b}}\n---^\nExpecting 'CLOSE_RAW_BLOCK', 'CLOSE', 'CLOSE_UNESCAPED', 'OPEN_SEXPR', 'CLOSE_SEXPR', 'ID', 'OPEN_BLOCK_PARAMS', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', 'SEP', got 'EQUALS'",
       line: 1,
-      column: 3,
+      column: 4,
     },
-    originalMessage:
-      "Parse error on line 1:\n{{a=b}}\n---^\nExpecting 'CLOSE_RAW_BLOCK', 'CLOSE', 'CLOSE_UNESCAPED', 'OPEN_SEXPR', 'CLOSE_SEXPR', 'ID', 'OPEN_BLOCK_PARAMS', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', 'SEP', got 'EQUALS'",
   },
   "06-path-expression/invalid-ids/char-code-62.hb-spec.json": {
     $schema: "../../schema/testcase.json",

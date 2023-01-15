@@ -3,6 +3,7 @@ import { writeTestcase } from "./lib/writeTestcase";
 import fs from "node:fs/promises";
 import path from "path";
 import { addResultToFile } from "./lib/addResultToFile";
+import { HandlebarsTest } from "types/tests";
 
 const folder = "06-path-expression/invalid-ids";
 const me = path.relative(process.cwd(), __filename);
@@ -14,18 +15,13 @@ for (const char of invalidChars) {
   const charCode = char.charCodeAt(0);
   const filename = `${folder}/char-code-${charCode}.hb-spec.json`;
   const resolvedFile = resolveSpecFile(filename);
-  writeTestcase(resolvedFile, {
+  await writeTestcase(resolvedFile, {
     $schema: "../../schema/testcase.json",
     type: "parseError",
     description: `${char} may not be used in an id`,
     template: `{{a${char}b}}`,
-    expected: {
-      message: `Parse error on line 1:\n{{a${char}b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'`,
-      line: 1,
-      column: 3,
-    },
-  });
-  addResultToFile(resolvedFile);
+  } as HandlebarsTest);
+  await addResultToFile(resolvedFile);
 }
 
 await fs.writeFile(

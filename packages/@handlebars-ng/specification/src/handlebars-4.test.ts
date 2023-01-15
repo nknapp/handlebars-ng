@@ -7,6 +7,7 @@ import fs from "node:fs";
 import path from "node:path";
 import prettier from "prettier";
 import { ParseErrorTest, SuccessTest } from "types/tests";
+import { posFromParseError } from "./utils/posFromParseError";
 
 const specDir = path.join(__dirname, "spec");
 
@@ -107,7 +108,7 @@ class ExpectedParseError {
   }
 
   verifyError(error: Error) {
-    const { line, column } = this.posFromMessage(error.message);
+    const { line, column } = posFromParseError(error);
     try {
       expect(error.message).toEqual(this.testcase.expected.message);
     } catch (failedExpectation) {
@@ -119,21 +120,6 @@ class ExpectedParseError {
       throw failedExpectation;
     }
   }
-
-  posFromMessage(message: string): { line: number; column: number } {
-    const [parseErrorMsg, ignoredCodeLine, marker, ignoredExpectations] =
-      message.split("\n");
-    const [lineAsString] = getMatchingGroups(parseErrorMsg, /on line (\d+)/);
-    expect(marker).toMatch(/-*\^$/); // e.g. ---^
-    const column = marker.length;
-    return { line: parseInt(lineAsString), column };
-  }
-}
-
-function getMatchingGroups(string: string, regex: RegExp) {
-  const match = string.match(regex);
-  if (match == null) throw new Error(`"${string}" does not match ${regex}`);
-  return match.slice(1);
 }
 
 function writeActualSpecForComparison(filename: string, actualSpec: unknown) {

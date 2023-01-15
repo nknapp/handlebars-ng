@@ -1,4 +1,5 @@
 import moo, { Lexer } from "moo";
+import { ParseError } from "../parser/ParseError";
 import { TokenType, Token } from "./model";
 import { createHandlebarsMooLexer } from "./moo-lexer";
 
@@ -10,6 +11,17 @@ export function* createLexer(template: string): Generator<Token> {
   const mooLexer = availableMooLexers.shift() ?? createHandlebarsMooLexer();
   mooLexer.reset(template);
   for (const mooToken of mooLexer) {
+    if (mooToken.type === "error") {
+      throw new ParseError(
+        "Parse error",
+        {
+          line: mooToken.line,
+          column: mooToken.col - 1,
+        },
+        template
+      );
+    }
+
     yield convertToken(mooToken);
   }
   availableMooLexers.push(mooLexer);

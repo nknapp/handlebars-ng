@@ -10,6 +10,7 @@ import type {
 import { jsonEquals } from "@/utils/jsonEquals";
 import { normalizeAst } from "@/utils/normalizeAst";
 import { writeTestcase } from "./writeTestcase";
+import { posFromParseError } from "@/utils/posFromParseError";
 
 export async function addResultToFile(file: string) {
   const testcase = JSON.parse(
@@ -61,7 +62,12 @@ function adjustParseErrorTestcase(testcase: ParseErrorTest): void {
     Handlebars.parse(testcase.template);
   } catch (error) {
     if (error instanceof Error) {
-      if (error.message !== testcase.expected.message) {
+      if (testcase.expected == null) {
+        testcase.expected = {
+          message: error.message,
+          ...posFromParseError(error),
+        };
+      } else if (error.message !== testcase.expected.message) {
         testcase.originalMessage = error.message;
       }
       return;

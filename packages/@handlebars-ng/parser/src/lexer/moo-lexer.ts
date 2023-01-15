@@ -1,18 +1,19 @@
-import moo, { Lexer, Rules } from "moo";
+import moo, { Lexer, Rules, ErrorRule } from "moo";
 import { TokenType } from "./model";
 
-type MyRules = { [x in TokenType]?: Rules[string] };
+type MyRules = { [x in TokenType]?: Rules[string] } & { error?: ErrorRule };
 type MyStates = { [x: string]: MyRules };
 
 const mustacheRules: MyRules = {
   SPACE: { match: /[ \t\n]/, lineBreaks: true },
-  ID: /\w+/,
+  ID: /[^\n \t!"#%&'()*+,./;<=>@[\\\]^`{|}~]+/,
   SQUARE_WRAPPED_ID: {
     match: /\[[^[]*?\]/,
     value: (text) => text.slice(1, -1),
   },
   STRIP: "~",
   DOT: ".",
+  error: { error: true },
 };
 
 const states: MyStates = {
