@@ -1212,6 +1212,68 @@ export const handlebarsSpec = {
     },
     output: "",
   },
+  "07-helpers/helper-without-args.hb-spec.json": {
+    $schema: "../schema/testcase.json",
+    type: "success",
+    description: "A helper without args",
+    input: {},
+    helpers: { help: "return_literal_a" },
+    template: "{{help}}",
+    output: "a",
+    ast: {
+      type: "Program",
+      body: [
+        {
+          type: "MustacheStatement",
+          escaped: true,
+          params: [],
+          path: {
+            type: "PathExpression",
+            original: "help",
+            data: false,
+            depth: 0,
+            parts: ["help"],
+            loc: { start: { line: 1, column: 2 }, end: { line: 1, column: 6 } },
+          },
+          strip: { open: false, close: false },
+          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 8 } },
+        },
+      ],
+      strip: {},
+      loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 8 } },
+    },
+  },
+  "07-helpers/helpers-have-precedence-over-input-props.hb-spec.json": {
+    $schema: "../schema/testcase.json",
+    type: "success",
+    description: "A helper without args",
+    input: { help: "b" },
+    helpers: { help: "return_literal_a" },
+    template: "{{help}}",
+    output: "a",
+    ast: {
+      type: "Program",
+      body: [
+        {
+          type: "MustacheStatement",
+          escaped: true,
+          params: [],
+          path: {
+            type: "PathExpression",
+            original: "help",
+            data: false,
+            depth: 0,
+            parts: ["help"],
+            loc: { start: { line: 1, column: 2 }, end: { line: 1, column: 6 } },
+          },
+          strip: { open: false, close: false },
+          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 8 } },
+        },
+      ],
+      strip: {},
+      loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 8 } },
+    },
+  },
 };
 
 export default handlebarsSpec;

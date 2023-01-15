@@ -10,7 +10,7 @@ import {
   tests,
 } from "@handlebars-ng/benchmarks";
 import { parse } from "@handlebars-ng/parser";
-import { compile } from "@handlebars-ng/runner";
+import { HandlebarsNgRunner } from "@handlebars-ng/runner";
 import mkdirp from "make-dir";
 import path from "path";
 
@@ -29,7 +29,8 @@ const ngRunner: ObjectUnderTest = {
   name: "ng-runner",
   testFn(test) {
     const ast = parse(test.template);
-    const compiledTemplate = compile(ast);
+    const runner = new HandlebarsNgRunner();
+    const compiledTemplate = runner.compile(ast);
     return () => {
       compiledTemplate(test.input);
     };

@@ -57,6 +57,10 @@
         }
       ]
     },
+    "Helper": {
+      "const": "return_literal_a",
+      "type": "string"
+    },
     "MustacheStatement": {
       "additionalProperties": false,
       "properties": {
@@ -278,7 +282,7 @@
         },
         "helpers": {
           "additionalProperties": {
-            "type": "string"
+            "$ref": "#/definitions/Helper"
           },
           "type": "object"
         },

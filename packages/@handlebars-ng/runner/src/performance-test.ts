@@ -3,13 +3,14 @@ import { ObjectUnderTest, TestBench } from "@handlebars-ng/benchmarks";
 import { originalHandlebars } from "@handlebars-ng/benchmarks";
 import { tests } from "@handlebars-ng/benchmarks";
 import { parse } from "@handlebars-ng/parser";
-import { compile } from "./index";
+import { HandlebarsNgRunner } from ".";
 
 const ngRunner: ObjectUnderTest = {
   name: "ng runner",
   testFn(test) {
     const ast = parse(test.template);
-    const compiledTemplate = compile(ast);
+    const instance = new HandlebarsNgRunner();
+    const compiledTemplate = instance.compile(ast);
     return () => {
       compiledTemplate(test.input);
     };

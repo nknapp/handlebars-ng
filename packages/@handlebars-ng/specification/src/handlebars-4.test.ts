@@ -8,6 +8,7 @@ import path from "node:path";
 import prettier from "prettier";
 import { ParseErrorTest, SuccessTest } from "types/tests";
 import { posFromParseError } from "./utils/posFromParseError";
+import { compileAndRun } from "./utils/hbs4-compileAndRun";
 
 const specDir = path.join(__dirname, "spec");
 
@@ -76,9 +77,8 @@ class ExpectedSuccess {
   }
 
   expectCorrectOutput() {
-    const instance = Handlebars.create();
-    const template = instance.compile(this.testcase.template);
-    expect(template(this.testcase.input)).toEqual(this.testcase.output);
+    const output = compileAndRun(this.testcase);
+    expect(output).toEqual(this.testcase.output);
   }
 }
 

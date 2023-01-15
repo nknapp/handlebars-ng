@@ -1,4 +1,5 @@
 import { Program } from "./ast";
+import { Helper } from "./helpers";
 
 export interface BaseHandlebarsTest {
   $schema: string;
@@ -17,7 +18,7 @@ export interface SuccessTest extends BaseHandlebarsTest {
   type: "success";
   ast: Program;
   input: Record<string, unknown>;
-  helpers?: Record<string, string>;
+  helpers?: Record<string, Helper>;
   output: string;
   /**
    * The AST created by the original Handlebars parser, in case it is different from "ast"

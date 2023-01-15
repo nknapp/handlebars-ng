@@ -11,18 +11,24 @@ import { jsonEquals } from "@/utils/jsonEquals";
 import { normalizeAst } from "@/utils/normalizeAst";
 import { writeTestcase } from "./writeTestcase";
 import { posFromParseError } from "@/utils/posFromParseError";
+import { compileAndRun } from "@/utils/hbs4-compileAndRun";
 
 export async function addResultToFile(file: string) {
+  console.log("Processing: " + file);
   const testcase = JSON.parse(
     await fs.readFile(file, "utf-8")
   ) as HandlebarsTest;
-  switch (testcase.type) {
+
+  const type = testcase.type;
+  switch (type) {
     case "success":
       adjustSuccessTestcase(testcase);
       break;
     case "parseError":
       adjustParseErrorTestcase(testcase);
       break;
+    default:
+      throw new Error(`"${file}" has invalid type: ${JSON.stringify(type)}`);
   }
 
   writeTestcase(file, testcase);
@@ -42,7 +48,7 @@ function adjustSuccessTestcase(testcase: SuccessTest): void {
 
 function addOutput(testcase: SuccessTest): void {
   if (testcase.output == null) {
-    testcase.output = Handlebars.compile(testcase.template)(testcase.input);
+    testcase.output = compileAndRun(testcase);
   }
 }
 

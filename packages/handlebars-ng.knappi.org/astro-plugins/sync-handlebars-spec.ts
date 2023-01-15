@@ -22,7 +22,7 @@ export function hbsSpec(): AstroIntegration {
             async (file: SyncedFile) => {
               if (file.relativePath.endsWith("md")) {
                 return {
-                  relativePath: file.relativePath + "x",
+                  relativePath: mdToMdx(file),
                   contents: addFrontMatter(file),
                 };
               }
@@ -38,6 +38,10 @@ export function hbsSpec(): AstroIntegration {
       },
     },
   };
+}
+
+function mdToMdx(file: SyncedFile): string {
+  return file.relativePath + "x";
 }
 
 function addFrontMatter({ relativePath, contents }: SyncedFile) {

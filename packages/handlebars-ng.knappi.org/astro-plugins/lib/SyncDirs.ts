@@ -29,6 +29,7 @@ export class SyncDirs {
     const sourceFiles = await globby("**/*", {
       cwd: this.sourceDir,
       gitignore: true,
+      ignore: ["**/*.ts"],
       dot: true,
     });
     if (sourceFiles.length === 0) throw new Error("No spec files found");

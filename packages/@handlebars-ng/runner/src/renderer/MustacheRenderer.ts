@@ -19,6 +19,10 @@ export class MustacheRenderer extends AbstractNodeRenderer<MustacheStatement> {
 
   // TODO: Extract to an ExpressionRenderer or something like that
   evaluateExpression(context: RenderContext): string {
+    // TODO: Make this distinction during compile-time
+    if (this.node.path.parts.length === 1) {
+      return this.evaluateHelperOrExpression(context, this.node.path.parts[0]);
+    }
     let currentObject: Record<string, unknown> = context.input;
     for (const id of this.node.path.parts) {
       if (typeof currentObject === "object" && currentObject != null) {
@@ -28,5 +32,16 @@ export class MustacheRenderer extends AbstractNodeRenderer<MustacheStatement> {
       }
     }
     return String(currentObject);
+  }
+
+  evaluateHelperOrExpression(
+    context: RenderContext,
+    propertyName: string
+  ): string {
+    const helper = context.helpers.get(propertyName);
+    if (helper != null) {
+      return (helper as () => string)();
+    }
+    return String(context.input[propertyName]);
   }
 }

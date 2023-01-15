@@ -1,9 +1,7 @@
-import { Validator } from "jsonschema";
-import testSchema from "@/spec/schema/testcase.json";
 import { loadTestcases } from "./utils/testcases";
 import path from "node:path";
+import { validateTestcaseSchema } from "./utils/validate-testcase-schema";
 
-const validator = new Validator();
 const testcases = await loadTestcases();
 
 describe("testcase schema validation", () => {
@@ -16,8 +14,8 @@ describe("testcase schema validation", () => {
       });
 
       it("matches the schema", () => {
-        const result = validator.validate(testcase, testSchema);
-        expect(result.errors).toHaveLength(0);
+        const errors = validateTestcaseSchema(testcase);
+        expect(errors).toHaveLength(0);
       });
     });
   }
