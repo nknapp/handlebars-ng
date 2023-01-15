@@ -9,8 +9,15 @@ export type TokenType =
   | "ESCAPED_MUSTACHE"
   | "STRIP"
   | "DOT"
+  | "SLASH"
   | MustacheOpenType
   | MustacheCloseType;
+
+export type TokenTypes = Set<TokenType>;
+
+export function tok(...types: TokenType[]): TokenTypes {
+  return new Set<TokenType>(types);
+}
 
 export type Location = {
   column: number;

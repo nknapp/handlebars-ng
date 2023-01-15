@@ -1,5 +1,11 @@
 # Path Expressions
 
+```
+    Id = everything except: Whitespace ! " # % & ' ( ) * + , . / ; < = > @ [ \ ] ^ ` { | } ~
+    PathExpression = Id { PathExpressionTail }
+    PathExpressionTail = "." Id | "/" Id
+```
+
 A path expression is a list of ids separated by dots. It is resolved by recursively retrieving the property matching the id
 of the current input object.
 
@@ -13,6 +19,14 @@ converted to an empty string by the mustache-statements?)
 If a prefix of the path expressions that resolves to nothing, the result is also an empty string.
 
 [](./path-expression-too-long.hb-spec.json)
+
+A path expression may contain ids separated by slashes
+
+[](./path-expression-slashes.hb-spec.json)
+
+Dots and slashes may be mixed.
+
+[](./path-expression-dots-and-slashes.hb-spec.json)
 
 ## Literal segments
 

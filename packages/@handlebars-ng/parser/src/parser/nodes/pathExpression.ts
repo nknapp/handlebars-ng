@@ -1,18 +1,19 @@
-import { TokenType } from "../../lexer";
+import { tok } from "../../lexer";
 import { ParserContext } from "../ParserContext";
 
-const idTypes = new Set<TokenType>(["ID", "SQUARE_WRAPPED_ID"]);
+const TOK_ID = tok("ID", "SQUARE_WRAPPED_ID");
+const TOK_SEPARATOR = tok("DOT", "SLASH");
 
 export const pathExpression: ParserContext["pathExpression"] = (context) => {
-  const firstToken = context.tokens.eat(idTypes);
+  const firstToken = context.tokens.eat(TOK_ID);
   let original = firstToken.original;
 
   const restValues: string[] = [];
   let lastToken = firstToken;
   let dotToken = null;
-  while ((dotToken = context.tokens.eatOptional("DOT")) != null) {
+  while ((dotToken = context.tokens.eatOptional(TOK_SEPARATOR)) != null) {
     original += dotToken.original;
-    const idToken = context.tokens.eat(idTypes);
+    const idToken = context.tokens.eat(TOK_ID);
     restValues.push(idToken.value);
     original += idToken.original;
     lastToken = idToken;

@@ -13,6 +13,7 @@ const mustacheRules: MyRules = {
   },
   STRIP: "~",
   DOT: ".",
+  SLASH: /\//,
   error: { error: true },
 };
 

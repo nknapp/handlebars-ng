@@ -6,7 +6,6 @@ import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 import mdx from "@astrojs/mdx";
-import path from "path";
 
 // https://astro.build/config
 import solidJs from "@astrojs/solid-js";

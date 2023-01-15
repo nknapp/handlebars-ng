@@ -1046,6 +1046,39 @@ export const handlebarsSpec = {
       column: 3,
     },
   },
+  "06-path-expression/path-expression-dots-and-slashes.hb-spec.json": {
+    $schema: "../schema/testcase.json",
+    type: "success",
+    description: "A path expressions with parts seperated by dots",
+    template: "{{who.person/name}}",
+    input: { who: { person: { name: "Max" } } },
+    output: "Max",
+    ast: {
+      type: "Program",
+      body: [
+        {
+          type: "MustacheStatement",
+          escaped: true,
+          params: [],
+          path: {
+            type: "PathExpression",
+            original: "who.person/name",
+            data: false,
+            depth: 0,
+            parts: ["who", "person", "name"],
+            loc: {
+              start: { line: 1, column: 2 },
+              end: { line: 1, column: 17 },
+            },
+          },
+          strip: { open: false, close: false },
+          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 19 } },
+        },
+      ],
+      strip: {},
+      loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 19 } },
+    },
+  },
   "06-path-expression/path-expression-dots.hb-spec.json": {
     $schema: "../schema/testcase.json",
     type: "success",
@@ -1112,6 +1145,39 @@ export const handlebarsSpec = {
       loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 15 } },
     },
     output: "",
+  },
+  "06-path-expression/path-expression-slashes.hb-spec.json": {
+    $schema: "../schema/testcase.json",
+    type: "success",
+    description: "A path expressions with parts seperated by dots",
+    template: "{{person/name}}",
+    input: { person: { name: "Max" } },
+    output: "Max",
+    ast: {
+      type: "Program",
+      body: [
+        {
+          type: "MustacheStatement",
+          escaped: true,
+          params: [],
+          path: {
+            type: "PathExpression",
+            original: "person/name",
+            data: false,
+            depth: 0,
+            parts: ["person", "name"],
+            loc: {
+              start: { line: 1, column: 2 },
+              end: { line: 1, column: 13 },
+            },
+          },
+          strip: { open: false, close: false },
+          loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 15 } },
+        },
+      ],
+      strip: {},
+      loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 15 } },
+    },
   },
   "06-path-expression/path-expression-too-long.hb-spec.json": {
     $schema: "../schema/testcase.json",

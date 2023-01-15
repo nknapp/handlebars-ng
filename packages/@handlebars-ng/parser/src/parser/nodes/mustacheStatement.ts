@@ -1,5 +1,8 @@
-import { MustacheCloseType, MustacheOpenType } from "../../lexer";
+import { MustacheCloseType, MustacheOpenType, tok } from "../../lexer";
 import { ParserContext } from "../ParserContext";
+
+const TOK_STRIP = tok("STRIP");
+const TOK_SPACE = tok("SPACE");
 
 export function mustacheStatement(
   openToken: Set<MustacheOpenType>,
@@ -8,11 +11,11 @@ export function mustacheStatement(
 ): ParserContext["mustache"] {
   return (context) => {
     const open = context.tokens.eat(openToken);
-    const stripLeft = context.tokens.eatOptional("STRIP");
-    context.tokens.ignore("SPACE");
+    const stripLeft = context.tokens.eatOptional(TOK_STRIP);
+    context.tokens.ignore(TOK_SPACE);
     const path = context.pathExpression(context);
-    context.tokens.ignore("SPACE");
-    const stripRight = context.tokens.eatOptional("STRIP");
+    context.tokens.ignore(TOK_SPACE);
+    const stripRight = context.tokens.eatOptional(TOK_STRIP);
     const close = context.tokens.eat(closeToken);
 
     return {

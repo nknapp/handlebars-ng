@@ -1,4 +1,4 @@
-import { createLexer, Token, TokenType } from "../lexer";
+import { createLexer, Token, TokenTypes } from "../lexer";
 import { SourceLocation } from "../model/ast";
 import { ParseError } from "./ParseError";
 
@@ -16,7 +16,7 @@ export class TokenStream {
     this.lookAhead = this.tokens.next().value ?? null;
   }
 
-  eat(types: Set<TokenType>): Token {
+  eat(types: TokenTypes): Token {
     if (this.lookAhead == null)
       throw new Error(`Expected '${[...types]}', but received end of file.`);
     this.currentToken = this.lookAhead;
@@ -30,27 +30,24 @@ export class TokenStream {
     return this.currentToken;
   }
 
-  eatOptional(type: TokenType): Token | null {
+  eatOptional(types: TokenTypes): Token | null {
     if (this.lookAhead == null) return null;
-    if (this.lookAhead.type !== type) return null;
+    if (!types.has(this.lookAhead.type)) return null;
     this.currentToken = this.lookAhead;
     this.lookAhead = this.tokens.next().value;
     return this.currentToken;
   }
 
-  *keepEating(...types: TokenType[]): Generator<Token> {
-    while (
-      this.lookAhead?.type != null &&
-      types.includes(this.lookAhead.type)
-    ) {
+  *keepEating(types: TokenTypes): Generator<Token> {
+    while (this.lookAhead?.type != null && types.has(this.lookAhead.type)) {
       this.currentToken = this.lookAhead;
       this.lookAhead = this.tokens.next().value;
       yield this.currentToken;
     }
   }
 
-  ignore(...types: TokenType[]): void {
-    for (const ignoredToken of this.keepEating(...types)) {
+  ignore(types: TokenTypes): void {
+    for (const ignoredToken of this.keepEating(types)) {
       // ignore token
     }
   }

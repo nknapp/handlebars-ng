@@ -1,7 +1,10 @@
+import { tok } from "../../lexer";
 import { ParserContext } from "../ParserContext";
 
+const TOK_CONTENT_ESCAPED_MUSTACHE = tok("CONTENT", "ESCAPED_MUSTACHE");
+
 export const contentStatement: ParserContext["content"] = (context) => {
-  const tokens = [...context.tokens.keepEating("CONTENT", "ESCAPED_MUSTACHE")];
+  const tokens = [...context.tokens.keepEating(TOK_CONTENT_ESCAPED_MUSTACHE)];
 
   const firstToken = tokens[0];
   const lastToken = tokens[tokens.length - 1];
