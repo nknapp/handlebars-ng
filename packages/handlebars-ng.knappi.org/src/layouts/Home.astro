@@ -31,9 +31,7 @@ const { title, logo } = Astro.props;
         <div class="mb-2">
           <WorkInProgress />
         </div>
-        <div class="grid lg:grid-flow-col auto-rows-min auto-cols-fr gap-2 pb-8">
-          <slot />
-        </div>
+        <slot />
       </div>
       <footer
         class="border-t border-slate-300 bg-slate-100 text-orange-900 flex-shrink-0 flex-grow-0 w-full bottom-0 absolute"
