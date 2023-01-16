@@ -1,4 +1,4 @@
-import { Helper } from "types/helpers";
+import type { Helper } from "types/helpers";
 
 interface HelperSpec {
   description: string;

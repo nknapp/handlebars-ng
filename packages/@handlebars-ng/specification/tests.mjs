@@ -1246,7 +1246,7 @@ export const handlebarsSpec = {
   "07-helpers/helpers-have-precedence-over-input-props.hb-spec.json": {
     $schema: "../schema/testcase.json",
     type: "success",
-    description: "A helper without args",
+    description: "Helpers have precedence over input properties",
     input: { help: "b" },
     helpers: { help: "return_literal_a" },
     template: "{{help}}",
