@@ -1,6 +1,10 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type HelperFn = (...args: never[]) => string;
+
 export interface PerformanceTest {
   template: string;
   input: Record<string, unknown>;
+  helpers?: Record<string, HelperFn>;
 }
 
 export interface NamedPerformanceTest extends PerformanceTest {

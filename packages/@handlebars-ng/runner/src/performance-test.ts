@@ -19,9 +19,33 @@ const ngRunner: ObjectUnderTest = {
 
 const bench = new TestBench({ roundsPerExecution: 1 })
   .addTests(tests)
+  .addTests([
+    {
+      name: "long-unescape",
+      template: "abc {{abc}}\n".repeat(1000),
+      input: { abc: "abcabc".repeat(100) },
+    },
+  ])
+  .addTests([
+    {
+      name: "long-escape",
+      template: "abc {{abc}}\n".repeat(1000),
+      input: { abc: "abc<=>".repeat(100) },
+    },
+  ])
+
   .addTestee(originalHandlebars.runner)
   .addTestee(ngRunner);
 
 await bench.run({ iterations: 200, warmupIterations: 100 });
 
-console.table(bench.asTable());
+const numberFormat = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 2,
+});
+
+const f = (number: number) => numberFormat.format(number).padStart(7);
+
+console.table(
+  bench.asTable((r) => `${f(r.min)} ${f(r.mean)} ${f(r.p99)} ${f(r.max)}`)
+);
