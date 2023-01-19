@@ -1,5 +1,5 @@
 import { MustacheStatement, Node } from "@handlebars-ng/specification/ast";
-import { renderHtmlEscaped } from "../utils/htmlEscape";
+import { htmlEscape } from "../utils/htmlEscape";
 import { AbstractNodeRenderer } from "./AbstractNodeRenderer";
 import { RenderContext } from "./RenderContext";
 
@@ -11,7 +11,7 @@ export class MustacheRenderer extends AbstractNodeRenderer<MustacheStatement> {
   render(context: RenderContext): void {
     const value = this.evaluateExpression(context);
     if (this.node.escaped) {
-      renderHtmlEscaped(value, context);
+      context.output += htmlEscape(value);
     } else {
       context.output += value;
     }

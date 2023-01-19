@@ -1,54 +1,33 @@
 import { bench } from "vitest";
-import { escapeHtmlFromNpm } from "./htmlEscape/escape-html-npm-package";
-import { escapeHtmlIterateSwitchPlusEquals } from "./htmlEscape/iterate-chars-and-switch";
-import { escapeHtmlIterateMapGetPlusEquals } from "./htmlEscape/iterate-chars-with-map";
-import { escapeHtmlIterateFastWithRuleArray } from "./htmlEscape/iterate-fast-with-rule-array";
-import { escapeHtmlRegexpExec } from "./htmlEscape/re-exec";
-import { escapeHtmlReplaceAll } from "./htmlEscape/replaceAll";
-import { escapeHtmlReplaceRegexp } from "./htmlEscape/string-replace-regex";
-import { escapeHtmlUint8Array } from "./htmlEscape/type-array-utf-8";
-import { escapeHtmlUint16Array } from "./htmlEscape/typed-array-utf16";
+import { htmlEscape } from "./htmlEscape";
 
-for (let i = 0; i < 3; i++) {
-  const string =
-    "ab< ad asd asd asd asd asd =a dsa asd asd ad a>d ad asd asd \"asd asd asd 'asd` asd ad asd c".repeat(
-      Math.pow(20, i)
-    );
-  describe("htmlEscape " + string.length, () => {
-    bench("replaceAll", () => {
-      escapeHtmlReplaceAll(string);
-    });
-
-    bench("iterate", () => {
-      escapeHtmlIterateMapGetPlusEquals(string);
-    });
-
-    bench("iterateSwitch", () => {
-      escapeHtmlIterateSwitchPlusEquals(string);
-    });
-
-    bench("escapeHtmlReReplace", () => {
-      escapeHtmlReplaceRegexp(string);
-    });
-
-    bench("re-exec", () => {
-      escapeHtmlRegexpExec(string);
-    });
-
-    bench("typedArray", () => {
-      escapeHtmlUint8Array(string);
-    });
-
-    bench("uint16array", () => {
-      escapeHtmlUint16Array(string);
-    });
-
-    bench("fromNpm", () => {
-      escapeHtmlFromNpm(string);
-    });
-
-    bench("iterate-fast-with-rule-array", () => {
-      escapeHtmlIterateFastWithRuleArray(string);
-    });
-  });
+function unscapedChars(count: number) {
+  return `${count} chars between escaped chars -------------`
+    .repeat(Math.ceil(count / 40))
+    .slice(0, count);
 }
+
+const strings: string[] = [
+  "short string unescaped",
+  "short & escape",
+  "long string unescaped".repeat(10),
+  (unscapedChars(5) + "<").repeat(10),
+  (unscapedChars(10) + "<").repeat(10),
+  (unscapedChars(20) + "<").repeat(10),
+  (unscapedChars(50) + "<").repeat(10),
+  (unscapedChars(100) + "<").repeat(10),
+  (unscapedChars(200) + "<").repeat(10),
+  (unscapedChars(500) + "<").repeat(10),
+  (unscapedChars(1000) + "<").repeat(10),
+];
+
+// In order to run performance tests, add another htmlEscape function and a "bench" call here and run with "yarn vitest bench"
+describe("htmlEscape benchmarks", () => {
+  for (const string of strings) {
+    describe(`${string.substring(0, 50)} (${string.length} chars)`, () => {
+      bench("htmlEscape", () => {
+        htmlEscape(string);
+      });
+    });
+  }
+});
