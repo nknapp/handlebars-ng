@@ -1,5 +1,6 @@
 import { bench } from "vitest";
-import { htmlEscape } from "./htmlEscape";
+import { renderEscapedHtml } from "./htmlEscape";
+import Handlebars from "handlebars";
 
 function unscapedChars(count: number) {
   return `${count} chars between escaped chars -------------`
@@ -26,7 +27,11 @@ describe("htmlEscape benchmarks", () => {
   for (const string of strings) {
     describe(`${string.substring(0, 50)} (${string.length} chars)`, () => {
       bench("htmlEscape", () => {
-        htmlEscape(string);
+        renderEscapedHtml(string, { output: "" });
+      });
+
+      bench("original", () => {
+        Handlebars.escapeExpression(string);
       });
     });
   }
