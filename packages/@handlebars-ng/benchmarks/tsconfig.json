@@ -1,20 +1,8 @@
 {
+  "extends": "../common-dev/tsconfigs/default.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "target": "ESNext",
-    "useDefineForClassFields": true,
-    "module": "ESNext",
-    "lib": ["ESNext"],
-    "moduleResolution": "Node",
-    "strict": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "noEmit": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
+    "baseUrl": "."
   },
-  "include": ["src", "scripts", "../../../node_modules/vitest/globals.d.ts"]
+  "references": [{ "path": "./tsconfig.node.json" }],
+  "include": ["src", "scripts"]
 }

@@ -9,22 +9,25 @@
     "test:lint": "eslint .",
     "format": "prettier -w .",
     "build": "lerna run build",
-    "test-and-build": "lerna run test-and-build",
+    "test-and-build": "node ./scripts/require-same-dependency-versions.mjs && lerna run test-and-build",
     "dev": "lerna run dev --parallel",
     "dev:site": "cd packages/handlebars-ng.knappi.org && yarn dev:server",
     "preview:site": "cd packages/handlebars-ng.knappi.org && yarn preview",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "deps": "yarn upgrade-interactive",
+    "clean": "lerna run clean --parallel"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.46.0",
-    "@typescript-eslint/parser": "^5.46.0",
-    "eslint": "^8.29.0",
-    "eslint-config-prettier": "^8.5.0",
-    "husky": ">=7",
-    "lerna": "^6.1.0",
-    "lint-staged": ">=10",
-    "prettier": "^2.8.1",
-    "typescript": "^4.9.4"
+    "@typescript-eslint/eslint-plugin": "5.49.0",
+    "@typescript-eslint/parser": "5.49.0",
+    "eslint": "8.32.0",
+    "eslint-config-prettier": "8.6.0",
+    "eslint-plugin-import": "2.27.5",
+    "husky": "8.0.3",
+    "lerna": "6.4.1",
+    "lint-staged": "13.1.0",
+    "prettier": "2.8.3",
+    "typescript": "4.9.4"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": "eslint --fix",

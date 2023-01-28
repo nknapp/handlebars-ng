@@ -11,16 +11,19 @@
     "test:unit": "vitest --run",
     "test:types": "tsc --noEmit",
     "build": "vite build",
-    "test-and-build": "yarn test:unit && yarn test:types && yarn build"
+    "test-and-build": "yarn test:unit && yarn test:types && yarn build",
+    "clean": "rm dist -rf"
   },
   "dependencies": {
-    "handlebars": "^4.7.7",
-    "isomorphic-performance": "^4.0.0",
-    "react-native-performance": "^4.0.0"
+    "handlebars": "4.7.7",
+    "isomorphic-performance": "4.0.0",
+    "react-native-performance": "4.0.0",
+    "tinybench": "2.3.1"
   },
   "devDependencies": {
-    "tinybench": "^2.3.1",
-    "typescript": "^4.9.4",
-    "vitest": "^0.25.6"
+    "@handlebars-ng/common-dev": "0.0.1",
+    "@handlebars-ng/eslint-plugin": "0.0.1",
+    "typescript": "4.9.4",
+    "vitest": "0.28.3"
   }
 }

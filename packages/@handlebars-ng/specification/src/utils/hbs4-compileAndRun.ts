@@ -1,5 +1,5 @@
-import { helpers as helpersUsedInSpec } from "@/spec/01-introduction/helpers";
-import { SuccessTest } from "types/tests";
+import { helpers as helpersUsedInSpec } from "../helpers";
+import { SuccessTest } from "../types/tests";
 import Handlebars from "handlebars";
 
 export function compileAndRun(testcase: SuccessTest): string {

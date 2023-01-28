@@ -1,4 +1,4 @@
-import { AnyNode, Node } from "@handlebars-ng/specification/ast";
+import { AnyNode, Node } from "./types/ast";
 import { AbstractNodeRenderer as NodeRenderer } from "./renderer/AbstractNodeRenderer";
 
 const mapping = new Map<Node["type"], new (node: Node) => NodeRenderer<Node>>();

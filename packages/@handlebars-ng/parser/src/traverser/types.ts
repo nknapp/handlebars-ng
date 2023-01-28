@@ -1,8 +1,4 @@
-import {
-  Program,
-  ContentStatement,
-  MustacheStatement,
-} from "@handlebars-ng/specification/ast";
+import { Program, ContentStatement, MustacheStatement } from "../model/ast";
 
 export interface Handlers {
   Program: Handler<Program>;

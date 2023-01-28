@@ -1,7 +1,10 @@
 /* eslint-disable no-console */
-import { ObjectUnderTest, TestBench } from "@handlebars-ng/benchmarks";
-import { originalHandlebars } from "@handlebars-ng/benchmarks";
-import { tests } from "@handlebars-ng/benchmarks";
+import {
+  ObjectUnderTest,
+  TestBench,
+  originalHandlebars,
+  tests,
+} from "@handlebars-ng/benchmarks";
 import { parse } from "@handlebars-ng/parser";
 import { HandlebarsNgRunner } from ".";
 

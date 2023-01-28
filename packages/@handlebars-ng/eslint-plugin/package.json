@@ -1,0 +1,13 @@
+{
+  "name": "@handlebars-ng/eslint-plugin",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "5.49.0",
+    "@typescript-eslint/parser": "5.49.0",
+    "eslint-config-prettier": "8.6.0",
+    "eslint-plugin-import": "2.27.5"
+  },
+  "devDependencies": {}
+}

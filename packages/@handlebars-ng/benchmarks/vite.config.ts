@@ -1,25 +1,10 @@
-/// <reference types="vitest" />
+import { hbsViteConfig } from "@handlebars-ng/common-dev";
+import { UserConfigExport } from "vite";
 
-import { defineConfig } from "vite";
-import dts from "vite-plugin-dts";
-
-export default defineConfig({
-  plugins: [dts({ include: ["src"], exclude: ["src/tests/**/*.perf.ts"] })],
-  build: {
-    outDir: "dist",
-    lib: {
-      entry: {
-        index: "src/index.ts",
-      },
-      formats: ["es"],
-      name: "handlebars-parser",
-    },
-
-    sourcemap: true,
-    minify: false,
-    target: "esnext",
+export default hbsViteConfig({
+  srcDir: "src",
+  name: "handlebars-ng-benchmarks",
+  dts: {
+    exclude: "src/tests/**/*.perf.ts",
   },
-  test: {
-    globals: true,
-  },
-});
+}) as UserConfigExport;

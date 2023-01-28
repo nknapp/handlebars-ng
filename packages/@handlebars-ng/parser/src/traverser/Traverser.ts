@@ -1,4 +1,4 @@
-import { AnyNode, Program } from "@handlebars-ng/specification/ast";
+import { AnyNode, Program } from "../model/ast";
 
 export interface ArrayContext {
   type: "array";

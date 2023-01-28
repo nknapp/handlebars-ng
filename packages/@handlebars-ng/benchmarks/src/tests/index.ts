@@ -2,21 +2,22 @@
 
 import { NamedPerformanceTest, PerformanceTest } from "../types/types";
 
-const testModules = import.meta.glob("./**/*.perf.ts");
+const testModules = import.meta.glob<PerformanceTest>("./**/*.perf.ts", {
+  eager: true,
+  import: "default",
+});
 
-async function getAllTests(): Promise<NamedPerformanceTest[]> {
-  const promises = Object.entries(testModules).map(async ([name, moduleFn]) => {
-    const module = (await moduleFn()) as { default: PerformanceTest };
-    const test = module.default;
+function getAllTests(): NamedPerformanceTest[] {
+  const tests = Object.entries(testModules).map(([name, test]) => {
     return {
       name: name.replace(/^\.\//, ""),
       ...test,
     };
   });
-  if (promises.length === 0) {
+  if (tests.length === 0) {
     throw new Error("No tests found");
   }
-  return Promise.all(promises);
+  return tests;
 }
 
-export const tests = await getAllTests();
+export const tests = getAllTests();

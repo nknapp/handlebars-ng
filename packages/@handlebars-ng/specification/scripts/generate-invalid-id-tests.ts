@@ -3,7 +3,7 @@ import { writeTestcase } from "./lib/writeTestcase";
 import fs from "node:fs/promises";
 import path from "path";
 import { addResultToFile } from "./lib/addResultToFile";
-import { HandlebarsTest } from "types/tests";
+import { HandlebarsTest } from "../src/types/tests";
 
 const folder = "06-path-expression/invalid-ids";
 const me = path.relative(process.cwd(), __filename);

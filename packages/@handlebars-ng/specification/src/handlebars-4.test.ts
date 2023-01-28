@@ -1,21 +1,19 @@
 import { describe, expect, it } from "vitest";
-import * as Handlebars from "handlebars";
-import { loadTestcases } from "./utils/testcases";
-import { Program } from "types/ast";
-import { normalizeAst } from "./utils/normalizeAst";
+import Handlebars from "handlebars";
+import { Program } from "@handlebars-ng/abstract-syntax-tree";
+import { normalizeAst } from "./normalizeAst";
 import fs from "node:fs";
 import path from "node:path";
 import prettier from "prettier";
-import { ParseErrorTest, SuccessTest } from "types/tests";
+import { ParseErrorTest, SuccessTest } from "./types/tests";
 import { posFromParseError } from "./utils/posFromParseError";
 import { compileAndRun } from "./utils/hbs4-compileAndRun";
+import { handlebarsSpec } from "./";
 
 const specDir = path.join(__dirname, "spec");
 
-const testCases = await loadTestcases();
-
 describe("The spec", () => {
-  for (const [filename, testcase] of Object.entries(testCases)) {
+  for (const [filename, testcase] of Object.entries(handlebarsSpec)) {
     describe(filename, () => {
       describe(testcase.description, () => {
         switch (testcase.type) {

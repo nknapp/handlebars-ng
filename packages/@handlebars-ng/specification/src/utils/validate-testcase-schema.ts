@@ -1,5 +1,5 @@
 import { Validator } from "jsonschema";
-import testSchema from "@/spec/schema/testcase.json";
+import testSchema from "../spec/schema/testcase.json";
 
 const validator = new Validator();
 

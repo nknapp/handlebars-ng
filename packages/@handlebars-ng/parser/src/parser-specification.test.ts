@@ -2,7 +2,7 @@ import {
   handlebarsSpec,
   ParseErrorTest,
   SuccessTest,
-} from "@handlebars-ng/specification/tests";
+} from "@handlebars-ng/specification";
 import { parse } from "./index";
 import { ParseError } from "./parser/ParseError";
 

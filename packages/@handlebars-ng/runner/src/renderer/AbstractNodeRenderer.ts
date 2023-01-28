@@ -1,4 +1,4 @@
-import { Node } from "@handlebars-ng/specification/ast";
+import type { Node } from "../types/ast";
 import { RenderContext } from "./RenderContext";
 
 export abstract class AbstractNodeRenderer<T extends Node> {

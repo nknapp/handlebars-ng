@@ -1,4 +1,4 @@
-import { Position } from "types/ast";
+import { Position } from "@handlebars-ng/abstract-syntax-tree";
 
 export function posFromParseError(error: Error): Position {
   const [parseErrorMsg, ignoredCodeLine, marker, ignoredExpectations] =

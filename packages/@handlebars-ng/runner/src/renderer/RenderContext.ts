@@ -1,7 +1,7 @@
-import { Helper } from "../types";
+import { HelperFn } from "../types/helper";
 
 export interface RenderContext {
   input: Record<string, unknown>;
   output: string;
-  helpers: Map<string, Helper>;
+  helpers: Map<string, HelperFn>;
 }

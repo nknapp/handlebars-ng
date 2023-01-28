@@ -1,17 +1,17 @@
 import Handlebars from "handlebars";
-import type { Program } from "../../types/ast";
+import type { Program } from "@handlebars-ng/abstract-syntax-tree";
 import fs from "node:fs/promises";
 
 import type {
   HandlebarsTest,
   ParseErrorTest,
   SuccessTest,
-} from "../../types/tests";
-import { jsonEquals } from "@/utils/jsonEquals";
-import { normalizeAst } from "@/utils/normalizeAst";
+} from "../../src/types/tests";
+import { jsonEquals } from "../../src/utils/jsonEquals";
+import { normalizeAst } from "../../src";
 import { writeTestcase } from "./writeTestcase";
-import { posFromParseError } from "@/utils/posFromParseError";
-import { compileAndRun } from "@/utils/hbs4-compileAndRun";
+import { posFromParseError } from "../../src/utils/posFromParseError";
+import { compileAndRun } from "../../src/utils/hbs4-compileAndRun";
 
 export async function addResultToFile(file: string) {
   console.log("Processing: " + file);

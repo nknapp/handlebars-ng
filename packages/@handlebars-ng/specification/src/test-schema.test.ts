@@ -1,11 +1,9 @@
-import { loadTestcases } from "./utils/testcases";
 import path from "node:path";
+import { handlebarsSpec } from "src";
 import { validateTestcaseSchema } from "./utils/validate-testcase-schema";
 
-const testcases = await loadTestcases();
-
 describe("testcase schema validation", () => {
-  for (const [filename, testcase] of Object.entries(testcases)) {
+  for (const [filename, testcase] of Object.entries(handlebarsSpec)) {
     describe(filename, () => {
       it("has the correct $schema value", () => {
         const testcaseDir = path.dirname(filename);

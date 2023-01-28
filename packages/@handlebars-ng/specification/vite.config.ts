@@ -1,16 +1,10 @@
-/// <reference types="vitest" />
+import { hbsViteConfig } from "@handlebars-ng/common-dev";
+import { UserConfigExport } from "vite";
 
-import { defineConfig } from "vite";
-import path from "node:path";
-
-// This is the vite.config for scripts ran with "vite-node"
-// For the website-config look at "astro.config.mjs"
-export default defineConfig({
-  plugins: [],
-  test: {
-    globals: true,
+export default hbsViteConfig({
+  srcDir: "src",
+  name: "handlebars-ng-runner",
+  dts: {
+    exclude: ["src/custom-types"],
   },
-  resolve: {
-    alias: { "@": path.resolve("src") },
-  },
-});
+}) as UserConfigExport;

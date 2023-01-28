@@ -1,0 +1,9 @@
+{
+  "name": "@handlebars-ng/abstract-syntax-tree",
+  "version": "0.0.1",
+  "license": "MIT",
+  "types": "index.d.ts",
+  "scripts": {
+    "test:lint": "eslint ."
+  }
+}

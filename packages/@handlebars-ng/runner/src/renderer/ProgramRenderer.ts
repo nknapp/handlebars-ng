@@ -1,4 +1,4 @@
-import { Node, Program } from "@handlebars-ng/specification/ast";
+import { Node, Program } from "../types/ast";
 import { getRendererForNode } from "../renderMapping";
 import { AbstractNodeRenderer } from "./AbstractNodeRenderer";
 import { RenderContext } from "./RenderContext";

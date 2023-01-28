@@ -1,4 +1,4 @@
-import { AnyNode } from "@handlebars-ng/specification/ast";
+import { AnyNode } from "../model/ast";
 import { parseWithoutProcessing } from "..";
 import { Traverser } from "./Traverser";
 import { NodeType } from "./types";

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json.schemastore.org/eslintrc",
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint/eslint-plugin"],
+
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "env": {
+    "es2022": true,
+    "shared-node-browser": true
+  },
+  "rules": {
+    "no-unused": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "varsIgnorePattern": "[iI]gnored" }
+    ],
+    "eqeqeq": ["error", "smart"],
+    "no-console": ["error"]
+  },
+  "overrides": [
+    {
+      "files": ["scripts/**/*",".eslintrc.cjs"],
+      "env": { "node": true },
+      "rules": { "no-console": "off" }
+    }
+  ]
+}

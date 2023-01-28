@@ -1,4 +1,4 @@
-import { MustacheStatement, Node } from "@handlebars-ng/specification/ast";
+import { MustacheStatement, Node } from "../types/ast";
 import { renderEscapedHtml } from "../utils/htmlEscape";
 import { AbstractNodeRenderer } from "./AbstractNodeRenderer";
 import { RenderContext } from "./RenderContext";

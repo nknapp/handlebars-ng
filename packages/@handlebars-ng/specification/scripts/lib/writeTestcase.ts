@@ -1,4 +1,4 @@
-import { HandlebarsTest } from "types/tests";
+import { HandlebarsTest } from "../../src/types/tests";
 import prettier from "prettier";
 import fs from "node:fs/promises";
 

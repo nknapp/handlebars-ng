@@ -1,4 +1,4 @@
-import type { Helper } from "@handlebars-ng/specification/tests";
+import type { Helper } from "@handlebars-ng/specification";
 
 // TODO: Export this file property from the specification
 interface HelperSpec {

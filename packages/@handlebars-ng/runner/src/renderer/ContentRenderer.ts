@@ -1,4 +1,4 @@
-import { ContentStatement, Node } from "@handlebars-ng/specification/ast";
+import { ContentStatement, Node } from "../types/ast";
 import { AbstractNodeRenderer } from "./AbstractNodeRenderer";
 import { RenderContext } from "./RenderContext";
 

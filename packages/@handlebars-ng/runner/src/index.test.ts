@@ -1,6 +1,5 @@
-import { handlebarsSpec } from "@handlebars-ng/specification/tests";
+import { handlebarsSpec, helpers } from "@handlebars-ng/specification";
 import { HandlebarsNgRunner } from ".";
-import { helpers } from "./test-utils/helpers-from-spec";
 
 describe("the runner runs templates from the spec", () => {
   for (const [filename, testCase] of Object.entries(handlebarsSpec)) {
@@ -10,7 +9,9 @@ describe("the runner runs templates from the spec", () => {
           const runner = new HandlebarsNgRunner();
           if (testCase.helpers != null) {
             for (const [name, helper] of Object.entries(testCase.helpers)) {
-              runner.registerHelper(name, helpers[helper].fn);
+              if (helper in helpers) {
+                runner.registerHelper(name, helpers[helper].fn);
+              }
             }
           }
           const compiledTemplate = runner.compile(testCase.ast);
