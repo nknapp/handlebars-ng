@@ -1,5 +1,5 @@
 module.exports = {
-  extends: "./configs/base.json",
+  extends: "./configs/base.cjs",
   env: {
     node: true,
   },

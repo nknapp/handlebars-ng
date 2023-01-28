@@ -28,6 +28,8 @@ if (differentDependencies.length > 0) {
     process.exit(1)
 }
 
+console.log("\nAll good! All dependencies have the same version.")
+
 
 
 async function loadPackageJsons() {
@@ -53,5 +55,4 @@ function gatherDependencies({file, content}, type, targetObject) {
             type
         })
     }
-
 }

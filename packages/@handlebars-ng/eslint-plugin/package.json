@@ -1,5 +1,6 @@
 {
   "name": "@handlebars-ng/eslint-plugin",
+  "description": "Common eslint-rules for the @handlebars-ng packages",
   "version": "0.0.1",
   "main": "index.js",
   "license": "MIT",

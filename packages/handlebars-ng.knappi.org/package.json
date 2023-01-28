@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "test:types": "tsc --noEmit",
+    "test:lint": "eslint .",
     "generate:perf": "vite-node scripts/generate-benchmarks.ts",
     "generate": "concurrently -k npm:generate:*",
     "build": "astro build",

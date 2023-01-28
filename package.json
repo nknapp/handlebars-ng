@@ -6,10 +6,12 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test:lint": "eslint .",
     "format": "prettier -w .",
+    "lint": "eslint .",
     "build": "lerna run build",
-    "test-and-build": "node ./scripts/require-same-dependency-versions.mjs && lerna run test-and-build",
+    "dep-versions": "node ./scripts/require-same-dependency-versions.mjs",
+    "test": "lerna run test",
+    "test-and-build": "yarn dep-versions && yarn build && yarn test",
     "dev": "lerna run dev --parallel",
     "dev:site": "cd packages/handlebars-ng.knappi.org && yarn dev:server",
     "preview:site": "cd packages/handlebars-ng.knappi.org && yarn preview",
@@ -20,6 +22,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "5.49.0",
     "@typescript-eslint/parser": "5.49.0",
+    "concurrently": "7.6.0",
     "eslint": "8.32.0",
     "eslint-config-prettier": "8.6.0",
     "eslint-plugin-import": "2.27.5",

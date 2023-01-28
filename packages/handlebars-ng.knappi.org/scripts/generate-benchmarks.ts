@@ -1,5 +1,3 @@
-/// <reference types="vite/client" />
-
 import fs from "node:fs/promises";
 import { existsSync } from "node:fs";
 
@@ -47,6 +45,7 @@ async function writeData(filename: string, ...testees: ObjectUnderTest[]) {
   const bench = new TestBench({
     roundsPerExecution: 1,
   });
+
   for (const testee of testees) {
     bench.addTestee(testee);
   }

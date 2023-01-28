@@ -1,9 +1,9 @@
-{
+module.exports = {
   "$schema": "https://json.schemastore.org/eslintrc",
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "sourceType": "module"
-  },
+  },  
   "plugins": ["@typescript-eslint/eslint-plugin"],
 
   "extends": [
@@ -27,9 +27,19 @@
   },
   "overrides": [
     {
-      "files": ["scripts/**/*",".eslintrc.cjs"],
-      "env": { "node": true },
-      "rules": { "no-console": "off" }
+      "files": ["scripts/**/*"],
+      "rules": { "no-console": "off" },
+      "env": { "node": true }
+    },
+    {
+      "files": ["*.cjs"],
+      "parserOptions": {
+        "sourceType": "script"
+      },
+      "env": {"commonjs": true}
+    }, {
+      // Additional file types to be checked
+      "files": ["*.mjs", "*.d.ts" ]
     }
   ]
 }
