@@ -1,14 +1,12 @@
 ---
 import { SidebarButton } from "./SidebarButton";
-import { Icon } from 'astro-icon'
+import { Icon } from "astro-icon";
 import { githubUrl } from "@/constants";
 
-
 interface Props {
-  sidebarEnabled: boolean
+  sidebarEnabled: boolean;
   section: string;
 }
-
 
 const { sidebarEnabled, section } = Astro.props;
 ---
@@ -19,12 +17,14 @@ const { sidebarEnabled, section } = Astro.props;
   <a href="/">
     <img src="/favicon.svg" class="h-8 mr-2 inline" />
   </a>
-  <div class="flex flex-col lg:flex-row lg:items-center lg:gap-8"> 
+  <div class="flex flex-col lg:flex-row lg:items-center lg:gap-8">
     <div class="text-xs lg:text-lg">Handlebars - the next generation</div>
     <div class="font-bold lg:text-lg">{section}</div>
   </div>
-  <div class="flex-1" />
+  <div class="flex-1"></div>
   <div>
-    <a href={githubUrl} title="Github Link"><Icon name="github" class="h-6 w-6 fill-slate-600 hover:fill-black" /></a>
+    <a href={githubUrl} title="Github Link"
+      ><Icon name="github" class="h-6 w-6 fill-slate-600 hover:fill-black" /></a
+    >
   </div>
 </div>

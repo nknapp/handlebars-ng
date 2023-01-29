@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "handlebars": ["src/custom-types/handlebars.d.ts"],
+      "handlebars": ["src/custom-types/handlebars.d.ts"]
     }
   },
   "references": [{ "path": "./tsconfig.node.json" }],

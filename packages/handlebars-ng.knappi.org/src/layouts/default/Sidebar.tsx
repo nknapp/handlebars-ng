@@ -51,5 +51,3 @@ export const Sidebar: Component<{ children?: JSXElement }> = (props) => {
     </aside>
   );
 };
-
-

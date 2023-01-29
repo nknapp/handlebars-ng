@@ -1,4 +1,7 @@
 {
   "extends": "../common-dev/tsconfigs/node.json",
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.ts"],
+  "compilerOptions": {
+    "outDir": "./dist-node"
+  }
 }

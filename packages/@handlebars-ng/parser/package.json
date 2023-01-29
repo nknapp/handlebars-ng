@@ -14,17 +14,18 @@
     }
   },
   "scripts": {
-    "perf": "vite-node scripts/performance-test.ts",
     "build": "vite build",
-    "test:lint": "eslint .",
+    "perf": "vite-node scripts/performance-test.ts",
+    "test": "concurrently --kill-others-on-fail npm:test:*",
     "test:unit": "vitest --run",
-    "test:types": "tsc --noEmit",
-    "test": "concurrently -m 1 npm:test:*",
-    "test-and-build": "yarn test && yarn build",
+    "test:types": "tsc --build",
     "dev": "concurrently -k npm:dev:*",
     "dev:unit": "vitest --ui",
     "dev:types": "tsc --watch",
     "dev:build": "vite build --watch",
+    "---- lerna tasks ----": "",
+    "build:watch": "vite build --watch",
+    "test-and-build": "yarn test && yarn build",
     "clean": "rm dist -rf"
   },
   "devDependencies": {

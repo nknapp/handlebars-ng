@@ -2,4 +2,4 @@
 . "$(dirname "$0")/_/husky.sh"
 
 npx lint-staged
-node ./scripts/require-same-dependency-versions.mjs
+node ./scripts/check-dep-versions.mjs

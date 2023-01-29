@@ -7,11 +7,16 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "perf": "vite-node scripts/run-performance-tests.ts",
-    "dev:unit": "vitest --ui",
-    "test:unit": "vitest --run",
-    "test:types": "tsc --noEmit",
     "build": "vite build",
-    "test-and-build": "yarn test:unit && yarn test:types && yarn build",
+    "dev": "concurrently -k npm:dev:*",
+    "dev:unit": "vitest --ui",
+    "dev:types": "tsc --watch",
+    "test": "concurrently --kill-others-on-fail npm:test:*",
+    "test:unit": "vitest --run",
+    "test:types": "tsc --build",
+    "---- lerna tasks ----": "",
+    "build:watch": "vite build --watch",
+    "test-and-build": "yarn test && yarn build",
     "clean": "rm dist -rf"
   },
   "dependencies": {
@@ -21,6 +26,7 @@
   "devDependencies": {
     "@handlebars-ng/common-dev": "0.0.1",
     "@handlebars-ng/eslint-plugin": "0.0.1",
+    "concurrently": "7.6.0",
     "typescript": "4.9.4",
     "vite": "4.0.4",
     "vitest": "0.28.3"

@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 import fs from "node:fs/promises";
 import { existsSync } from "node:fs";
 
