@@ -18,8 +18,8 @@
     "astro": "astro",
     "---- lerna tasks ----": "",
     "build:watch": "vite build --watch",
-    "test-and-build": "concurrently -m 1 --kill-others-on-fail npm:test:* npm:build",
-    "clean": "rm dist dist-node -rf"
+    "test-and-build": "yarn generate && yarn test && yarn build",
+    "clean": "rm dist dist-node src/__generated__ -rf"
   },
   "files": [
     "ast.d.ts",
