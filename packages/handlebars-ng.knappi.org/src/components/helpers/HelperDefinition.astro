@@ -1,0 +1,25 @@
+---
+import { helperLink } from "@/utils/helperLink";
+import { helpers } from "@handlebars-ng/specification";
+import { Code } from "astro/components";
+import prettier from "prettier";
+
+interface Props {
+  name: keyof typeof helpers;
+}
+
+const { name } = Astro.props;
+
+const spec = helpers[name];
+
+const description = spec.description;
+const sourceCode = prettier
+  .format(spec.fn.toString().replace(/^fn/, "function " + name))
+  .trim();
+
+const {slug, hash} = helperLink(name)
+---
+
+<h2 id={slug}><a href={hash}>{name}</a></h2>
+<p>{description}</p>
+<div><Code code={sourceCode} /></div>

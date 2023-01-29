@@ -1,0 +1,16 @@
+---
+title: Helper definitions
+layout: "@/layouts/MdxLayout.astro"
+---
+
+import { helpers } from "@handlebars-ng/specification";
+import HelperDefinition from "@/components/helpers/HelperDefinition.astro";
+
+# Helper definitions
+
+The spec defines a number of helpers that are used in test-cases.
+This is a list of all defined helper, including that JavaScript source code.
+
+{Object.keys(helpers).map(name => {
+return <HelperDefinition name={name} />
+})}

@@ -11,6 +11,7 @@ import mdx from "@astrojs/mdx";
 import solidJs from "@astrojs/solid-js";
 import { hbsSpec } from "./astro-plugins/sync-handlebars-spec";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeSlug from "rehype-slug";
 
 // https://astro.build/config
 export default defineConfig({
@@ -18,11 +19,13 @@ export default defineConfig({
   srcDir: "./src",
   markdown: {
     remarkPlugins: [injectTestcases],
-    rehypePlugins: [[rehypeAutolinkHeadings, { behavior: "wrap" }]],
-    extendDefaultPlugins: true,
+    rehypePlugins: [
+      rehypeSlug,
+      [rehypeAutolinkHeadings, { behavior: "wrap" }],
+    ],
     syntaxHighlight: "shiki",
   },
   outDir: "dist",
-  site: "https://handlebars-ng.knappi.org/",
+  site: "https://handlebars-ng.knappi.org",
   base: "/",
 });

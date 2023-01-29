@@ -1,11 +1,12 @@
 ---
-import type { SuccessTest } from "@handlebars-ng/specification/tests";
+import type { SuccessTest } from "@handlebars-ng/specification";
 import prettier from "prettier";
 
 import { Code } from "astro/components";
 import Tabs from "./Tabs.astro";
 import Ast from "./Ast.astro";
-import { helpers } from "./helpers";
+import { helpers } from "@handlebars-ng/specification";
+import { helperDefinitionUrl } from "@/utils/helperLink";
 
 interface Props {
   spec: SuccessTest;
@@ -17,6 +18,8 @@ const { spec, filename } = Astro.props;
 const prettyInput = prettier.format(JSON.stringify(spec.input), {
   parser: "json",
 });
+
+
 ---
 
 <div class="testcase border-amber-900 border-2">
@@ -48,13 +51,15 @@ const prettyInput = prettier.format(JSON.stringify(spec.input), {
               spec.helpers != null && (
                 <>
                   <header>Helpers</header>
-                  <table>
+                  <table class="table-fixed w-full">
                     {Object.entries(spec.helpers).map(
-                      ([name, helperFromSpec]) => {
+                      ([localName, globalName]) => {
                         return (
                           <tr>
-                            <td>{name}</td>
-                            <td>{helpers[helperFromSpec].description}</td>
+                            <td class="w-2/12">{localName}</td>
+                            <td class="w-1/12">=</td>
+                            <td class="w-3/12"><a href={helperDefinitionUrl(globalName)}>{globalName}</a></td>
+                            <td>{helpers[globalName].description}</td>
                           </tr>
                         );
                       }
@@ -86,13 +91,9 @@ const prettyInput = prettier.format(JSON.stringify(spec.input), {
     </div>
   </div>
 </div>
-<style>
+<style lang="scss">
   header {
     @apply font-bold;
   }
-  code,
-  pre {
-    @apply bg-white;
-    font-family: monospace;
-  }
+
 </style>

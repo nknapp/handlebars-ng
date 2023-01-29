@@ -8,6 +8,7 @@ const path = Astro.url.pathname;
 <div>
   <TocHeader href="/spec/" text="Language Specification" />
   {path.startsWith("/spec/") && <TableOfContents />}
+  <TocHeader href="/helper-definitions/" text="Helper definitions" />
 
   <TocHeader href="/benchmarks/" text="Benchmarks" />
 </div>
