@@ -19,7 +19,7 @@
     "---- lerna tasks ----": "",
     "build:watch": "vite build --watch",
     "test-and-build": "concurrently -m 1 --kill-others-on-fail npm:test:* npm:build",
-    "clean": "rm dist -rf"
+    "clean": "rm dist dist-node -rf"
   },
   "files": [
     "ast.d.ts",

@@ -12,7 +12,7 @@
     "dep-versions": "node ./scripts/check-dep-versions.mjs",
     "---- workflows ----": "",
     "clean": "lerna run clean --parallel",
-    "test-and-build": "yarn dep-versions && yarn test:lint && yarn test:format && lerna run test-and-build",
+    "test-and-build": "lerna run test-and-build",
     "build:watch": "lerna run build:watch --parallel",
     "---- development ---- ": "",
     "runner": "lerna run --scope @handlebars-ng/runner",

@@ -29,7 +29,7 @@
     "---- lerna tasks ----": "",
     "build:watch": "vite build --watch",
     "test-and-build": "yarn test && yarn build",
-    "clean": "rm dist -rf"
+    "clean": "rm dist dist-node -rf"
   },
   "files": [
     "ast.d.ts",

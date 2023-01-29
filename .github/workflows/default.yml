@@ -11,6 +11,9 @@ jobs:
         with:
           node-version: 18
       - run: yarn
+      - run: yarn dep-versions
+      - run: yarn test:lint
+      - run: yarn test:format
       - run: yarn test-and-build
       - name: "Upload website as artifact"
         uses: actions/upload-pages-artifact@v1

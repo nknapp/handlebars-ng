@@ -2,6 +2,7 @@ import prettier from "prettier";
 import type { APIRoute } from "astro";
 import { handlebarsSpec } from "@handlebars-ng/specification";
 import { mapKeys } from "@/utils/mapKeys";
+import { extractMiddle } from "@/utils/strings";
 
 const imports = import.meta.glob("./**/*.json", {
   eager: true,
@@ -9,9 +10,9 @@ const imports = import.meta.glob("./**/*.json", {
 });
 imports["./spec/tests/all-tests.json"] = handlebarsSpec;
 
-const jsonFiles = mapKeys(imports, (path) =>
-  path.replace(/^\./, "").replace(/\.json$/, "")
-);
+const jsonFiles = mapKeys(imports, (path) => {
+  return extractMiddle(path, "./", ".json");
+});
 
 export function getStaticPaths() {
   return Object.keys(jsonFiles).map((path) => ({
