@@ -49,24 +49,28 @@ const prettyInput = prettier.format(JSON.stringify(spec.input), {
               spec.helpers != null && (
                 <>
                   <header>Helpers</header>
-                  <table class="table-fixed w-full">
+                  <div class="grid auto-rows-min grid-cols-12">
                     {Object.entries(spec.helpers).map(
                       ([localName, globalName]) => {
                         return (
-                          <tr>
-                            <td class="w-2/12">{localName}</td>
-                            <td class="w-1/12">=</td>
-                            <td class="w-3/12">
+                          <>
+                            <div class="col-span-4 md:col-span-2">
+                              {localName}
+                            </div>
+                            <div class="col-span-1">=</div>
+                            <div class="col-span-7 md:col-span-9">
                               <a href={helperDefinitionUrl(globalName)}>
                                 {globalName}
                               </a>
-                            </td>
-                            <td>{helpers[globalName].description}</td>
-                          </tr>
+                            </div>
+                            <div class="col-start-6 col-span-7 md:col-start-4">
+                              <em>{helpers[globalName].description}</em>
+                            </div>
+                          </>
                         );
                       }
                     )}
-                  </table>
+                  </div>
                 </>
               )
             }
