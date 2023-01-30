@@ -17,7 +17,7 @@ const sourceCode = prettier
   .format(spec.fn.toString().replace(/^fn/, "function " + name))
   .trim();
 
-const {slug, hash} = helperLink(name)
+const { slug, hash } = helperLink(name);
 ---
 
 <h2 id={slug}><a href={hash}>{name}</a></h2>

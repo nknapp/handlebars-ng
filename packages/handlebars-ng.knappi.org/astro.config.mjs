@@ -19,10 +19,7 @@ export default defineConfig({
   srcDir: "./src",
   markdown: {
     remarkPlugins: [injectTestcases],
-    rehypePlugins: [
-      rehypeSlug,
-      [rehypeAutolinkHeadings, { behavior: "wrap" }],
-    ],
+    rehypePlugins: [rehypeSlug, [rehypeAutolinkHeadings, { behavior: "wrap" }]],
     syntaxHighlight: "shiki",
   },
   outDir: "dist",

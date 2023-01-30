@@ -18,8 +18,6 @@ const { spec, filename } = Astro.props;
 const prettyInput = prettier.format(JSON.stringify(spec.input), {
   parser: "json",
 });
-
-
 ---
 
 <div class="testcase border-amber-900 border-2">
@@ -58,7 +56,11 @@ const prettyInput = prettier.format(JSON.stringify(spec.input), {
                           <tr>
                             <td class="w-2/12">{localName}</td>
                             <td class="w-1/12">=</td>
-                            <td class="w-3/12"><a href={helperDefinitionUrl(globalName)}>{globalName}</a></td>
+                            <td class="w-3/12">
+                              <a href={helperDefinitionUrl(globalName)}>
+                                {globalName}
+                              </a>
+                            </td>
                             <td>{helpers[globalName].description}</td>
                           </tr>
                         );
@@ -95,5 +97,4 @@ const prettyInput = prettier.format(JSON.stringify(spec.input), {
   header {
     @apply font-bold;
   }
-
 </style>
