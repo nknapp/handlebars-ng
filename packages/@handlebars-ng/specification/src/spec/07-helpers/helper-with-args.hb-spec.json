@@ -1,0 +1,63 @@
+{
+  "$schema": "../schema/testcase.json",
+  "type": "success",
+  "description": "A helper with string-args",
+  "input": { "first": "hello", "second": "world" },
+  "helpers": { "help": "concat_strings" },
+  "template": "{{help first second}}",
+  "output": "helloworld",
+  "ast": {
+    "type": "Program",
+    "body": [
+      {
+        "type": "MustacheStatement",
+        "escaped": true,
+        "params": [
+          {
+            "type": "PathExpression",
+            "original": "first",
+            "data": false,
+            "depth": 0,
+            "parts": ["first"],
+            "loc": {
+              "start": { "line": 1, "column": 7 },
+              "end": { "line": 1, "column": 12 }
+            }
+          },
+          {
+            "type": "PathExpression",
+            "original": "second",
+            "data": false,
+            "depth": 0,
+            "parts": ["second"],
+            "loc": {
+              "start": { "line": 1, "column": 13 },
+              "end": { "line": 1, "column": 19 }
+            }
+          }
+        ],
+        "path": {
+          "type": "PathExpression",
+          "original": "help",
+          "data": false,
+          "depth": 0,
+          "parts": ["help"],
+          "loc": {
+            "start": { "line": 1, "column": 2 },
+            "end": { "line": 1, "column": 6 }
+          }
+        },
+        "strip": { "open": false, "close": false },
+        "loc": {
+          "start": { "line": 1, "column": 0 },
+          "end": { "line": 1, "column": 21 }
+        }
+      }
+    ],
+    "strip": {},
+    "loc": {
+      "start": { "line": 1, "column": 0 },
+      "end": { "line": 1, "column": 21 }
+    }
+  }
+}

@@ -17,4 +17,10 @@ export const helpers: Record<Helper, HelperSpec> = {
       return "a";
     },
   },
+  concat_strings: {
+    description: "Concatenates two strings",
+    fn(a, b) {
+      return "" + a + b;
+    },
+  },
 };

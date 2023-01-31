@@ -1,4 +1,4 @@
-import { MustacheStatement, Node } from "../types/ast";
+import { MustacheStatement, Node, PathExpression } from "../types/ast";
 import { renderEscapedHtml } from "../utils/htmlEscape";
 import { AbstractNodeRenderer } from "./AbstractNodeRenderer";
 import { RenderContext } from "./RenderContext";
@@ -23,15 +23,7 @@ export class MustacheRenderer extends AbstractNodeRenderer<MustacheStatement> {
     if (this.node.path.parts.length === 1) {
       return this.evaluateHelperOrExpression(context, this.node.path.parts[0]);
     }
-    let currentObject: Record<string, unknown> = context.input;
-    for (const id of this.node.path.parts) {
-      if (typeof currentObject === "object" && currentObject != null) {
-        currentObject = currentObject[id] as Record<string, unknown>;
-      } else {
-        return "";
-      }
-    }
-    return String(currentObject);
+    return this.evaluatePathExpression(context, this.node.path);
   }
 
   evaluateHelperOrExpression(
@@ -40,8 +32,26 @@ export class MustacheRenderer extends AbstractNodeRenderer<MustacheStatement> {
   ): string {
     const helper = context.helpers.get(propertyName);
     if (helper != null) {
-      return (helper as () => string)();
+      const args = this.node.params.map((param) => {
+        return this.evaluatePathExpression(context, param);
+      });
+      return helper(...args);
     }
     return String(context.input[propertyName]);
+  }
+
+  evaluatePathExpression(
+    context: RenderContext,
+    expression: PathExpression
+  ): string {
+    let currentObject: Record<string, unknown> = context.input;
+    for (const id of expression.parts) {
+      if (typeof currentObject === "object" && currentObject != null) {
+        currentObject = currentObject[id] as Record<string, unknown>;
+      } else {
+        return "";
+      }
+    }
+    return String(currentObject);
   }
 }

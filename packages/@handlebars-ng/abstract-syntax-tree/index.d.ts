@@ -36,7 +36,7 @@ export interface StripFlags {
 export interface MustacheStatement extends Node {
   type: "MustacheStatement";
   escaped: boolean;
-  params: string[];
+  params: PathExpression[];
   path: PathExpression;
   strip: StripFlags;
 }

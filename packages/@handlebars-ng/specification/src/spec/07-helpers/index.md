@@ -10,3 +10,5 @@ If a helper-name and an input property have the same value, the helper is chosen
 [](./helpers-have-precedence-over-input-props.hb-spec.json)
 
 ## Helper parameters
+
+A mustache can have a helper call with space-separated parameters
