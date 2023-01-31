@@ -21,46 +21,46 @@ tests in the parser and runner.
 
 I use the following workflow for this:
 
-### Adding a new testcase to the spec
+_All the yarn-commands in the following description are run in the main directory._
 
-**Go to "packages/@handlebars-ng/specification"**
+### Adding a new testcase to the spec
 
 - In the directory[src/spec](packages/@handlebars-ng/specification/src/spec), add a new chapter-directory or use an existing chapter, if it fits semantically.
 - Create a file `index.md` and describe the feature. Use existing chapters are template.
 - Add one file named `[feature-name].hb-spec.json`, give it a `$schema`, `description`, `template` and `input` (and possible more relevant data that is
   NOT `ast` or `output`)
-- Create a link from the markdown-file to the test-file using markdown-syntax
-- Run `yarn auto-complete-tests`. This will run Handlebars 4.x and add `ast` and `output` to the test-file
-- Validate output and ast. If the AST does not match your expectations, correct it and run `yarn auto-complete-tests` again. This will add the `originalAst` feature.
+- Create a link from the markdown-file to the test-file using markdown-syntax.
+- Run `yarn spec generate:auto-complete-tests`. This will run Handlebars 4.x and add `ast` and `output` to the test-file
+- Validate output and ast. If the AST does not match your expectations, correct it and run `yarn spec generate:auto-complete-tests` again. This will add the `originalAst` feature.
 - The output should match your expectation, because handlebars-ng ist supposed to be compatible to Handlebars 4.x at least in that respect. If you really think it is a bug, you can add a description of the bug to the field `possibleBug`. We can discuss this later.
-- If the generated AST does not match, the JSON schema, you add the correct TypeScript-types to the file `types/ast.d.ts` and run `yarn generate` to update the JSON schema. The Handlebars 4.x types are in `types/handlebars/index.d.ts`. You can use them as hints.
+- If the generated AST does not match, the JSON schema, you add the correct TypeScript-types to the file `packages/@handlebars-ng/abstract-syntax-tree/index.d.ts` and run `yarn spec generate` to update the JSON schema. The Handlebars 4.x types are in `types/handlebars/index.d.ts`. You can use them as hints.
 - Only add as many types as necessary to represent the generated AST. We want to build up the model incrementally.
-- Run `yarn test-and-build` to make sure all the dist-files are updated correctly.
+- Run `yarn spec test-and-build` to make sure all the dist-files are updated correctly.
 
 ### Adjust the parser
 
 **Go to "packages/@handlebars-ng/parser"**
 
-- Run `yarn dev:unit` to run unit-tests in watch mode. Your specification-test should be run as well and fail, so you can try to fix.
+- Run `yarn parser dev:unit` to run unit-tests in watch mode. Your specification-test should be run as well and fail, so you can try to fix.
 - Add values to the `TokenType` type in [src/lexer/model.ts](packages/@handlebars-ng/parser/src/lexer/model.ts) if necessary.
 - Add new tokens to [src/lexer/moo-lexer.ts](packages/@handlebars-ng/parser/src/lexer/moo-lexer.ts) if necessary.
 - Add new node-types to [src/parser/ParserContext.ts](packages/@handlebars-ng/parser/src/parser/ParserContext.ts) and a corresponding node-parser to
   [src/parser/nodes](packages/@handlebars-ng/parser/src/parser/nodes/)
 - When the test is green, cleanup your code.
-- You can run `yarn perf` to run the performance tests, but performance optimizations can also be done later on.
-- Finally, run `yarn test-and-build` to update the `dist`-folder
+- You can run `yarn parser perf` to run the performance tests, but performance optimizations can also be done later on.
+- Finally, run `yarn parser test-and-build` to update the `dist`-folder
 
 ### Adjust the runner
 
 **Go to "packages/@handlebars-ng/runner"**
 
-- Run `yarn dev:unit` to run unit-tests in watch mode. Your specification-test should be run as well and fail, so you can try to fix.
+- Run `yarn runner dev:unit` to run unit-tests in watch mode. Your specification-test should be run as well and fail, so you can try to fix.
 - Add a new renderer to [src/renderer](packages/@handlebars-ng/runner/src/renderer) if necessary.
 - Register the new renderer in [src/index.ts](packages/@handlebars-ng/runner/src/index.ts)
 - Adjust renders and needed
 - Cleanup your code afterwards.
-- You can run `yarn perf` to run the performance tests, but performance optimizations can also be done later on.
-- Finally, run `yarn test-and-build` to update the `dist`-folder
+- You can run `yarn runner perf` to run the performance tests, but performance optimizations can also be done later on.
+- Finally, run `yarn runner test-and-build` to update the `dist`-folder
 
 ## Work in progress
 
