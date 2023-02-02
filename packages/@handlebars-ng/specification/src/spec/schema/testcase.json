@@ -53,6 +53,9 @@
           "$ref": "#/definitions/ParseErrorTest"
         },
         {
+          "$ref": "#/definitions/RuntimeErrorTest"
+        },
+        {
           "$ref": "#/definitions/SuccessTest"
         }
       ]
@@ -222,6 +225,62 @@
         "body",
         "loc",
         "strip",
+        "type"
+      ],
+      "type": "object"
+    },
+    "RuntimeErrorTest": {
+      "additionalProperties": false,
+      "properties": {
+        "$schema": {
+          "type": "string"
+        },
+        "ast": {
+          "$ref": "#/definitions/Program"
+        },
+        "description": {
+          "type": "string"
+        },
+        "expectedErrorMessage": {
+          "type": "string"
+        },
+        "helpers": {
+          "additionalProperties": {
+            "$ref": "#/definitions/Helper"
+          },
+          "type": "object"
+        },
+        "input": {
+          "additionalProperties": {},
+          "type": "object"
+        },
+        "originalAst": {
+          "description": "The AST created by the original Handlebars parser, in case it is different from \"ast\""
+        },
+        "originalParseError": {
+          "const": true,
+          "description": "The original Handlebars parser cannot parse the template in this test",
+          "type": "boolean"
+        },
+        "possibleBug": {
+          "description": "If the output of Handlebars.js seems to be wrong, a description of this should be in this field. That way, we can discuss the issues later. For now we should try to remain backwards compatible, so the \"output\" field should be what Handlebars 4.x is creating.",
+          "type": "string"
+        },
+        "template": {
+          "type": "string"
+        },
+        "type": {
+          "const": "runtimeError",
+          "type": "string"
+        }
+      },
+      "required": [
+        "$schema",
+        "ast",
+        "description",
+        "expectedErrorMessage",
+        "input",
+        "template",
         "type"
       ],
       "type": "object"
