@@ -1,57 +1,80 @@
-import { MustacheStatement, Node, PathExpression } from "../types/ast";
+import {
+  NodeMapping,
+  RenderContext,
+  Evaluator,
+  EvaluationContext,
+} from "../types/nodeMapping";
+import { MustacheStatement, Node } from "../types/ast";
 import { renderEscapedHtml } from "../utils/htmlEscape";
 import { AbstractNodeRenderer } from "./AbstractNodeRenderer";
-import { RenderContext } from "./RenderContext";
+import { getOwnProperty } from "src/utils/getOwnProperty";
 
 export class MustacheRenderer extends AbstractNodeRenderer<MustacheStatement> {
-  constructor(node: Node) {
+  private evaluator: Evaluator;
+
+  constructor(node: Node, nodeMapping: NodeMapping) {
     super(node as MustacheStatement);
+    this.evaluator = createEvaluator(this.node, nodeMapping);
   }
 
   render(context: RenderContext): void {
-    const value = this.evaluateExpression(context);
+    const value = this.evaluator.evaluate(context);
+    const stringValue = String(value ?? "");
     if (this.node.escaped) {
-      renderEscapedHtml(value, context);
+      renderEscapedHtml(stringValue, context);
     } else {
-      context.output += value;
+      context.output += stringValue;
     }
   }
+}
 
-  // TODO: Extract to an ExpressionRenderer or something like that
-  evaluateExpression(context: RenderContext): string {
-    // TODO: Make this distinction during compile-time
-    if (this.node.path.parts.length === 1) {
-      return this.evaluateHelperOrExpression(context, this.node.path.parts[0]);
-    }
-    return this.evaluatePathExpression(context, this.node.path);
+function createEvaluator(
+  node: MustacheStatement,
+  nodeMapping: NodeMapping
+): Evaluator {
+  const pathParts = node.path.parts;
+  const params = node.params.map((node) => nodeMapping.createEvaluator(node));
+
+  if (pathParts.length === 1 && params.length === 0) {
+    return new HelperOrPathEvaluator(pathParts[0]);
+  } else if (pathParts.length > 1 && params.length === 0) {
+    return nodeMapping.createEvaluator(node.path);
+  } else if (pathParts.length === 1 && params.length > 0) {
+    return new HelperEvaluator(pathParts[0], params);
+  } else {
+    throw new Error(`Missing helper: "${node.path.original}"`);
+  }
+}
+
+class HelperOrPathEvaluator implements Evaluator {
+  name: string;
+
+  constructor(name: string) {
+    this.name = name;
   }
 
-  evaluateHelperOrExpression(
-    context: RenderContext,
-    propertyName: string
-  ): string {
-    const helper = context.helpers.get(propertyName);
-    if (helper != null) {
-      const args = this.node.params.map((param) => {
-        return this.evaluatePathExpression(context, param);
-      });
-      return helper(...args);
+  evaluate(context: EvaluationContext): unknown {
+    const helper = context.helpers.get(this.name);
+    if (helper) {
+      return helper();
+    } else {
+      return getOwnProperty(context.input, this.name);
     }
-    return String(context.input[propertyName]);
   }
+}
 
-  evaluatePathExpression(
-    context: RenderContext,
-    expression: PathExpression
-  ): string {
-    let currentObject: Record<string, unknown> = context.input;
-    for (const id of expression.parts) {
-      if (typeof currentObject === "object" && currentObject != null) {
-        currentObject = currentObject[id] as Record<string, unknown>;
-      } else {
-        return "";
-      }
-    }
-    return String(currentObject);
+class HelperEvaluator implements Evaluator {
+  helperName: string;
+  paramEvaluator: Evaluator[];
+
+  constructor(helperName: string, paramEvaluator: Evaluator[]) {
+    this.helperName = helperName;
+    this.paramEvaluator = paramEvaluator;
+  }
+  evaluate(context: EvaluationContext): unknown {
+    const params = this.paramEvaluator.map((e) => e.evaluate(context));
+    const helper = context.helpers.get(this.helperName);
+    if (helper == null) throw new Error("Helper not found");
+    return helper(...params);
   }
 }

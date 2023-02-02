@@ -1,25 +1,18 @@
-import { Program } from "./types/ast";
+import { Node, Program } from "./types/ast";
 import { ContentRenderer } from "./renderer/ContentRenderer";
 import { MustacheRenderer } from "./renderer/MustacheRenderer";
 import { ProgramRenderer } from "./renderer/ProgramRenderer";
-import { RenderContext } from "./renderer/RenderContext";
-import {
-  getRendererForNode,
-  registerNodeRenderer as registerNodeRenderer,
-} from "./renderMapping";
 import { HelperFn } from "./types/helper";
+import { NodeMapping, RenderContext } from "./types/nodeMapping";
+import { PathEvaluator } from "./expressions/PathEvaluator";
 
 type Runnable = (input: Record<string, unknown>) => string;
-
-registerNodeRenderer("Program", ProgramRenderer);
-registerNodeRenderer("MustacheStatement", MustacheRenderer);
-registerNodeRenderer("ContentStatement", ContentRenderer);
 
 export class HandlebarsNgRunner {
   helpers: Map<string, HelperFn> = new Map();
 
   compile(ast: Program): Runnable {
-    const renderer = getRendererForNode(ast);
+    const renderer = nodeMapping.createRenderer(ast);
     return (input) => {
       const context: RenderContext = {
         input,
@@ -34,4 +27,27 @@ export class HandlebarsNgRunner {
   registerHelper(name: string, fn: HelperFn) {
     this.helpers.set(name, fn);
   }
+}
+
+const nodeMapping: NodeMapping = {
+  createEvaluator(node) {
+    return new PathEvaluator(node);
+  },
+
+  createRenderer(node) {
+    switch (node.type) {
+      case "ContentStatement":
+        return new ContentRenderer(node);
+      case "MustacheStatement":
+        return new MustacheRenderer(node, this);
+      case "Program":
+        return new ProgramRenderer(node, this);
+      default:
+        unexpectedNodeType(node);
+    }
+  },
+};
+
+function unexpectedNodeType(node: never): never {
+  throw new Error("Unexpected node type" + (node as Node).type);
 }

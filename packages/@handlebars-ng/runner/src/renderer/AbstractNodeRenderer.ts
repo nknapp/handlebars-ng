@@ -1,5 +1,5 @@
 import type { Node } from "../types/ast";
-import { RenderContext } from "./RenderContext";
+import { RenderContext } from "../types/nodeMapping";
 
 export abstract class AbstractNodeRenderer<T extends Node> {
   node: T;

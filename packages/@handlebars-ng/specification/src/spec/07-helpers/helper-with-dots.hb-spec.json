@@ -1,0 +1,63 @@
+{
+  "$schema": "../schema/testcase.json",
+  "type": "runtimeError",
+  "description": "Helper with dots in the name (TODO: error message should 'Cannot use nested paths like helpers')",
+  "input": { "firstname": "John", "lastname": "Smith" },
+  "helpers": { "help.with.dots": "concat_strings" },
+  "template": "{{help.with.dots firstname lastname}}",
+  "ast": {
+    "type": "Program",
+    "body": [
+      {
+        "type": "MustacheStatement",
+        "escaped": true,
+        "params": [
+          {
+            "type": "PathExpression",
+            "original": "firstname",
+            "data": false,
+            "depth": 0,
+            "parts": ["firstname"],
+            "loc": {
+              "start": { "line": 1, "column": 17 },
+              "end": { "line": 1, "column": 26 }
+            }
+          },
+          {
+            "type": "PathExpression",
+            "original": "lastname",
+            "data": false,
+            "depth": 0,
+            "parts": ["lastname"],
+            "loc": {
+              "start": { "line": 1, "column": 27 },
+              "end": { "line": 1, "column": 35 }
+            }
+          }
+        ],
+        "path": {
+          "type": "PathExpression",
+          "original": "help.with.dots",
+          "data": false,
+          "depth": 0,
+          "parts": ["help", "with", "dots"],
+          "loc": {
+            "start": { "line": 1, "column": 2 },
+            "end": { "line": 1, "column": 16 }
+          }
+        },
+        "strip": { "open": false, "close": false },
+        "loc": {
+          "start": { "line": 1, "column": 0 },
+          "end": { "line": 1, "column": 37 }
+        }
+      }
+    ],
+    "strip": {},
+    "loc": {
+      "start": { "line": 1, "column": 0 },
+      "end": { "line": 1, "column": 37 }
+    }
+  },
+  "expectedErrorMessage": "Missing helper: \"help.with.dots\""
+}

@@ -1,14 +1,13 @@
 import { Node, Program } from "../types/ast";
-import { getRendererForNode } from "../renderMapping";
 import { AbstractNodeRenderer } from "./AbstractNodeRenderer";
-import { RenderContext } from "./RenderContext";
+import { NodeMapping, Renderer, RenderContext } from "../types/nodeMapping";
 
 export class ProgramRenderer extends AbstractNodeRenderer<Program> {
-  body: AbstractNodeRenderer<Node>[];
+  body: Renderer[];
 
-  constructor(node: Node) {
+  constructor(node: Node, mapping: NodeMapping) {
     super(node as Program);
-    this.body = this.node.body.map(getRendererForNode);
+    this.body = this.node.body.map((node) => mapping.createRenderer(node));
   }
 
   render(context: RenderContext): void {

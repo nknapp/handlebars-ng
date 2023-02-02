@@ -19,8 +19,9 @@ export interface Program extends Node {
   strip: Record<string, never>;
 }
 
-export type AnyNode = Statement | Program;
+export type AnyNode = Statement | Program | Expression;
 export type Statement = ContentStatement | MustacheStatement;
+export type Expression = PathExpression;
 
 export interface ContentStatement extends Node {
   type: "ContentStatement";

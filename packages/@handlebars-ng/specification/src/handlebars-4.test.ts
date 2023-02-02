@@ -19,8 +19,12 @@ describe("The spec", () => {
         switch (testcase.type) {
           case "success":
             return new ExpectedSuccess(testcase, filename).testSuccess();
+          case "runtimeError":
+            it.todo("verify runtime error: " + filename);
+            return;
           case "parseError":
             return new ExpectedParseError(testcase, filename).testError();
+
           default:
             it("error", () => {
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment

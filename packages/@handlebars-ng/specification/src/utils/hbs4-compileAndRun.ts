@@ -1,8 +1,10 @@
 import { helpers as helpersUsedInSpec } from "../helpers";
-import { SuccessTest } from "../types/tests";
+import { RuntimeErrorTest, SuccessTest } from "../types/tests";
 import Handlebars from "handlebars";
 
-export function compileAndRun(testcase: SuccessTest): string {
+export function compileAndRun(
+  testcase: SuccessTest | RuntimeErrorTest
+): string {
   const instance = Handlebars.create();
   if (testcase.helpers != null) {
     for (const [name, helper] of Object.entries(testcase.helpers)) {

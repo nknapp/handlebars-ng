@@ -45,6 +45,23 @@ export interface ExpectedParseError {
   message: string;
 }
 
-export type HandlebarsTest = ParseErrorTest | SuccessTest;
+export interface RuntimeErrorTest extends BaseHandlebarsTest {
+  type: "runtimeError";
+  ast: Program;
+  /**
+   * The AST created by the original Handlebars parser, in case it is different from "ast"
+   */
+  originalAst?: unknown;
+  /**
+   * The original Handlebars parser cannot parse the template in this test
+   */
+  originalParseError?: true;
+
+  input: Record<string, unknown>;
+  helpers?: Record<string, Helper>;
+  expectedErrorMessage: string;
+}
+
+export type HandlebarsTest = ParseErrorTest | RuntimeErrorTest | SuccessTest;
 
 declare const handlebarsSpec: Record<string, HandlebarsTest>;

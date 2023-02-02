@@ -1,9 +1,10 @@
 {
   "$schema": "../schema/testcase.json",
   "type": "success",
-  "description": "A path expression resolved on 'null' returns an empty string",
-  "template": "{{person.name}}",
+  "description": "A path expression retrieving values from null 'null' returns an empty string",
+  "template": "{{person.name}}{{{person.name}}}",
   "input": {},
+  "output": "",
   "ast": {
     "type": "Program",
     "body": [
@@ -27,13 +28,33 @@
           "start": { "line": 1, "column": 0 },
           "end": { "line": 1, "column": 15 }
         }
+      },
+      {
+        "type": "MustacheStatement",
+        "escaped": false,
+        "params": [],
+        "path": {
+          "type": "PathExpression",
+          "original": "person.name",
+          "data": false,
+          "depth": 0,
+          "parts": ["person", "name"],
+          "loc": {
+            "start": { "line": 1, "column": 18 },
+            "end": { "line": 1, "column": 29 }
+          }
+        },
+        "strip": { "open": false, "close": false },
+        "loc": {
+          "start": { "line": 1, "column": 15 },
+          "end": { "line": 1, "column": 32 }
+        }
       }
     ],
     "strip": {},
     "loc": {
       "start": { "line": 1, "column": 0 },
-      "end": { "line": 1, "column": 15 }
+      "end": { "line": 1, "column": 32 }
     }
-  },
-  "output": ""
+  }
 }

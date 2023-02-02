@@ -5,6 +5,7 @@ import fs from "node:fs/promises";
 import type {
   HandlebarsTest,
   ParseErrorTest,
+  RuntimeErrorTest,
   SuccessTest,
 } from "../../src/types/tests";
 import { jsonEquals } from "../../src/utils/jsonEquals";
@@ -26,6 +27,9 @@ export async function addResultToFile(file: string) {
       break;
     case "parseError":
       adjustParseErrorTestcase(testcase);
+      break;
+    case "runtimeError":
+      adjustRuntimeErrorTestcase(testcase);
       break;
     default:
       throw new Error(`"${file}" has invalid type: ${JSON.stringify(type)}`);
@@ -52,7 +56,25 @@ function addOutput(testcase: SuccessTest): void {
   }
 }
 
-function addAstOrOriginalAst(testcase: SuccessTest): void {
+function adjustRuntimeErrorTestcase(testcase: RuntimeErrorTest): void {
+  if (!testcase.originalParseError) {
+    addAstOrOriginalAst(testcase);
+    try {
+      compileAndRun(testcase);
+    } catch (error) {
+      if (error instanceof Error) {
+        testcase.expectedErrorMessage = error.message;
+      }
+    }
+  }
+
+  testcase.ast = normalizeAst(testcase.ast);
+  if (testcase.originalAst != null) {
+    testcase.originalAst = normalizeAst(testcase.originalAst as Program);
+  }
+}
+
+function addAstOrOriginalAst(testcase: SuccessTest | RuntimeErrorTest): void {
   const ast = normalizeAst(Handlebars.parse(testcase.template) as Program);
   if (testcase.ast == null) {
     testcase.ast = ast;

@@ -28,7 +28,7 @@ Adjusted by Nils Knappmeier
 
 */
 
-import { RenderContext } from "../renderer/RenderContext";
+import { RenderContext } from "src/types/nodeMapping";
 
 const rules: [string, string][] = [
   ["&", "&amp;"],

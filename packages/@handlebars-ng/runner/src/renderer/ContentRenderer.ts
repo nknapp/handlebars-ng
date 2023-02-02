@@ -1,6 +1,6 @@
 import { ContentStatement, Node } from "../types/ast";
 import { AbstractNodeRenderer } from "./AbstractNodeRenderer";
-import { RenderContext } from "./RenderContext";
+import { RenderContext } from "../types/nodeMapping";
 
 export class ContentRenderer extends AbstractNodeRenderer<ContentStatement> {
   constructor(node: Node) {
