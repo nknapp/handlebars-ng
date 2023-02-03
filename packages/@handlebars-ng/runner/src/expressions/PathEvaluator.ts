@@ -1,5 +1,5 @@
 import { Node, PathExpression } from "@handlebars-ng/abstract-syntax-tree";
-import { getOwnProperty } from "src/utils/getOwnProperty";
+import { getOwnProperty } from "../utils/getOwnProperty";
 import { EvaluationContext } from "../types/nodeMapping";
 import { AbstractEvaluator } from "./AbstractEvaluator";
 
