@@ -7,7 +7,7 @@ import {
 import { MustacheStatement, Node } from "../types/ast";
 import { renderEscapedHtml } from "../utils/htmlEscape";
 import { AbstractNodeRenderer } from "./AbstractNodeRenderer";
-import { getOwnProperty } from "src/utils/getOwnProperty";
+import { getOwnProperty } from "../utils/getOwnProperty";
 
 export class MustacheRenderer extends AbstractNodeRenderer<MustacheStatement> {
   private evaluator: Evaluator;
