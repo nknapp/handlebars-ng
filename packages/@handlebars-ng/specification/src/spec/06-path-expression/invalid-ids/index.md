@@ -2,6 +2,7 @@
 
 _Note: Parse error tests are not a core part of the spec. The important
 part is that an error is thrown in these cases, not the exact error message._
+
 [char-code-33.hb-spec.json](./char-code-33.hb-spec.json)
 [char-code-34.hb-spec.json](./char-code-34.hb-spec.json)
 [char-code-35.hb-spec.json](./char-code-35.hb-spec.json)

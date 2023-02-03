@@ -19,12 +19,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "loc",
-        "original",
-        "type",
-        "value"
-      ],
+      "required": ["loc", "original", "type", "value"],
       "type": "object"
     },
     "ExpectedParseError": {
@@ -40,11 +35,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "line",
-        "column",
-        "message"
-      ],
+      "required": ["line", "column", "message"],
       "type": "object"
     },
     "HandlebarsTest": {
@@ -61,10 +52,7 @@
       ]
     },
     "Helper": {
-      "enum": [
-        "return_literal_a",
-        "concat_strings"
-      ],
+      "enum": ["return_literal_a", "concat_strings"],
       "type": "string"
     },
     "MustacheStatement": {
@@ -93,14 +81,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "escaped",
-        "loc",
-        "params",
-        "path",
-        "strip",
-        "type"
-      ],
+      "required": ["escaped", "loc", "params", "path", "strip", "type"],
       "type": "object"
     },
     "ParseErrorTest": {
@@ -131,13 +112,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "$schema",
-        "description",
-        "expected",
-        "template",
-        "type"
-      ],
+      "required": ["$schema", "description", "expected", "template", "type"],
       "type": "object"
     },
     "PathExpression": {
@@ -166,14 +141,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "data",
-        "depth",
-        "loc",
-        "original",
-        "parts",
-        "type"
-      ],
+      "required": ["data", "depth", "loc", "original", "parts", "type"],
       "type": "object"
     },
     "Position": {
@@ -186,10 +154,7 @@
           "type": "number"
         }
       },
-      "required": [
-        "line",
-        "column"
-      ],
+      "required": ["line", "column"],
       "type": "object"
     },
     "Program": {
@@ -221,12 +186,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "body",
-        "loc",
-        "strip",
-        "type"
-      ],
+      "required": ["body", "loc", "strip", "type"],
       "type": "object"
     },
     "RuntimeErrorTest": {
@@ -298,10 +258,7 @@
           "$ref": "#/definitions/Position"
         }
       },
-      "required": [
-        "start",
-        "end"
-      ],
+      "required": ["start", "end"],
       "type": "object"
     },
     "Statement": {
@@ -324,10 +281,7 @@
           "type": "boolean"
         }
       },
-      "required": [
-        "open",
-        "close"
-      ],
+      "required": ["open", "close"],
       "type": "object"
     },
     "SuccessTest": {

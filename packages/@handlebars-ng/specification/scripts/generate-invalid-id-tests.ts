@@ -4,6 +4,7 @@ import fs from "node:fs/promises";
 import path from "path";
 import { addResultToFile } from "./lib/addResultToFile";
 import { HandlebarsTest } from "../src/types/tests";
+import prettier from "prettier";
 
 const folder = "06-path-expression/invalid-ids";
 const me = path.relative(process.cwd(), __filename);
@@ -15,6 +16,7 @@ let indexFile = `# Testcases for invalid id characters
 
 *Note: Parse error tests are not a core part of the spec. The important 
 part is that an error is thrown in these cases, not the exact error message.* 
+
 `;
 
 for (const char of invalidChars) {
@@ -32,6 +34,8 @@ for (const char of invalidChars) {
 
   indexFile += `[${filename}](./${filename})\n`;
 }
+
+indexFile = prettier.format(indexFile, { parser: "markdown" });
 
 await fs.writeFile(
   resolveSpecFile(`${folder}/WARNING.txt`),
