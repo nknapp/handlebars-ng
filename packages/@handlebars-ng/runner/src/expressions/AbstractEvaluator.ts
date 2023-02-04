@@ -1,4 +1,4 @@
-import { EvaluationContext } from "src/types/nodeMapping";
+import { EvaluationContext } from "../types/nodeMapping";
 import type { Node } from "../types/ast";
 
 export abstract class AbstractEvaluator<T extends Node> {

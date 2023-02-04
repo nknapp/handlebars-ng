@@ -24,6 +24,14 @@ module.exports = {
     ],
     eqeqeq: ["error", "smart"],
     "no-console": ["error"],
+    "no-restricted-imports": [
+      "error",
+      {
+        patterns: [
+          { group: ["src/*", "@/*"], message: "Use relative import instead" },
+        ],
+      },
+    ],
   },
   overrides: [
     {
