@@ -1,5 +1,5 @@
 export function getOwnProperty(value: unknown, property: string): unknown {
-  if (!Object.prototype.hasOwnProperty.call(value, property)) return null;
   const object = value as Record<string, unknown>;
+  if (!Object.hasOwn(object, property)) return null;
   return object[property] ?? null;
 }
