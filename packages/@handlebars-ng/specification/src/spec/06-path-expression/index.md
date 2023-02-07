@@ -43,3 +43,26 @@ It may be wise to allow multiple templates in such a test-case. Otherwise we nee
 Ids with special charactares must be wrapped in `[` and `]`. It may than not include a closing `]`.
 
 [](./id-in-square-brackets.hb-spec.json)
+
+[](./id-)
+
+## TODO: Quotes to allow invalid chars
+
+In https://github.com/handlebars-lang/docs/pull/119 it was pointed out that the following also works
+
+```handlebars
+{{"id containing spaces"}}
+{{"id containing spaces"}}
+```
+
+but the following does not
+
+```handlebars
+{{ 'id containing spaces'.moreProp}}
+{{ "id containing spaces".moreProps}}
+```
+
+This is because the `{{ 'id containing spaces' }}` interpreted by the parser as LiteralString, where quotes are allowed, but
+`{{ 'id containing spaces'.moreProp}}` is a contains a PathExpressions, where quotes aren't allowed.
+
+This could be considered a bug in the parser.
