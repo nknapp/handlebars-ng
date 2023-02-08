@@ -20,12 +20,11 @@ export class SyncFile {
     this.originalExt = path.extname(relativePath);
   }
 
-  updateExtension(newExtension: string): this {
+  updateExtension(newExtension: string): void {
     this.relativePath = this.relativePath.replace(/\.\w+$/, newExtension);
-    return this;
   }
 
-  wrapContentInFences(language: string): this {
+  wrapContentInFences(language: string): void {
     if (this.contents.match(/```/))
       throw new Error(
         "Content already contains fences. This is currently not supported"
@@ -41,14 +40,19 @@ export class SyncFile {
       this.contents,
       "```"
     );
-    return this;
+  }
+
+  async transform(
+    fn: (contents: string) => Promise<string> | string
+  ): Promise<void> {
+    this.contents = await fn(this.contents);
   }
 
   private titleFromFilename() {
     return capitalize(path.basename(this.relativePath));
   }
 
-  addFrontMatter(header: HeaderSpec = TITLE_FROM_H1): this {
+  addFrontMatter(header: HeaderSpec = TITLE_FROM_H1): void {
     this.updateContents(
       `---`,
       ``,
@@ -61,7 +65,6 @@ export class SyncFile {
       ``,
       this.contents
     );
-    return this;
   }
 
   private updateContents(...lines: LineSpec[]): void {

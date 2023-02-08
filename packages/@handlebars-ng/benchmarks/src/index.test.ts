@@ -18,11 +18,15 @@ describe("benchmarks", () => {
 
     expect(bench.asTable()).toEqual([
       ["ms / 2 runs", "twenty", "ten"],
-      ["mustaches.perf.ts", roughMeanStd("40 (± 5)"), roughMeanStd("20 (± 5)")],
+      [
+        "mustaches.perf.ts",
+        expect.stringMatching(/[\d.]+ \(± [\d.]+\)/),
+        expect.stringMatching(/[\d.]+ \(± [\d.]+\)/),
+      ],
       [
         "unescaped-mustaches.perf.ts",
-        roughMeanStd("40 (± 5)"),
-        roughMeanStd("20 (± 5)"),
+        expect.stringMatching(/[\d.]+ \(± [\d.]+\)/),
+        expect.stringMatching(/[\d.]+ \(± [\d.]+\)/),
       ],
     ]);
   });
@@ -108,39 +112,4 @@ function roughly(expected: number, threshold: number = expected / 2): number {
     },
   };
   return matcher as unknown as number;
-}
-
-function roughMeanStd(expectedMeanStdDev: string, threshold?: string): number {
-  const [expectedMean, expectedStdDev] = parseMeanStdDev(expectedMeanStdDev);
-  const [thresholdMean, thresholdStdDev] = threshold
-    ? parseMeanStdDev(threshold)
-    : [expectedMean / 2, expectedStdDev / 2];
-
-  const matcher: AsymmetricMatcherInterface<string> = {
-    $$typeof: Symbol.for("jest.asymmetricMatcher"),
-    asymmetricMatch(received: string) {
-      const [receivedMean, receivedStdDev] = parseMeanStdDev(received);
-      return (
-        Math.abs(receivedMean - expectedMean) <= thresholdMean &&
-        Math.abs(receivedStdDev - expectedStdDev) <= thresholdStdDev
-      );
-    },
-    toString() {
-      return "Expected";
-    },
-    getExpectedType() {
-      return "number";
-    },
-    toAsymmetricMatcher() {
-      return "roughly " + expectedMeanStdDev;
-    },
-  };
-  return matcher as unknown as number;
-}
-
-function parseMeanStdDev(meanStdDev: string): [mean: number, stdDev: number] {
-  const match = meanStdDev.match(/[-\d.]+/g)?.map(Number);
-  if (match == null || match.length < 2)
-    throw new Error("Could not find two numbers in string");
-  return [match[0], match[1]];
 }

@@ -1,0 +1,28 @@
+@define noStrictParametricProductions true
+
+
+MutacheStart_escaped :: `{{`
+MutacheStart_unescaped :: `{{{`
+
+
+SourceCharacter ::
+	> any Unicode code point
+
+MustacheStart ::
+    MutacheStart_escaped
+    MutacheStart_unescaped
+
+NonMustacheStart ::
+    SourceCharacter but not MustacheStart
+
+ContentCharacter ::
+    NonMustacheStart 
+    `\{{`
+     `\{{{`
+
+ContentStatement ::
+    ContentCharacter 
+    ContentCharacter ContentStatement 
+
+Program ::
+    ContentStatement

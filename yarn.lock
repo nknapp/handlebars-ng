@@ -487,6 +487,37 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.16.17.tgz#c5a1a4bfe1b57f0c3e61b29883525c6da3e5c091"
   integrity sha512-y+EHuSchhL7FjHgvQL/0fnnFmO4T1bhvWANX6gcnqTjtnKWbTvUMCpGnv2+t+31d7RzyEAYAd4u2fnIhHL6N/Q==
 
+"@esfx/async-canceltoken@^1.0.0-pre.13":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@esfx/async-canceltoken/-/async-canceltoken-1.0.0.tgz#44277ddaf92514efcf2041d73054432a01c6a4a2"
+  integrity sha512-3Ps/4NPd7qFltmHL+CYXCjZtNXcQGV9BZmpzu8Rt3/0SZMtbQve0gtX0uJDJGvAWa6w3IB4HrKVP12VPoFONmA==
+  dependencies:
+    "@esfx/cancelable" "^1.0.0"
+    "@esfx/canceltoken" "^1.0.0"
+    "@esfx/disposable" "^1.0.0"
+    tslib "^2.4.0"
+
+"@esfx/cancelable@^1.0.0", "@esfx/cancelable@^1.0.0-pre.13":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@esfx/cancelable/-/cancelable-1.0.0.tgz#8545e35a76ac620c5c7cd43233e99501727126cf"
+  integrity sha512-2dry/TuOT9ydpw86f396v09cyi/gLeGPIZSH4Gx+V/qKQaS/OXCRurCY+Cn8zkBfTAgFsjk9NE15d+LPo2kt9A==
+  dependencies:
+    "@esfx/disposable" "^1.0.0"
+
+"@esfx/canceltoken@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@esfx/canceltoken/-/canceltoken-1.0.0.tgz#0e75ff058feaaea24825c5536ceceb781289b80c"
+  integrity sha512-/TgdzC5O89w5v0TgwE2wcdtampWNAFOxzurCtb4RxYVr3m72yk3Bg82vMdznx+H9nnf28zVDR0PtpZO9FxmOkw==
+  dependencies:
+    "@esfx/cancelable" "^1.0.0"
+    "@esfx/disposable" "^1.0.0"
+    tslib "^2.4.0"
+
+"@esfx/disposable@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@esfx/disposable/-/disposable-1.0.0.tgz#6f46270ab14fe8ec84167c588f64f0945023f59a"
+  integrity sha512-hu7EI+YxlEWEKrb2himbS13HNaq5mlUePASf99KeQqkiNeqiAZbKqG4w59uDcLZs8JrV3qJqS/NYib5ZMhbfTQ==
+
 "@eslint/eslintrc@^1.4.1":
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-1.4.1.tgz#af58772019a2d271b7e2d4c23ff4ddcba3ccfb3e"
@@ -4787,6 +4818,14 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.5
   version "4.2.10"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.10.tgz#147d3a006da4ca3ce14728c7aefc287c367d7a6c"
   integrity sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==
+
+grammarkdown@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/grammarkdown/-/grammarkdown-3.2.0.tgz#7338456fe39dca871afb02073b88c5e94b4ceb28"
+  integrity sha512-pEVUvG2Kxv/PwM3Dm3kFEU1/GHRkNcFWmk/zkqN/y0uoQtPaZ+5VaBacMQAaFOIL9WGYjHXtqpkT5YRvySsISQ==
+  dependencies:
+    "@esfx/async-canceltoken" "^1.0.0-pre.13"
+    "@esfx/cancelable" "^1.0.0-pre.13"
 
 grapheme-splitter@^1.0.4:
   version "1.0.4"

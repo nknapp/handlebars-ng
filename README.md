@@ -16,6 +16,17 @@ This project is a mono-repo. The directory [packages/@handlebars-ng](packages/%4
 
 ## Contributing
 
+I use [Visual Studio Code]() to work in this repository.
+The following extensions are helpful:
+
+- [grammarkdown](https://marketplace.visualstudio.com/items?itemName=rbuckton.grammarkdown-vscode)
+- [astro](https://marketplace.visualstudio.com/items?itemName=astro-build.astro-vscode)
+- [eslint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+- [mdx](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx)
+- [prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [TailwindDocs](https://marketplace.visualstudio.com/items?itemName=austenc.tailwind-docs)
+- [Teildinw CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
+
 You can contribute by adding new sections to the specification and fixing the resulting failing
 tests in the parser and runner.
 

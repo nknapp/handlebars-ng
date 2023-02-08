@@ -4,6 +4,8 @@ import path from "path";
 import { SyncFile, TITLE_NONE } from "./lib/SyncFile";
 import { SyncDirs } from "./lib/SyncDirs";
 
+import { Grammar, EmitFormat } from "grammarkdown";
+
 const specSourceDir = path.resolve("../@handlebars-ng/specification/src/spec");
 const specTargetDir = path.resolve("src/pages/spec");
 
@@ -34,21 +36,42 @@ export function hbsSpec(): AstroIntegration {
 async function applyTransformations(file: SyncFile): Promise<void> {
   switch (file.originalExt) {
     case ".md":
-      file.updateExtension(".mdx").addFrontMatter();
+      file.updateExtension(".mdx");
+      await file.transform(escapeOpeningBraces);
+      file.addFrontMatter();
       break;
     case ".ts":
-      file
-        .updateExtension(".mdx")
-        .wrapContentInFences("typescript")
-        .addFrontMatter(TITLE_NONE);
+      file.updateExtension(".mdx");
+      file.wrapContentInFences("typescript");
+      file.addFrontMatter(TITLE_NONE);
       break;
     case ".json":
       break;
     case ".txt":
+      break;
+    case ".grammar":
+      file.updateExtension(".mdx");
+      await file.transform(grammarToMarkdown);
+      file.addFrontMatter();
       break;
     default:
       throw new Error(
         "Unknown file type for transformation: " + file.relativePath
       );
   }
+}
+
+function escapeOpeningBraces(content: string): string {
+  return content
+    .replace(/{/g, "&#123;")
+    .replace(/}/g, "&#125;")
+    .replace(/\\/g, "&#92;")
+    .replace(/`/g, "&#96;");
+}
+
+async function grammarToMarkdown(content: string): Promise<string> {
+  const html = await Grammar.convert(content, { format: EmitFormat.html });
+  return `# Syntax grammar\n\n**work in progress**\n\n<br/>${escapeOpeningBraces(
+    html
+  )}`;
 }
