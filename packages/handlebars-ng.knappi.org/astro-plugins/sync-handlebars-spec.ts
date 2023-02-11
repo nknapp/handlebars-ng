@@ -9,7 +9,7 @@ import { Grammar, EmitFormat } from "grammarkdown";
 const specSourceDir = path.resolve("../@handlebars-ng/specification/src/spec");
 const specTargetDir = path.resolve("src/pages/spec");
 
-export function hbsSpec(): AstroIntegration {
+export function syncHandlebarsSpec(): AstroIntegration {
   return {
     name: "handlebars-spec",
     hooks: {
@@ -37,7 +37,6 @@ async function applyTransformations(file: SyncFile): Promise<void> {
   switch (file.originalExt) {
     case ".md":
       file.updateExtension(".mdx");
-      await file.transform(escapeOpeningBraces);
       file.addFrontMatter();
       break;
     case ".ts":
