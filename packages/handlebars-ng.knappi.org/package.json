@@ -53,6 +53,7 @@
     "@vitest/ui": "0.28.3",
     "astro-icon": "0.8.0",
     "chart.js": "4.2.0",
+    "cheerio": "^1.0.0-rc.12",
     "chokidar": "3.5.3",
     "concurrently": "7.6.0",
     "del": "7.0.0",

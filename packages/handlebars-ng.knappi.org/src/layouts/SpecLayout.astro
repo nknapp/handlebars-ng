@@ -17,30 +17,3 @@ const { frontmatter } = Astro.props;
   </div>
   <slot />
 </Layout>
-
-<style lang="scss" is:global>
-  .grammar {
-    .nonterminal {
-      font-style: italic;
-    }
-
-    .unicode-character-literal,
-    .terminal,
-    .keyword {
-      font-weight: bold;
-    }
-
-    .punctuation {
-    }
-
-    .rhs,
-    .one-of-list {
-      display: block;
-      margin-left: 5rem;
-    }
-
-    .prose {
-      font-family: serif;
-    }
-  }
-</style>

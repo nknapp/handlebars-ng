@@ -18,12 +18,14 @@ export const inlineSpecialLinks: Plugin = (options: SpecialLinksConfig) => {
     for (const { node, replaceWith } of visit<Link>(tree, "link")) {
       const replacement = links.replacementForLink(node.url);
       if (replacement != null) {
-        replaceWith(createComponentCall(replacement));
+        const newLocal = createComponentCall(replacement);
+        replaceWith(newLocal);
       }
     }
 
     if (links.importsRequired) {
-      tree.children?.unshift(createImports([...links.imports]));
+      const imports = createImports([...links.imports]);
+      tree.children?.unshift(imports);
       file.extname = ".mdx";
     }
   };

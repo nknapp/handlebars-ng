@@ -7,6 +7,7 @@ export interface SpecialLinksConfig {
 
 export interface SpecialLinkConfig {
   match: RegExp;
+  dataImportQuery?: `?${string}`;
   component: string;
   propMapping: Record<string, symbol>;
 }

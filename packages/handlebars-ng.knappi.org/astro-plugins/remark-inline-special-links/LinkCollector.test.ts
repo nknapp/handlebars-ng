@@ -2,6 +2,7 @@ import { SpecialLinksConfig } from ".";
 import {
   DATA,
   FILENAME,
+  HASH,
   ImportSpec,
   JsxComponentCall,
   LinkCollector,
@@ -11,10 +12,11 @@ const config: SpecialLinksConfig = {
   baseDir: "./source",
   links: [
     {
-      match: /hb-spec\.json$/,
+      match: /hb-spec\.json(#.*?)?$/,
       component: "@/components/Testcase/index.astro",
       propMapping: {
         filename: FILENAME,
+        hash: HASH,
         spec: DATA,
       },
     },
@@ -32,7 +34,7 @@ describe("LinkCollector", () => {
   it("returns a node for configured links", () => {
     const collector = new LinkCollector("./source/01/file.md", config);
     const replacementSpec = collector.replacementForLink(
-      "./some-test.hb-spec.json"
+      "./some-test.hb-spec.json#hash"
     );
     expect(replacementSpec).toEqual({
       jsxElementName: expect.any(String),
@@ -45,12 +47,43 @@ describe("LinkCollector", () => {
           type: "identifier",
           value: expect.any(String),
         },
+        hash: {
+          type: "string",
+          value: "hash",
+        },
       },
     } satisfies JsxComponentCall);
   });
 
   it("adds an import for the generated link", () => {
     const collector = new LinkCollector("./source/01/file.md", config);
+    const replacementSpec = collector.replacementForLink(
+      "./some-test.hb-spec.json#hash"
+    );
+    const variableName = replacementSpec?.props.spec.value;
+    assertNotNull(variableName);
+
+    expect(collector.imports).toContainEqual({
+      name: variableName,
+      source: "./some-test.hb-spec.json",
+    } satisfies ImportSpec);
+  });
+
+  it("adds a query to the data import, if configured", () => {
+    const collector = new LinkCollector("./source/01/file.md", {
+      baseDir: "./source",
+      links: [
+        {
+          match: /hb-spec\.json$/,
+          dataImportQuery: "?raw",
+          component: "@/components/Testcase/index.astro",
+          propMapping: {
+            filename: FILENAME,
+            spec: DATA,
+          },
+        },
+      ],
+    });
     const replacementSpec = collector.replacementForLink(
       "./some-test.hb-spec.json"
     );
@@ -60,7 +93,7 @@ describe("LinkCollector", () => {
 
     expect(collector.imports).toContainEqual({
       name: variableName,
-      source: "./some-test.hb-spec.json",
+      source: "./some-test.hb-spec.json?raw",
     } satisfies ImportSpec);
   });
 

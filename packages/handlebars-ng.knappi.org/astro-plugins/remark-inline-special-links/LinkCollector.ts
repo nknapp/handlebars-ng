@@ -1,4 +1,4 @@
-import { SpecialLinksConfig } from "./types";
+import { SpecialLinkConfig, SpecialLinksConfig } from "./types";
 import path from "node:path";
 
 export interface JsxComponentCall {
@@ -16,8 +16,9 @@ export interface ImportSpec {
   source: string;
 }
 
-export const FILENAME = Symbol("filename");
-export const DATA = Symbol("data");
+export const FILENAME = Symbol("linkcollector-filename");
+export const DATA = Symbol("linkcollector-data");
+export const HASH = Symbol("linkcollector-hash");
 
 export class LinkCollector {
   sourceFile: string;
@@ -39,7 +40,7 @@ export class LinkCollector {
         return {
           jsxElementName: jsxElementName,
           props: mapValues(linkConfig.propMapping, (configValue) => {
-            return this.getPropValue(configValue, linkTarget);
+            return this.getPropValue(linkConfig, configValue, linkTarget);
           }),
         };
       }
@@ -51,30 +52,44 @@ export class LinkCollector {
     return this.imports.size > 0;
   }
 
-  private getPropValue(value: symbol, linkTarget: string): PropValue {
+  private getPropValue(
+    linkConfig: SpecialLinkConfig,
+    value: symbol,
+    linkTarget: string
+  ): PropValue {
+    const [linkPath, hash] = linkTarget.split("#");
+
     switch (value) {
       case FILENAME:
-        return this.filename(linkTarget);
+        return this.stringProp(this.relativePath(linkPath));
       case DATA: {
-        return this.importedVariable(linkTarget);
+        const query = linkConfig.dataImportQuery ?? "";
+        return this.importedVariableProp(linkPath + query);
+      }
+      case HASH: {
+        return this.stringProp(hash);
       }
       default:
         throw new Error("Unexpected prop value symbol " + value.toString());
     }
   }
 
-  private importedVariable(linkTarget: string): PropValue {
+  private importedVariableProp(linkTarget: string): PropValue {
     return {
       type: "identifier",
       value: this.imports.lazyCreateImportVar(linkTarget),
     };
   }
 
-  private filename(linkTarget: string): PropValue {
-    const fullPath = path.join(path.dirname(this.sourceFile), linkTarget);
+  private relativePath(filename: string): string {
+    const fullPath = path.join(path.dirname(this.sourceFile), filename);
+    return path.relative(this.config.baseDir, fullPath);
+  }
+
+  private stringProp(value: string): PropValue {
     return {
       type: "string",
-      value: path.relative(this.config.baseDir, fullPath),
+      value: value,
     };
   }
 }

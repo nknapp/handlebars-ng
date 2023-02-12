@@ -1,6 +1,10 @@
 @define noStrictParametricProductions true
 
 
+Program ::
+    ContentStatement
+
+
 MutacheStart_escaped :: `{{`
 MutacheStart_unescaped :: `{{{`
 
@@ -18,11 +22,9 @@ NonMustacheStart ::
 ContentCharacter ::
     NonMustacheStart 
     `\{{`
-     `\{{{`
+    `\{{{`
 
 ContentStatement ::
     ContentCharacter 
     ContentCharacter ContentStatement 
 
-Program ::
-    ContentStatement

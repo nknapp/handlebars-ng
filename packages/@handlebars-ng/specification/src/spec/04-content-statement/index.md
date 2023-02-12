@@ -1,5 +1,7 @@
 # Content
 
+[Content Grammar](../handlebars.grammar#ContentStatement,ContentCharacter,NonMustacheCharacter,NonMustacheStart,SourceCharacter)
+
 "Content" is the default type of statement contained in a template. It does not have a specific start- or end-token. It ends when other statments start.
 Since all other statement types start with two or more opening mustache-statements, "Content" ends when such an opening mustache statement is found.
 

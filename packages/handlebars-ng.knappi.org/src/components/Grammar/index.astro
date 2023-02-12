@@ -1,0 +1,56 @@
+---
+import { EcmaGrammar } from "./ecmaGrammar";
+
+interface Props {
+  filename: string;
+  contents: string;
+  hash?: string;
+}
+
+const { contents, hash } = Astro.props;
+
+let grammar = await EcmaGrammar.fromString(contents);
+// TODO: Make sure that "hash" is undefined or null if no hash is provided
+if (typeof hash === "string") {
+  const selectedProductions = hash.split(",");
+  grammar = grammar.selectProductions(selectedProductions);
+}
+---
+
+<div class="my-4">
+  <div class="border-l pl-2 py-2" set:html={grammar.html} />
+</div>
+<style lang="scss" is:global>
+  .grammar {
+    .nonterminal {
+      @apply italic;
+    }
+
+    .terminal {
+      &:before,
+      &:after {
+        @apply text-gray-500 font-light;
+        content: '"';
+      }
+    }
+
+    .unicode-character-literal,
+    .terminal,
+    .keyword {
+      @apply font-bold;
+    }
+
+    .punctuation {
+    }
+
+    .rhs,
+    .one-of-list {
+      display: block;
+      margin-left: 5rem;
+    }
+
+    .prose {
+      font-family: serif;
+    }
+  }
+</style>
