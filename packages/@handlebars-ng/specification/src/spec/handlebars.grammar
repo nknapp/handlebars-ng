@@ -1,30 +1,65 @@
 @define noStrictParametricProductions true
 
+// Section: Program
 
 Program ::
     ContentStatement
+    MustacheStatement
+    MustacheStatement[+Unescaped]
 
+// Section: Content
 
-MutacheStart_escaped :: `{{`
-MutacheStart_unescaped :: `{{{`
+ContentStatement ::
+    ContentCharacter ContentStatement?
 
+ContentCharacter ::
+    NonMustacheStart
+    `\{{`
+    `\{{{`
+
+NonMustacheStart ::
+    SourceCharacter but not one of MustacheStart or MustacheStart[+Unescaped]
 
 SourceCharacter ::
 	> any Unicode code point
 
-MustacheStart ::
-    MutacheStart_escaped
-    MutacheStart_unescaped
+// Section: Mustaches
 
-NonMustacheStart ::
-    SourceCharacter but not MustacheStart
+MustacheStatement[Unescaped] ::
+    MustacheStart[?Unescaped] MustacheContents MustacheEnd[?Unescaped]
 
-ContentCharacter ::
-    NonMustacheStart 
-    `\{{`
-    `\{{{`
+MustacheStart[Unescaped] ::
+    [+Unescaped]`{{{`
+    [~Unescaped]`{{`
 
-ContentStatement ::
-    ContentCharacter 
-    ContentCharacter ContentStatement 
+MustacheEnd[Unescaped] ::
+    [+Unescaped]`}}}`
+    [~Unescaped]`}}`
+
+MustacheContents ::
+    WhitespaceControl? Whitespace? PathExpression MustacheParameters? Whitespace? WhitespaceControl?
+
+WhitespaceControl :: `~`
+
+Whitespace :: one of
+    `<SPACE>` `<TAB>` `<LF>` `<CR>`
+
+MustacheParameters ::
+    Whitespace PathExpression MustacheParameters?
+
+// Section: PathExpressions
+
+PathExpression ::
+    Id PathExpressionTail?
+
+PathExpressionTail ::
+    `.` PathExpression
+    `/` PathExpression
+
+Id ::
+    SourceCharacter but not one of NonId or Whitespace
+
+NonId :: one of 
+    `!` `"` `#` `%` `&` `'` `(` `)` `*` `+` `,` `.` `/` `;` `<` `=` `>` `@` `[` `\` `]` `^` ``` `{` `|` `}` `~`
+
 

@@ -5,22 +5,7 @@ via a `PathExpression`. In the most simple form, the `PathExpression` is the nam
 
 More complex expressions are possible and described in a later chapter (TODO).
 
-```
-Whitespace = " " | "\t" | "\n"
-WhitespaceControl = "~"
-
-MustacheStatement =
-    HtmlEscapedMustacheStatement |
-    UnescapedMustacheStatement
-
-HtmlEscapedMustacheStatement =
-    "{{" MustacheContents "}}"
-
-UnescapedMustacheStatement =
-    "{{{" MustacheContents  "}}}"
-
-MustacheContents = [ WhitespaceControl ] { Whitespace } PathExpression { Whitespace } [ WhitespaceControl ]
-```
+[Mustache Grammar](../handlebars.grammar#MustacheStatement,MustacheStart,MustacheContents,MustacheEnd_,Whitespace,WhitespaceControl,)
 
 ## Html escaped Mustache Statement
 

@@ -22,16 +22,12 @@ if (typeof hash === "string") {
 </div>
 <style lang="scss" is:global>
   .grammar {
+    white-space: nowrap;
+    word-spacing: 0.5rem;
+    overflow: auto;
+
     .nonterminal {
       @apply italic;
-    }
-
-    .terminal {
-      &:before,
-      &:after {
-        @apply text-gray-500 font-light;
-        content: '"';
-      }
     }
 
     .unicode-character-literal,
@@ -47,10 +43,18 @@ if (typeof hash === "string") {
     .one-of-list {
       display: block;
       margin-left: 5rem;
+      line-height: 2rem;
     }
 
     .prose {
       font-family: serif;
+    }
+
+    .parameter-list,
+    .argument-list,
+    .opt {
+      @apply text-xs text-cyan-600 font-bold ml-1 transform translate-y-1 inline-block;
+      word-spacing: normal;
     }
   }
 </style>

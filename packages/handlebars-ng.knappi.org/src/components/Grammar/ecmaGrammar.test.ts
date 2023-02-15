@@ -9,6 +9,14 @@ Program ::
 ContentStatement :: > any Unicode code point
 
 MustacheStatement :: \`{{\` \`}}\`
+
+
+MustacheStart[Escaped,Unescaped] :: \`{{\` \`}}\`
+
+MustacheStart
+  MustacheStart_Escaped
+  MustacheStart_Unescaped
+
 `;
 
 describe("grammar", () => {
@@ -53,6 +61,29 @@ describe("grammar", () => {
     const grammar = (
       await EcmaGrammar.fromString(grammarDefinition)
     ).selectProductions(["ContentStatement", "MustacheStatement"]);
+    expect(normalizeHtml(grammar.html)).toEqual(
+      normalizeHtml(`
+      <div class='grammar'>
+        <div class="production">
+          <span class="nonterminal">ContentStatement</span><span class="punctuation"> ::</span>
+          <span class="rhs"><span class="prose">any Unicode code point</span></span>
+        </div>
+        <div class="production">
+          <span class="nonterminal">MustacheStatement</span>
+          <span class="punctuation"> ::</span>
+          <span class="rhs">
+            <span class="terminal">{{</span> <span class="terminal">}}</span>
+          </span>
+       </div>
+      </div>
+  `)
+    );
+  });
+
+  it("can select productions with parameters", async () => {
+    const grammar = (
+      await EcmaGrammar.fromString(grammarDefinition)
+    ).selectProductions(["MustacheStart"]);
     expect(normalizeHtml(grammar.html)).toEqual(
       normalizeHtml(`
       <div class='grammar'>
