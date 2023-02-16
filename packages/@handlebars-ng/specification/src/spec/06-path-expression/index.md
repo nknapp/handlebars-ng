@@ -1,10 +1,6 @@
 # Path Expressions
 
-```
-    Id = everything except: Whitespace ! " # % & ' ( ) * + , . / ; < = > @ [ \ ] ^ ` { | } ~
-    PathExpression = Id { PathExpressionTail }
-    PathExpressionTail = "." Id | "/" Id
-```
+[Path Expressions Grammar](../handlebars.grammar#PathExpressions)
 
 A path expression is a list of ids separated by dots. It is resolved by recursively retrieving the property matching the id
 of the current input object.
@@ -31,10 +27,6 @@ Dots and slashes may be mixed.
 ## Literal segments
 
 Identifiers may contain any unicode character except for the following.
-
-```
-Whitespace ! " # % & ' ( ) * + , . / ; < = > @ [ \ ] ^ ` { | } ~
-```
 
 [Testcases for invalid ids](./invalid-ids/)
 

@@ -1,13 +1,13 @@
 @define noStrictParametricProductions true
 
-// Section: Program
+// @section:Program
 
 Program ::
     ContentStatement
     MustacheStatement
     MustacheStatement[+Unescaped]
 
-// Section: Content
+// @section:Content
 
 ContentStatement ::
     ContentCharacter ContentStatement?
@@ -23,7 +23,7 @@ NonMustacheStart ::
 SourceCharacter ::
 	> any Unicode code point
 
-// Section: Mustaches
+// @section:Mustaches
 
 MustacheStatement[Unescaped] ::
     MustacheStart[?Unescaped] MustacheContents MustacheEnd[?Unescaped]
@@ -47,7 +47,7 @@ Whitespace :: one of
 MustacheParameters ::
     Whitespace PathExpression MustacheParameters?
 
-// Section: PathExpressions
+// @section:PathExpressions
 
 PathExpression ::
     Id PathExpressionTail?

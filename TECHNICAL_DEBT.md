@@ -1,3 +1,2 @@
 - Some TODOs are scattered in the code
 - TypeScript has different strictness settings in different modules
-- eslint/prettier should be configured per repo

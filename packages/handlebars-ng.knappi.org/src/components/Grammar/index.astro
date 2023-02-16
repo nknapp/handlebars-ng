@@ -1,5 +1,7 @@
 ---
-import { EcmaGrammar } from "./ecmaGrammar";
+import { Grammar, EmitFormat } from "grammarkdown";
+import "grammarkdown/resources/grammar.css";
+import { grammarSections } from "./grammarSections";
 
 interface Props {
   filename: string;
@@ -9,52 +11,17 @@ interface Props {
 
 const { contents, hash } = Astro.props;
 
-let grammar = await EcmaGrammar.fromString(contents);
-// TODO: Make sure that "hash" is undefined or null if no hash is provided
-if (typeof hash === "string") {
-  const selectedProductions = hash.split(",");
-  grammar = grammar.selectProductions(selectedProductions);
-}
+const section = hash != null ? grammarSections(contents, hash) : contents;
+const html = await Grammar.convert(section, { format: EmitFormat.html });
 ---
 
 <div class="my-4">
-  <div class="border-l pl-2 py-2" set:html={grammar.html} />
+  <div class="border-l pl-2 py-2 overflow-auto" set:html={html} />
 </div>
 <style lang="scss" is:global>
-  .grammar {
-    white-space: nowrap;
-    word-spacing: 0.5rem;
-    overflow: auto;
-
-    .nonterminal {
-      @apply italic;
-    }
-
-    .unicode-character-literal,
-    .terminal,
-    .keyword {
-      @apply font-bold;
-    }
-
-    .punctuation {
-    }
-
-    .rhs,
-    .one-of-list {
-      display: block;
-      margin-left: 5rem;
-      line-height: 2rem;
-    }
-
-    .prose {
-      font-family: serif;
-    }
-
-    .parameter-list,
-    .argument-list,
-    .opt {
-      @apply text-xs text-cyan-600 font-bold ml-1 transform translate-y-1 inline-block;
-      word-spacing: normal;
-    }
+  .grammar .constraints {
+    font-size: 0.75em;
+    color: #2aa198;
+    margin-right: 0.5ex;
   }
 </style>

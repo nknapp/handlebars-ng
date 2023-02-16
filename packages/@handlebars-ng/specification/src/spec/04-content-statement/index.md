@@ -1,17 +1,16 @@
-# Content
+# ContentStatement
 
-[Content Grammar](../handlebars.grammar#ContentStatement,ContentCharacter,NonMustacheCharacter,NonMustacheStart,SourceCharacter)
+ContentStatements do not have a specific start and end-token. By default, all parts of the template that are not
+other statements are ContentStatements.
 
-"Content" is the default type of statement contained in a template. It does not have a specific start- or end-token. It ends when other statments start.
-Since all other statement types start with two or more opening mustache-statements, "Content" ends when such an opening mustache statement is found.
+[Content Grammar](../handlebars.grammar#Content)
 
-"Content" is copied verbatim to the output.
+ContentStatements are copied verbatim to the output, except in the case described below.
 
 [](./content.hb-spec.json)
 
 ## Escaped mustache statements
 
-If an opening mustache tokens such as `{{`, `{{{` or `{{{{` is prefixed with a `\`, it is considered "Content" and the backslash is removed from the
-output.
+If an opening mustache tokens such as `{{`, `{{{` or `{{{{` is prefixed with a `\`, it does not start a mustache, but remains part of the ContentStatement. The backslash is not copied to the output.
 
 [](./escaped-content.hb-spec.json)

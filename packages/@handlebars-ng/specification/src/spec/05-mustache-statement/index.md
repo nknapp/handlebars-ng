@@ -5,7 +5,7 @@ via a `PathExpression`. In the most simple form, the `PathExpression` is the nam
 
 More complex expressions are possible and described in a later chapter (TODO).
 
-[Mustache Grammar](../handlebars.grammar#MustacheStatement,MustacheStart,MustacheContents,MustacheEnd_,Whitespace,WhitespaceControl,)
+[Mustache Grammar](../handlebars.grammar#Mustaches)
 
 ## Html escaped Mustache Statement
 
