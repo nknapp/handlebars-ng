@@ -34,10 +34,28 @@ I use the following workflow for this:
 
 _All the yarn-commands in the following description are run in the main directory._
 
-### Adding a new testcase to the spec
+### Write a description of the feature
 
-- In the directory[src/spec](packages/@handlebars-ng/specification/src/spec), add a new chapter-directory or use an existing chapter, if it fits semantically.
-- Create a file `index.md` and describe the feature. Use existing chapters are template.
+- In general, it is helpful to run `yarn site dev:server` while editing the spec. It shows the current website
+  instantly, including live-reload on content changes.
+- In the directory [src/spec](packages/@handlebars-ng/specification/src/spec), add a new chapter-directory or use an existing chapter, if it fits semantically.
+- Create a file `index.md` and describe the feature. Use existing chapters as a template.
+
+### Add grammar
+
+Grammar is written in [grammarkdown](https://github.com/rbuckton/grammarkdown) which allows to use a language grammar
+as defined the [ECMA 262 Specification](https://262.ecma-international.org/#sec-grammar-notation).
+
+- Adjust the file [handlebars.grammar](packages/@handlebars-ng/specification/src/spec/handlebars.grammar) by adding more
+  statements and extending existing ones.
+- If you want to include parts of the grammar into your text, add a `// @section:MySectionName` comment to the grammar file
+- Add a link `[My FeatureName](../handlebars.grammer#MySectionName)` to the text, linking to the grammar file.
+
+The part of the grammar starting with the linked section, up to the next section marker (or end-of-file) will be inlined
+instead of the link.
+
+### Add a testcase to the spec
+
 - Add one file named `[feature-name].hb-spec.json`, give it a `$schema`, `description`, `template` and `input` (and possible more relevant data that is
   NOT `ast` or `output`)
 - Create a link from the markdown-file to the test-file using markdown-syntax.
