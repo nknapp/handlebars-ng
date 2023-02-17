@@ -55,6 +55,26 @@ describe("LinkCollector", () => {
     } satisfies JsxComponentCall);
   });
 
+  it("omits the hash, if no havh is present in the url", () => {
+    const collector = new LinkCollector("./source/01/file.md", config);
+    const replacementSpec = collector.replacementForLink(
+      "./some-test.hb-spec.json"
+    );
+    expect(replacementSpec).toEqual({
+      jsxElementName: expect.any(String),
+      props: {
+        filename: {
+          type: "string",
+          value: "01/some-test.hb-spec.json",
+        },
+        spec: {
+          type: "identifier",
+          value: expect.any(String),
+        },
+      },
+    } satisfies JsxComponentCall);
+  });
+
   it("adds an import for the generated link", () => {
     const collector = new LinkCollector("./source/01/file.md", config);
     const replacementSpec = collector.replacementForLink(

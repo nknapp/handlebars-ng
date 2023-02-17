@@ -56,7 +56,7 @@ export class LinkCollector {
     linkConfig: SpecialLinkConfig,
     value: symbol,
     linkTarget: string
-  ): PropValue {
+  ): PropValue | typeof OMIT_VALUE {
     const [linkPath, hash] = linkTarget.split("#");
 
     switch (value) {
@@ -67,7 +67,7 @@ export class LinkCollector {
         return this.importedVariableProp(linkPath + query);
       }
       case HASH: {
-        return this.stringProp(hash);
+        return hash != null ? this.stringProp(hash) : OMIT_VALUE;
       }
       default:
         throw new Error("Unexpected prop value symbol " + value.toString());
@@ -94,12 +94,16 @@ export class LinkCollector {
   }
 }
 
+const OMIT_VALUE = Symbol("omit value");
+
 function mapValues<Input, Output>(
   input: Record<string, Input>,
-  mapFn: (value: Input) => Output
+  mapFn: (value: Input) => Output | typeof OMIT_VALUE
 ): Record<string, Output> {
   return Object.fromEntries(
-    Object.entries(input).map(([key, value]) => [key, mapFn(value)])
+    Object.entries(input)
+      .map(([key, value]) => [key, mapFn(value)])
+      .filter((entry) => entry[1] !== OMIT_VALUE)
   );
 }
 

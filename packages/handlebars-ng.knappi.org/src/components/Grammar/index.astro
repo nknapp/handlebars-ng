@@ -16,6 +16,7 @@ const html = await Grammar.convert(section, { format: EmitFormat.html });
 ---
 
 <div class="my-4">
+  {hash}
   <div class="border-l pl-2 py-2 overflow-auto" set:html={html} />
 </div>
 <style lang="scss" is:global>
