@@ -23,7 +23,7 @@ export function getStaticPaths() {
 }
 
 export const get: APIRoute = async ({ params }) => {
-  const path = params.paths;
+  const path = params.path;
   if (path == null || jsonFiles[path] == null) {
     return new Response("JSON file not found " + params.path, {
       status: 404,

@@ -1,8 +1,8 @@
 import { AstroIntegration } from "astro";
 
 import path from "path";
-import { SyncFile, TITLE_NONE } from "./lib/SyncFile";
-import { SyncDirs } from "./lib/SyncDirs";
+import { SyncFile, TITLE_NONE } from "./SyncFile";
+import { SyncDirs } from "./SyncDirs";
 
 const specSourceDir = path.resolve("../@handlebars-ng/specification/src/spec");
 const specTargetDir = path.resolve("src/pages/spec");

@@ -2,6 +2,7 @@ import { defineConfig } from "astro/config";
 import {
   DATA,
   FILENAME,
+  HASH,
   inlineSpecialLinks,
 } from "./astro-plugins/remark-inline-special-links";
 
@@ -16,7 +17,6 @@ import solidJs from "@astrojs/solid-js";
 import { syncHandlebarsSpec } from "./astro-plugins/sync-handlebars-spec";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
-import { HASH } from "./astro-plugins/remark-inline-special-links/LinkCollector";
 
 // https://astro.build/config
 export default defineConfig({
@@ -56,5 +56,6 @@ export default defineConfig({
   },
   outDir: "dist",
   site: "https://handlebars-ng.knappi.org",
+  trailingSlash: "always",
   base: "/",
 });

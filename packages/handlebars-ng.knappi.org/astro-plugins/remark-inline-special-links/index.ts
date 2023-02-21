@@ -5,7 +5,7 @@ import { MyNode, SpecialLinksConfig } from "./types";
 import { createComponentCall } from "./createComponentCall";
 import { createImports } from "./createImports";
 
-export { FILENAME, DATA } from "./LinkCollector";
+export { FILENAME, DATA, HASH } from "./LinkCollector";
 export { SpecialLinksConfig } from "./types";
 
 interface Link extends MyNode {

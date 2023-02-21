@@ -8,6 +8,10 @@ have been created. The goal of this document is to define
 the language and provide language-independent
 test-cases that allow implementations to converge.
 
+## Grammar notation
+
+In order to specify the syntax of Handlebars, we use the grammar defined in [the ecma262 specification](https://tc39.es/ecma262/#sec-notational-conventions). For compiling and validating the grammar, we use the same tool as ecma262: [grammarkdown](https://github.com/rbuckton/grammarkdown)
+
 ## Basic structure
 
 A Handlebars implementation consists of multiple
