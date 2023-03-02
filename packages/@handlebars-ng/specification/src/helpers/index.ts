@@ -7,7 +7,7 @@ import type { Helper } from "../types/helpers";
 interface HelperSpec {
   description: string;
   // TODO: add "this" argument, specify Type for helper function (if possible)
-  fn: (...args: unknown[]) => string;
+  fn: (...args: unknown[]) => unknown;
 }
 
 export const helpers: Record<Helper, HelperSpec> = {
@@ -21,6 +21,12 @@ export const helpers: Record<Helper, HelperSpec> = {
     description: "Concatenates two strings",
     fn(a, b) {
       return "" + a + b;
+    },
+  },
+  identity: {
+    description: "Returns the first parameter",
+    fn(a) {
+      return a;
     },
   },
 };

@@ -3,9 +3,9 @@
   "type": "success",
   "description": "A helper with string-args",
   "input": { "first": "hello", "second": "world" },
-  "helpers": { "help": "concat_strings" },
-  "template": "{{help first second}}",
-  "output": "helloworld",
+  "helpers": { "id": "identity" },
+  "template": "{{id \"hello\"}}",
+  "output": "hello",
   "ast": {
     "type": "Program",
     "body": [
@@ -14,50 +14,37 @@
         "escaped": true,
         "params": [
           {
-            "type": "PathExpression",
-            "original": "first",
-            "data": false,
-            "depth": 0,
-            "parts": ["first"],
+            "type": "StringLiteral",
+            "value": "hello",
+            "original": "hello",
             "loc": {
-              "start": { "line": 1, "column": 7 },
+              "start": { "line": 1, "column": 5 },
               "end": { "line": 1, "column": 12 }
-            }
-          },
-          {
-            "type": "PathExpression",
-            "original": "second",
-            "data": false,
-            "depth": 0,
-            "parts": ["second"],
-            "loc": {
-              "start": { "line": 1, "column": 13 },
-              "end": { "line": 1, "column": 19 }
             }
           }
         ],
         "path": {
           "type": "PathExpression",
-          "original": "help",
+          "original": "id",
           "data": false,
           "depth": 0,
-          "parts": ["help"],
+          "parts": ["id"],
           "loc": {
             "start": { "line": 1, "column": 2 },
-            "end": { "line": 1, "column": 6 }
+            "end": { "line": 1, "column": 4 }
           }
         },
         "strip": { "open": false, "close": false },
         "loc": {
           "start": { "line": 1, "column": 0 },
-          "end": { "line": 1, "column": 21 }
+          "end": { "line": 1, "column": 14 }
         }
       }
     ],
     "strip": {},
     "loc": {
       "start": { "line": 1, "column": 0 },
-      "end": { "line": 1, "column": 21 }
+      "end": { "line": 1, "column": 14 }
     }
   }
 }

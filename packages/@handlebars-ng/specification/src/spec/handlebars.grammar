@@ -44,9 +44,6 @@ WhitespaceControl :: `~`
 Whitespace :: one of
     `<SPACE>` `<TAB>` `<LF>` `<CR>`
 
-MustacheParameters ::
-    Whitespace PathExpression MustacheParameters?
-
 // @section:PathExpressions
 
 PathExpression ::
@@ -63,3 +60,23 @@ NonId :: one of
     `!` `"` `#` `%` `&` `'` `(` `)` `*` `+` `,` `.` `/` `;` `<` `=` `>` `@` `[` `\` `]` `^` ``` `{` `|` `}` `~`
 
 
+// @section:HelperParameters
+
+MustacheParameters ::
+    Whitespace MustacheParameter MustacheParameters?
+
+MustacheParameter ::
+    PathExpression
+    Literal
+
+
+// @section:LiteralExpressions
+
+Literal ::
+    StringLiteral
+
+StringLiteral ::
+    `"` AnythingExceptDoubleQuote `"`
+
+AnythingExceptDoubleQuote ::
+     SourceCharacter but not `"`

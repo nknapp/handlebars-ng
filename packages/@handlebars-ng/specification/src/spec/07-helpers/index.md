@@ -11,4 +11,9 @@ If a helper-name and an input property have the same value, the helper is chosen
 
 ## Helper parameters
 
-A mustache can have a helper call with space-separated parameters
+A mustache can be a helper call with space-separated parameters.
+Each parameter is a PathExpression or a Literal expression
+
+[](../handlebars.grammar#HelperParameters)
+
+[](./helper-with-args.hb-spec.json)

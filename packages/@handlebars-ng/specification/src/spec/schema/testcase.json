@@ -52,7 +52,7 @@
       ]
     },
     "Helper": {
-      "enum": ["return_literal_a", "concat_strings"],
+      "enum": ["return_literal_a", "concat_strings", "identity"],
       "type": "string"
     },
     "MustacheStatement": {
