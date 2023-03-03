@@ -6,14 +6,15 @@ import {
 } from "../../lexer";
 import { ParserContext } from "../ParserContext";
 
-const TOK_STRIP = tok("STRIP");
-const TOK_SPACE = tok("SPACE");
-
 export function mustacheStatement(
   openToken: Set<MustacheOpenType>,
   closeToken: Set<MustacheCloseType>,
   escaped: boolean
 ): ParserContext["mustache"] {
+  const TOK_STRIP = tok("STRIP");
+  const TOK_SPACE = tok("SPACE");
+  const TOK_PARAM_END = tok("STRIP", ...closeToken);
+
   return (context) => {
     const open = context.tokens.eat(openToken);
     const stripLeft = context.tokens.eatOptional(TOK_STRIP);
@@ -22,8 +23,8 @@ export function mustacheStatement(
     const params = [];
     while (context.tokens.lookAhead?.type === "SPACE") {
       context.tokens.ignore(TOK_SPACE);
-      if ((context.tokens.lookAhead.type as TokenType) === "ID") {
-        params.push(context.pathExpression(context));
+      if (!TOK_PARAM_END.has(context.tokens.lookAhead.type as TokenType)) {
+        params.push(context.expression(context));
       }
     }
     context.tokens.ignore(TOK_SPACE);

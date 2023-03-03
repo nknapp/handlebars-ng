@@ -22,6 +22,19 @@
       "required": ["loc", "original", "type", "value"],
       "type": "object"
     },
+    "Expression": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/PathExpression"
+        },
+        {
+          "$ref": "#/definitions/Literal"
+        }
+      ]
+    },
+    "Literal": {
+      "$ref": "#/definitions/StringLiteral"
+    },
     "MustacheStatement": {
       "additionalProperties": false,
       "properties": {
@@ -33,7 +46,7 @@
         },
         "params": {
           "items": {
-            "$ref": "#/definitions/PathExpression"
+            "$ref": "#/definitions/Expression"
           },
           "type": "array"
         },
@@ -150,6 +163,26 @@
           "$ref": "#/definitions/MustacheStatement"
         }
       ]
+    },
+    "StringLiteral": {
+      "additionalProperties": false,
+      "properties": {
+        "loc": {
+          "$ref": "#/definitions/SourceLocation"
+        },
+        "original": {
+          "type": "string"
+        },
+        "type": {
+          "const": "StringLiteral",
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": ["loc", "original", "type", "value"],
+      "type": "object"
     },
     "StripFlags": {
       "additionalProperties": false,

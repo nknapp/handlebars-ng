@@ -14,6 +14,10 @@ const mustacheRules: MyRules = {
   STRIP: "~",
   DOT: ".",
   SLASH: /\//,
+  STRING_LITERAL_DOUBLE_QUOTE: {
+    match: /"\w+"/,
+    value: (text) => text.slice(1, -1),
+  },
   error: { error: true },
 };
 

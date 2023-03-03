@@ -21,7 +21,8 @@ export interface Program extends Node {
 
 export type AnyNode = Statement | Program | Expression;
 export type Statement = ContentStatement | MustacheStatement;
-export type Expression = PathExpression;
+export type Expression = PathExpression | Literal;
+export type Literal = StringLiteral;
 
 export interface ContentStatement extends Node {
   type: "ContentStatement";
@@ -37,7 +38,7 @@ export interface StripFlags {
 export interface MustacheStatement extends Node {
   type: "MustacheStatement";
   escaped: boolean;
-  params: PathExpression[];
+  params: Expression[];
   path: PathExpression;
   strip: StripFlags;
 }
@@ -63,4 +64,10 @@ export interface SourceLocation {
 export interface Position {
   line: number;
   column: number;
+}
+
+interface StringLiteral extends Node {
+  type: "StringLiteral";
+  value: string;
+  original: string;
 }

@@ -16,6 +16,47 @@
           {
             "type": "StringLiteral",
             "value": "hello",
+            "original": "\"hello\"",
+            "loc": {
+              "start": { "line": 1, "column": 5 },
+              "end": { "line": 1, "column": 12 }
+            }
+          }
+        ],
+        "path": {
+          "type": "PathExpression",
+          "original": "id",
+          "data": false,
+          "depth": 0,
+          "parts": ["id"],
+          "loc": {
+            "start": { "line": 1, "column": 2 },
+            "end": { "line": 1, "column": 4 }
+          }
+        },
+        "strip": { "open": false, "close": false },
+        "loc": {
+          "start": { "line": 1, "column": 0 },
+          "end": { "line": 1, "column": 14 }
+        }
+      }
+    ],
+    "strip": {},
+    "loc": {
+      "start": { "line": 1, "column": 0 },
+      "end": { "line": 1, "column": 14 }
+    }
+  },
+  "originalAst": {
+    "type": "Program",
+    "body": [
+      {
+        "type": "MustacheStatement",
+        "escaped": true,
+        "params": [
+          {
+            "type": "StringLiteral",
+            "value": "hello",
             "original": "hello",
             "loc": {
               "start": { "line": 1, "column": 5 },

@@ -1,9 +1,11 @@
 import {
   ContentStatement,
+  Expression,
   MustacheStatement,
   PathExpression,
   Program,
   Statement,
+  StringLiteral,
 } from "../model/ast";
 import { TokenStream } from "./TokenStream";
 
@@ -16,4 +18,6 @@ export interface ParserContext {
   mustache(context: ParserContext): MustacheStatement;
   tripleMustache(context: ParserContext): MustacheStatement;
   pathExpression(context: ParserContext): PathExpression;
+  expression(context: ParserContext): Expression;
+  stringLiteral(context: ParserContext): StringLiteral;
 }

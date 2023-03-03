@@ -10,6 +10,7 @@ export type TokenType =
   | "STRIP"
   | "DOT"
   | "SLASH"
+  | "STRING_LITERAL_DOUBLE_QUOTE"
   | MustacheOpenType
   | MustacheCloseType;
 
