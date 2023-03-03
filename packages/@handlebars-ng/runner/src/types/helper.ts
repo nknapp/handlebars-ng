@@ -1,1 +1,1 @@
-export type HelperFn = (...args: unknown[]) => string;
+export type HelperFn = (...args: unknown[]) => unknown;
