@@ -5,6 +5,7 @@ import { ProgramRenderer } from "./renderer/ProgramRenderer";
 import { HelperFn } from "./types/helper";
 import { NodeMapping, RenderContext } from "./types/nodeMapping";
 import { PathEvaluator } from "./expressions/PathEvaluator";
+import { LiteralEvaluator } from "./expressions/LiteralEvaluator";
 
 type Runnable = (input: Record<string, unknown>) => string;
 
@@ -31,7 +32,14 @@ export class HandlebarsNgRunner {
 
 const nodeMapping: NodeMapping = {
   createEvaluator(node) {
-    return new PathEvaluator(node);
+    switch (node.type) {
+      case "PathExpression":
+        return new PathEvaluator(node);
+      case "StringLiteral":
+        return new LiteralEvaluator(node);
+      default:
+        unexpectedNodeType(node);
+    }
   },
 
   createRenderer(node) {
