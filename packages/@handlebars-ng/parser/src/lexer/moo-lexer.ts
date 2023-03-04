@@ -18,6 +18,10 @@ const mustacheRules: MyRules = {
     match: /"[^"]+"/,
     value: (text) => text.slice(1, -1),
   },
+  STRING_LITERAL_SINGLE_QUOTE: {
+    match: /'[^']+'/,
+    value: (text) => text.slice(1, -1),
+  },
   error: { error: true },
 };
 

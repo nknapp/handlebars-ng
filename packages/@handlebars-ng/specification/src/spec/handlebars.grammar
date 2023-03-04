@@ -77,6 +77,11 @@ Literal ::
 
 StringLiteral ::
     `"` AnythingExceptDoubleQuote `"`
+    `'` AnythingExceptSingleQuote `'`
 
 AnythingExceptDoubleQuote ::
      SourceCharacter but not `"`
+
+AnythingExceptSingleQuote ::
+     SourceCharacter but not `'`
+

@@ -12,4 +12,16 @@ TODO: Undefined does not make sense in most non-js languages.
 
 [Literal Expressions Grammar](../handlebars.grammar#LiteralExpressions)
 
-[](./literal-string.hb-spec.json)
+## String literals
+
+A helper parameter wrapped in double quotes is a string literal.
+
+[](./double-quoted-literal-string.hb-spec.json)
+
+It can contain all characters special characters, but no double quote
+
+[](./double-quoted-literal-string-with-invalid-chars.hb-spec.json)
+
+A helper parameter wrapper in single quotes can contain all characters except a single quote.
+
+[](./single-quoted-literal-string-with-invalid-chars.hb-spec.json)

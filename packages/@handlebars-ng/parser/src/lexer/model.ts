@@ -11,6 +11,7 @@ export type TokenType =
   | "DOT"
   | "SLASH"
   | "STRING_LITERAL_DOUBLE_QUOTE"
+  | "STRING_LITERAL_SINGLE_QUOTE"
   | MustacheOpenType
   | MustacheCloseType;
 

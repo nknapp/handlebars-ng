@@ -11,6 +11,8 @@ export const expression: ParserContext["expression"] = (context) => {
       return context.pathExpression(context);
     case "STRING_LITERAL_DOUBLE_QUOTE":
       return context.stringLiteral(context);
+    case "STRING_LITERAL_SINGLE_QUOTE":
+      return context.stringLiteral(context);
   }
 
   throw new Error(`Unexpected token: '${lookAhead.type}'`);

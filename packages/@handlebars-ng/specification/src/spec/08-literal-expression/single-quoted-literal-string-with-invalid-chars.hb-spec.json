@@ -1,0 +1,91 @@
+{
+  "$schema": "../schema/testcase.json",
+  "type": "success",
+  "description": "Single quote string literal with special chararacters (except ').",
+  "input": {},
+  "helpers": { "id": "identity" },
+  "template": "{{{id '! #%&\"()*+,;<=>@[\\]^`{|}~'}}}",
+  "output": "! #%&\"()*+,;<=>@[\\]^`{|}~",
+  "ast": {
+    "type": "Program",
+    "body": [
+      {
+        "type": "MustacheStatement",
+        "escaped": false,
+        "params": [
+          {
+            "type": "StringLiteral",
+            "value": "! #%&\"()*+,;<=>@[\\]^`{|}~",
+            "original": "'! #%&\"()*+,;<=>@[\\]^`{|}~'",
+            "loc": {
+              "start": { "line": 1, "column": 6 },
+              "end": { "line": 1, "column": 33 }
+            }
+          }
+        ],
+        "path": {
+          "type": "PathExpression",
+          "original": "id",
+          "data": false,
+          "depth": 0,
+          "parts": ["id"],
+          "loc": {
+            "start": { "line": 1, "column": 3 },
+            "end": { "line": 1, "column": 5 }
+          }
+        },
+        "strip": { "open": false, "close": false },
+        "loc": {
+          "start": { "line": 1, "column": 0 },
+          "end": { "line": 1, "column": 36 }
+        }
+      }
+    ],
+    "strip": {},
+    "loc": {
+      "start": { "line": 1, "column": 0 },
+      "end": { "line": 1, "column": 36 }
+    }
+  },
+  "originalAst": {
+    "type": "Program",
+    "body": [
+      {
+        "type": "MustacheStatement",
+        "escaped": false,
+        "params": [
+          {
+            "type": "StringLiteral",
+            "value": "! #%&\"()*+,;<=>@[\\]^`{|}~",
+            "original": "! #%&\"()*+,;<=>@[\\]^`{|}~",
+            "loc": {
+              "start": { "line": 1, "column": 6 },
+              "end": { "line": 1, "column": 33 }
+            }
+          }
+        ],
+        "path": {
+          "type": "PathExpression",
+          "original": "id",
+          "data": false,
+          "depth": 0,
+          "parts": ["id"],
+          "loc": {
+            "start": { "line": 1, "column": 3 },
+            "end": { "line": 1, "column": 5 }
+          }
+        },
+        "strip": { "open": false, "close": false },
+        "loc": {
+          "start": { "line": 1, "column": 0 },
+          "end": { "line": 1, "column": 36 }
+        }
+      }
+    ],
+    "strip": {},
+    "loc": {
+      "start": { "line": 1, "column": 0 },
+      "end": { "line": 1, "column": 36 }
+    }
+  }
+}
