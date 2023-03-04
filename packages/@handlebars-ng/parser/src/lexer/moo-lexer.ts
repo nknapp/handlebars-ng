@@ -15,7 +15,7 @@ const mustacheRules: MyRules = {
   DOT: ".",
   SLASH: /\//,
   STRING_LITERAL_DOUBLE_QUOTE: {
-    match: /"\w+"/,
+    match: /"[^"]+"/,
     value: (text) => text.slice(1, -1),
   },
   error: { error: true },
