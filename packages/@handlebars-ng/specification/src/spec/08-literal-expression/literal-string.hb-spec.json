@@ -1,7 +1,7 @@
 {
   "$schema": "../schema/testcase.json",
   "type": "success",
-  "description": "A helper with string-args",
+  "description": "Parameter in quotes is StringLiteral",
   "input": { "first": "hello", "second": "world" },
   "helpers": { "id": "identity" },
   "template": "{{id \"hello\"}}",
