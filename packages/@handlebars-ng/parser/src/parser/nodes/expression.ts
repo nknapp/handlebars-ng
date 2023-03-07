@@ -13,6 +13,8 @@ export const expression: ParserContext["expression"] = (context) => {
       return context.stringLiteral(context);
     case "STRING_LITERAL_SINGLE_QUOTE":
       return context.stringLiteral(context);
+    case "NUMBER":
+      return context.numberLiteral(context);
   }
 
   throw new Error(`Unexpected token: '${lookAhead.type}'`);

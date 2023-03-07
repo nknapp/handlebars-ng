@@ -36,6 +36,7 @@ const nodeMapping: NodeMapping = {
       case "PathExpression":
         return new PathEvaluator(node);
       case "StringLiteral":
+      case "NumberLiteral":
         return new LiteralEvaluator(node);
       default:
         unexpectedNodeType(node);

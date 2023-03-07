@@ -2,6 +2,7 @@ import {
   ContentStatement,
   Expression,
   MustacheStatement,
+  NumberLiteral,
   PathExpression,
   Program,
   Statement,
@@ -20,4 +21,5 @@ export interface ParserContext {
   pathExpression(context: ParserContext): PathExpression;
   expression(context: ParserContext): Expression;
   stringLiteral(context: ParserContext): StringLiteral;
+  numberLiteral(context: ParserContext): NumberLiteral;
 }

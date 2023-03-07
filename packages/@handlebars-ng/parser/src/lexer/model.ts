@@ -12,6 +12,7 @@ export type TokenType =
   | "SLASH"
   | "STRING_LITERAL_DOUBLE_QUOTE"
   | "STRING_LITERAL_SINGLE_QUOTE"
+  | "NUMBER"
   | MustacheOpenType
   | MustacheCloseType;
 

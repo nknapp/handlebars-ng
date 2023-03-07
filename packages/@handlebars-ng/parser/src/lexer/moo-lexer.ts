@@ -6,6 +6,9 @@ type MyStates = { [x: string]: MyRules };
 
 const mustacheRules: MyRules = {
   SPACE: { match: /[ \t\n]/, lineBreaks: true },
+  NUMBER: {
+    match: /-?\d+(?:\.\d+)?/,
+  },
   ID: /[^\n \t!"#%&'()*+,./;<=>@[\\\]^`{|}~]+/,
   SQUARE_WRAPPED_ID: {
     match: /\[[^[]*?\]/,

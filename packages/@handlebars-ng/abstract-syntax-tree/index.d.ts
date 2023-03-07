@@ -22,7 +22,7 @@ export interface Program extends Node {
 export type AnyNode = Statement | Program | Expression;
 export type Statement = ContentStatement | MustacheStatement;
 export type Expression = PathExpression | Literal;
-export type Literal = StringLiteral;
+export type Literal = StringLiteral | NumberLiteral;
 
 export interface ContentStatement extends Node {
   type: "ContentStatement";
@@ -69,5 +69,11 @@ export interface Position {
 interface StringLiteral extends Node {
   type: "StringLiteral";
   value: string;
+  original: string;
+}
+
+interface NumberLiteral extends Node {
+  type: "NumberLiteral";
+  value: number;
   original: string;
 }

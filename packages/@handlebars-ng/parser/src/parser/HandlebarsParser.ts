@@ -8,6 +8,7 @@ import { TokenStream } from "./TokenStream";
 import { ParserContext } from "./ParserContext";
 import { expression } from "./nodes/expression";
 import { stringLiteral } from "./nodes/stringLiteral";
+import { numberLiteral } from "./nodes/numberLiteral";
 
 export class HandlebarsParser {
   parse(template: string): Program {
@@ -25,6 +26,7 @@ export class HandlebarsParser {
       pathExpression: pathExpression,
       expression: expression,
       stringLiteral: stringLiteral,
+      numberLiteral: numberLiteral,
     };
     return context.program(context);
   }

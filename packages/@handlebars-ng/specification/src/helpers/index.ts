@@ -29,4 +29,12 @@ export const helpers: Record<Helper, HelperSpec> = {
       return a;
     },
   },
+  add: {
+    description: "Adds two numbers",
+    fn(x, y) {
+      if (typeof x != "number" || typeof y != "number")
+        throw new Error("Both parameters must be numbers");
+      return x + y;
+    },
+  },
 };

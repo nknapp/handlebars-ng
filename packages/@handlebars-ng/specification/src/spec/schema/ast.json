@@ -33,7 +33,14 @@
       ]
     },
     "Literal": {
-      "$ref": "#/definitions/StringLiteral"
+      "anyOf": [
+        {
+          "$ref": "#/definitions/StringLiteral"
+        },
+        {
+          "$ref": "#/definitions/NumberLiteral"
+        }
+      ]
     },
     "MustacheStatement": {
       "additionalProperties": false,
@@ -62,6 +69,26 @@
         }
       },
       "required": ["escaped", "loc", "params", "path", "strip", "type"],
+      "type": "object"
+    },
+    "NumberLiteral": {
+      "additionalProperties": false,
+      "properties": {
+        "loc": {
+          "$ref": "#/definitions/SourceLocation"
+        },
+        "original": {
+          "type": "string"
+        },
+        "type": {
+          "const": "NumberLiteral",
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        }
+      },
+      "required": ["loc", "original", "type", "value"],
       "type": "object"
     },
     "PathExpression": {

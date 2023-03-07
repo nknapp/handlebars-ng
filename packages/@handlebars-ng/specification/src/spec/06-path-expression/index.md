@@ -40,6 +40,8 @@ Ids with special charactares must be wrapped in `[` and `]`. It may than not inc
 
 ## TODO: Quotes to allow invalid chars
 
+The original Handlebars parser also allows Literal expressions to be the
+
 In https://github.com/handlebars-lang/docs/pull/119 it was pointed out that the following also works
 
 ```handlebars

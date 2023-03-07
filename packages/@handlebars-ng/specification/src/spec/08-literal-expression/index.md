@@ -25,3 +25,5 @@ It can contain all characters special characters, but no double quote
 A helper parameter wrapper in single quotes can contain all characters except a single quote.
 
 [](./single-quoted-literal-string-with-invalid-chars.hb-spec.json)
+
+## Number literals

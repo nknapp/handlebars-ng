@@ -1,0 +1,109 @@
+{
+  "$schema": "../schema/testcase.json",
+  "type": "success",
+  "description": "A parameter without quotes, consisting of digits and a dot, is a NumberLiteral",
+  "template": "{{add 64 -00064.5}}",
+  "helpers": { "add": "add" },
+  "input": {},
+  "output": "-0.5",
+  "ast": {
+    "type": "Program",
+    "body": [
+      {
+        "type": "MustacheStatement",
+        "escaped": true,
+        "params": [
+          {
+            "type": "NumberLiteral",
+            "value": 64,
+            "original": "64",
+            "loc": {
+              "start": { "line": 1, "column": 6 },
+              "end": { "line": 1, "column": 8 }
+            }
+          },
+          {
+            "type": "NumberLiteral",
+            "value": -64.5,
+            "original": "-00064.5",
+            "loc": {
+              "start": { "line": 1, "column": 9 },
+              "end": { "line": 1, "column": 17 }
+            }
+          }
+        ],
+        "path": {
+          "type": "PathExpression",
+          "original": "add",
+          "data": false,
+          "depth": 0,
+          "parts": ["add"],
+          "loc": {
+            "start": { "line": 1, "column": 2 },
+            "end": { "line": 1, "column": 5 }
+          }
+        },
+        "strip": { "open": false, "close": false },
+        "loc": {
+          "start": { "line": 1, "column": 0 },
+          "end": { "line": 1, "column": 19 }
+        }
+      }
+    ],
+    "strip": {},
+    "loc": {
+      "start": { "line": 1, "column": 0 },
+      "end": { "line": 1, "column": 19 }
+    }
+  },
+  "originalAst": {
+    "type": "Program",
+    "body": [
+      {
+        "type": "MustacheStatement",
+        "escaped": true,
+        "params": [
+          {
+            "type": "NumberLiteral",
+            "value": 64,
+            "original": 64,
+            "loc": {
+              "start": { "line": 1, "column": 6 },
+              "end": { "line": 1, "column": 8 }
+            }
+          },
+          {
+            "type": "NumberLiteral",
+            "value": -64.5,
+            "original": -64.5,
+            "loc": {
+              "start": { "line": 1, "column": 9 },
+              "end": { "line": 1, "column": 17 }
+            }
+          }
+        ],
+        "path": {
+          "type": "PathExpression",
+          "original": "add",
+          "data": false,
+          "depth": 0,
+          "parts": ["add"],
+          "loc": {
+            "start": { "line": 1, "column": 2 },
+            "end": { "line": 1, "column": 5 }
+          }
+        },
+        "strip": { "open": false, "close": false },
+        "loc": {
+          "start": { "line": 1, "column": 0 },
+          "end": { "line": 1, "column": 19 }
+        }
+      }
+    ],
+    "strip": {},
+    "loc": {
+      "start": { "line": 1, "column": 0 },
+      "end": { "line": 1, "column": 19 }
+    }
+  }
+}
