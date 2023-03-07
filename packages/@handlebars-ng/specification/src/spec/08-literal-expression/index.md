@@ -27,3 +27,5 @@ A helper parameter wrapper in single quotes can contain all characters except a 
 [](./single-quoted-literal-string-with-invalid-chars.hb-spec.json)
 
 ## Number literals
+
+[](./number-literal.hb-spec.json)
