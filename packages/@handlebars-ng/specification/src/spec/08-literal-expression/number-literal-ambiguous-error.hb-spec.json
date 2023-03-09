@@ -1,0 +1,11 @@
+{
+  "$schema": "../schema/testcase.json",
+  "description": "Paths that could be a number in part, yield and error",
+  "type": "parseError",
+  "template": "{{id 123.456.789}}",
+  "expected": {
+    "message": "Parse error on line 1:\n{{id 123.456.789}}\n---------^\nExpecting 'ID', got 'NUMBER'",
+    "line": 1,
+    "column": 10
+  }
+}
