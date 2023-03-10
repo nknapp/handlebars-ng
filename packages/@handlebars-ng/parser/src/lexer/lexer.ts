@@ -6,13 +6,14 @@
 
 import { Location } from "./model";
 
-export interface Rule {
+export type Rule = MatchRule | FallbackRule;
+
+interface MatchRule {
   match: RegExp;
 }
 
-interface Matcher<Types> {
-  regex: RegExp;
-  groups: Types[];
+interface FallbackRule {
+  fallback?: true;
 }
 
 export interface Token<T extends string> {
@@ -24,32 +25,89 @@ export interface Token<T extends string> {
 }
 
 export class Lexer<States extends string, Types extends string> {
-  matchers: Record<States | "main", Matcher<Types>>;
-  currentMatcher: Matcher<Types>;
+  states: Record<States | "main", LexerState<Types>>;
+  currentState: LexerState<Types>;
 
   constructor(states: Record<States | "main", Record<Types, Rule>>) {
-    this.matchers = mapValues(states, (state) => ({
-      regex: matchAny(Object.values<Rule>(state).map((rule) => rule.match)),
-      groups: Object.keys(state) as Types[],
-    }));
-    this.currentMatcher = this.matchers.main;
+    this.states = mapValues(states, (state) => {
+      return new LexerState(state);
+    });
+    this.currentState = this.states.main;
   }
 
   *lex(string: string): Generator<Token<Types>> {
-    for (const match of string.matchAll(this.currentMatcher.regex)) {
-      yield this.#createToken(match);
+    for (const { token } of this.currentState.lex(string)) {
+      yield token;
+    }
+  }
+}
+
+class LexerState<Types extends string> {
+  #fallback?: FallbackRule;
+  #fallbackType?: Types;
+  #matchRegex: RegExp;
+  #matchRules: MatchRule[] = [];
+  #matchTypes: Types[] = [];
+
+  constructor(rules: Record<Types, Rule>) {
+    for (const [type, rule] of Object.entries<Rule>(rules)) {
+      if (isFallbackRule(rule)) {
+        this.#fallback = rule;
+        this.#fallbackType = type as Types;
+      } else {
+        this.#matchRules.push(rule);
+        this.#matchTypes.push(type as Types);
+      }
+    }
+    // If there is no fallback rules, we assume that every token must directly follow the previous token
+    // thus, the regex must be sticky
+    const sticky = this.#fallback == null;
+    const regexes = this.#matchRules.map((rule) => rule.match);
+    this.#matchRegex = matchAny(regexes, sticky);
+  }
+
+  *lex(string: string): Generator<{ rule: Rule; token: Token<Types> }> {
+    let offset = 0;
+    for (const match of string.matchAll(this.#matchRegex)) {
+      if (match.index == null) {
+        return;
+      }
+      if (match.index > offset && this.#fallback && this.#fallbackType) {
+        const original = string.substring(offset, match.index);
+        yield {
+          rule: this.#fallback,
+          token: {
+            type: this.#fallbackType,
+            value: original,
+            original,
+            start: { line: 1, column: offset },
+            end: { line: 1, column: match.index },
+          },
+        };
+      }
+      const result = this.#getMatchResult(match);
+      yield result;
+
+      offset = match.index + result.token.original.length;
     }
   }
 
-  #createToken(match: RegExpMatchArray): Token<Types> {
+  #getMatchResult(match: RegExpMatchArray): {
+    rule: Rule;
+    token: Token<Types>;
+  } {
     for (let i = 1; i < match.length; i++) {
-      if (match[i] != null && match.index != null) {
+      const matchingGroup = match[i];
+      if (matchingGroup != null && match.index != null) {
         return {
-          type: this.currentMatcher.groups[i - 1],
-          original: match[i],
-          value: match[i],
-          start: { line: 1, column: match.index },
-          end: { line: 1, column: match.index + 1 },
+          rule: this.#matchRules[i - 1],
+          token: {
+            type: this.#matchTypes[i - 1],
+            original: matchingGroup,
+            value: matchingGroup,
+            start: { line: 1, column: match.index },
+            end: { line: 1, column: match.index + matchingGroup.length },
+          },
         };
       }
     }
@@ -57,10 +115,13 @@ export class Lexer<States extends string, Types extends string> {
   }
 }
 
-function matchAny(regex: RegExp[]): RegExp {
-  const group1 = "(" + regex[0].source + ")";
-  const group2 = "(" + regex[1].source + ")";
-  return new RegExp(group1 + "|" + group2, "yg");
+function isFallbackRule(rule: Rule): rule is FallbackRule {
+  return (rule as FallbackRule).fallback === true;
+}
+
+function matchAny(regexList: RegExp[], sticky: boolean): RegExp {
+  const sources = regexList.map((regex) => `(${regex.source})`);
+  return new RegExp(sources.join("|"), sticky ? "yg" : "g");
 }
 
 function mapValues<K extends string, In, Out>(

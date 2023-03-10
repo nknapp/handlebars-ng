@@ -13,34 +13,70 @@ describe("lexer", () => {
       },
     });
     expect([...lexer.lex("abab")]).toEqual([
-      {
-        type: "A",
-        original: "a",
-        value: "a",
-        start: { line: 1, column: 0 },
-        end: { line: 1, column: 1 },
+      token("A", "a", "a", "1:0", "1:1"),
+      token("B", "b", "b", "1:1", "1:2"),
+      token("A", "a", "a", "1:2", "1:3"),
+      token("B", "b", "b", "1:3", "1:4"),
+    ]);
+  });
+
+  it("allows fallback tokens", () => {
+    const lexer = new Lexer({
+      main: {
+        A: {
+          match: /a/,
+        },
+        DEFAULT: {
+          fallback: true,
+        },
       },
-      {
-        type: "B",
-        original: "b",
-        value: "b",
-        start: { line: 1, column: 1 },
-        end: { line: 1, column: 2 },
+    });
+    expect([...lexer.lex("a---a")]).toEqual([
+      token("A", "a", "a", "1:0", "1:1"),
+      token("DEFAULT", "---", "---", "1:1", "1:4"),
+      token("A", "a", "a", "1:4", "1:5"),
+    ]);
+  });
+
+  it("identifies boundary of fallback token surrounded by multi-char tokens", () => {
+    const lexer = new Lexer({
+      main: {
+        A: {
+          match: /aa/,
+        },
+        DEFAULT: {
+          fallback: true,
+        },
       },
-      {
-        type: "A",
-        original: "a",
-        value: "a",
-        start: { line: 1, column: 2 },
-        end: { line: 1, column: 3 },
-      },
-      {
-        type: "B",
-        original: "b",
-        value: "b",
-        start: { line: 1, column: 3 },
-        end: { line: 1, column: 4 },
-      },
-    ] satisfies Token<string>);
+    });
+    expect([...lexer.lex("aa---aa")]).toEqual([
+      token("A", "aa", "aa", "1:0", "1:2"),
+      token("DEFAULT", "---", "---", "1:2", "1:5"),
+      token("A", "aa", "aa", "1:5", "1:7"),
+    ]);
   });
 });
+
+type LocationSpec = `${number}:${number}`;
+
+function token(
+  type: string,
+  original: string,
+  value: string,
+  start: LocationSpec,
+  end: LocationSpec
+): Token<string> {
+  // e.g. 1:0 - 1:5 (columns 0-5 on first line)
+  return {
+    type,
+    original,
+    value,
+    start: parseLocation(start),
+    end: parseLocation(end),
+  };
+}
+
+function parseLocation(location: string): { line: number; column: number } {
+  const [line, column] = location.split(":").map(Number);
+  return { line, column };
+}
