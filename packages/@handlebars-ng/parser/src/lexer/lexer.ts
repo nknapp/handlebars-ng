@@ -1,7 +1,7 @@
 /**
  * WORK IN PROGRESS
  *
- * This is a replacement for the moo-lexer, which we need to token lookahead
+ * This is a replacement for the moo-lexer, which we need for token lookahead
  */
 
 import { Location } from "./model";
@@ -36,15 +36,14 @@ export class Lexer<States extends string, Types extends string> {
   }
 
   *lex(string: string): Generator<Token<Types>> {
-    for (const { token } of this.currentState.lex(string)) {
+    for (const token of this.currentState.lex(string)) {
       yield token;
     }
   }
 }
 
 class LexerState<Types extends string> {
-  #fallback?: FallbackRule;
-  #fallbackType?: Types;
+  #fallback?: Fallback<Types>;
   #matchRegex: RegExp;
   #matchRules: MatchRule[] = [];
   #matchTypes: Types[] = [];
@@ -52,8 +51,7 @@ class LexerState<Types extends string> {
   constructor(rules: Record<Types, Rule>) {
     for (const [type, rule] of Object.entries<Rule>(rules)) {
       if (isFallbackRule(rule)) {
-        this.#fallback = rule;
-        this.#fallbackType = type as Types;
+        this.#fallback = new Fallback(type as Types, rule);
       } else {
         this.#matchRules.push(rule);
         this.#matchTypes.push(type as Types);
@@ -66,52 +64,64 @@ class LexerState<Types extends string> {
     this.#matchRegex = matchAny(regexes, sticky);
   }
 
-  *lex(string: string): Generator<{ rule: Rule; token: Token<Types> }> {
+  *lex(string: string): Generator<Token<Types>> {
     let offset = 0;
     for (const match of string.matchAll(this.#matchRegex)) {
       if (match.index == null) {
-        return;
+        break;
       }
-      if (match.index > offset && this.#fallback && this.#fallbackType) {
-        const original = string.substring(offset, match.index);
-        yield {
-          rule: this.#fallback,
-          token: {
-            type: this.#fallbackType,
-            value: original,
-            original,
-            start: { line: 1, column: offset },
-            end: { line: 1, column: match.index },
-          },
-        };
+      if (match.index > offset && this.#fallback) {
+        yield this.#fallback.createToken(string, offset, match.index);
       }
-      const result = this.#getMatchResult(match);
+      const result = this.createTokenFromMatch(match);
       yield result;
 
-      offset = match.index + result.token.original.length;
+      offset = match.index + result.original.length;
+    }
+    if (offset < string.length) {
+      throw new Error(
+        `Syntax error at 1:${offset}, expected one of ${this.#matchTypes
+          .map((t) => `\`${t}\``)
+          .join(", ")} but got '${string[offset]}'`
+      );
     }
   }
 
-  #getMatchResult(match: RegExpMatchArray): {
-    rule: Rule;
-    token: Token<Types>;
-  } {
+  createTokenFromMatch(match: RegExpMatchArray): Token<Types> {
     for (let i = 1; i < match.length; i++) {
       const matchingGroup = match[i];
       if (matchingGroup != null && match.index != null) {
         return {
-          rule: this.#matchRules[i - 1],
-          token: {
-            type: this.#matchTypes[i - 1],
-            original: matchingGroup,
-            value: matchingGroup,
-            start: { line: 1, column: match.index },
-            end: { line: 1, column: match.index + matchingGroup.length },
-          },
+          type: this.#matchTypes[i - 1],
+          original: matchingGroup,
+          value: matchingGroup,
+          start: { line: 1, column: match.index },
+          end: { line: 1, column: match.index + matchingGroup.length },
         };
       }
     }
     throw new Error("Unexpected: Did not find token in matcher array");
+  }
+}
+
+class Fallback<Types extends string> {
+  #rule: FallbackRule;
+  #type: Types;
+
+  constructor(type: Types, rule: FallbackRule) {
+    this.#type = type;
+    this.#rule = rule;
+  }
+
+  createToken(string: string, from: number, to: number): Token<Types> {
+    const original = string.substring(from, to);
+    return {
+      type: this.#type,
+      value: original,
+      original,
+      start: { line: 1, column: from },
+      end: { line: 1, column: to },
+    };
   }
 }
 

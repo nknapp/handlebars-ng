@@ -38,6 +38,24 @@ describe("lexer", () => {
     ]);
   });
 
+  it("throws an error if no token matches", () => {
+    const lexer = new Lexer({
+      main: {
+        A: {
+          match: /aa/,
+        },
+        B: {
+          match: /bb/,
+        },
+      },
+    });
+    const tokens = lexer.lex("aa---aa");
+    expect(tokens.next().value).toEqual(token("A", "aa", "aa", "1:0", "1:2"));
+    expect(() => tokens.next()).toThrow(
+      "Syntax error at 1:2, expected one of `A`, `B` but got '-'"
+    );
+  });
+
   it("identifies boundary of fallback token surrounded by multi-char tokens", () => {
     const lexer = new Lexer({
       main: {
