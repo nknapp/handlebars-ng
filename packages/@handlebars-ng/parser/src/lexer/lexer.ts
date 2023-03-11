@@ -6,14 +6,18 @@
 
 import { Location } from "./model";
 
-export type Rule = MatchRule | FallbackRule;
+export type Rule = MatchRule | FallbackRule | ErrorRule;
 
 interface MatchRule {
   match: RegExp;
 }
 
 interface FallbackRule {
-  fallback?: true;
+  fallback: true;
+}
+
+interface ErrorRule {
+  error: true;
 }
 
 export interface Token<T extends string> {
@@ -44,6 +48,7 @@ export class Lexer<States extends string, Types extends string> {
 
 class LexerState<Types extends string> {
   #fallback?: Fallback<Types>;
+  #errorHandler?: ErrorHandler<Types>;
   #matchRegex: RegExp;
   #matchRules: MatchRule[] = [];
   #matchTypes: Types[] = [];
@@ -52,6 +57,8 @@ class LexerState<Types extends string> {
     for (const [type, rule] of Object.entries<Rule>(rules)) {
       if (isFallbackRule(rule)) {
         this.#fallback = new Fallback(type as Types, rule);
+      } else if (isErrorRule(rule)) {
+        this.#errorHandler = new ErrorHandler(type as Types, rule);
       } else {
         this.#matchRules.push(rule);
         this.#matchTypes.push(type as Types);
@@ -79,11 +86,15 @@ class LexerState<Types extends string> {
       offset = match.index + result.original.length;
     }
     if (offset < string.length) {
-      throw new Error(
-        `Syntax error at 1:${offset}, expected one of ${this.#matchTypes
-          .map((t) => `\`${t}\``)
-          .join(", ")} but got '${string[offset]}'`
-      );
+      if (this.#errorHandler) {
+        yield this.#errorHandler.createErrorToken(string, offset);
+      } else {
+        throw new Error(
+          `Syntax error at 1:${offset}, expected one of ${this.#matchTypes
+            .map((t) => `\`${t}\``)
+            .join(", ")} but got '${string[offset]}'`
+        );
+      }
     }
   }
 
@@ -125,8 +136,33 @@ class Fallback<Types extends string> {
   }
 }
 
+class ErrorHandler<Types extends string> {
+  #rule: ErrorRule;
+  #type: Types;
+
+  constructor(type: Types, rule: ErrorRule) {
+    this.#type = type;
+    this.#rule = rule;
+  }
+
+  createErrorToken(string: string, offset: number): Token<Types> {
+    const original = string.substring(offset);
+    return {
+      type: this.#type,
+      value: original,
+      original,
+      start: { line: 1, column: offset },
+      end: { line: 1, column: string.length },
+    };
+  }
+}
+
 function isFallbackRule(rule: Rule): rule is FallbackRule {
   return (rule as FallbackRule).fallback === true;
+}
+
+function isErrorRule(rule: Rule): rule is ErrorRule {
+  return (rule as ErrorRule).error === true;
 }
 
 function matchAny(regexList: RegExp[], sticky: boolean): RegExp {

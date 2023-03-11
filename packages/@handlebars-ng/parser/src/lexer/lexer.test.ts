@@ -38,6 +38,24 @@ describe("lexer", () => {
     ]);
   });
 
+  it("identifies boundary of fallback token surrounded by multi-char tokens", () => {
+    const lexer = new Lexer({
+      main: {
+        A: {
+          match: /aa/,
+        },
+        DEFAULT: {
+          fallback: true,
+        },
+      },
+    });
+    expect([...lexer.lex("aa---aa")]).toEqual([
+      token("A", "aa", "aa", "1:0", "1:2"),
+      token("DEFAULT", "---", "---", "1:2", "1:5"),
+      token("A", "aa", "aa", "1:5", "1:7"),
+    ]);
+  });
+
   it("throws an error if no token matches", () => {
     const lexer = new Lexer({
       main: {
@@ -56,22 +74,23 @@ describe("lexer", () => {
     );
   });
 
-  it("identifies boundary of fallback token surrounded by multi-char tokens", () => {
+  it("returns an error token if one is configured and nothing matches", () => {
     const lexer = new Lexer({
       main: {
         A: {
           match: /aa/,
         },
-        DEFAULT: {
-          fallback: true,
+        ERROR: {
+          error: true,
         },
       },
     });
-    expect([...lexer.lex("aa---aa")]).toEqual([
-      token("A", "aa", "aa", "1:0", "1:2"),
-      token("DEFAULT", "---", "---", "1:2", "1:5"),
-      token("A", "aa", "aa", "1:5", "1:7"),
-    ]);
+    const tokens = lexer.lex("aa---aa");
+    expect(tokens.next().value).toEqual(token("A", "aa", "aa", "1:0", "1:2"));
+    expect(tokens.next().value).toEqual(
+      token("ERROR", "---aa", "---aa", "1:2", "1:7")
+    );
+    expect(tokens.next().done).toBe(true);
   });
 });
 
