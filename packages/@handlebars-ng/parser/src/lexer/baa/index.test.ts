@@ -1,4 +1,5 @@
-import { Lexer, Token } from "./lexer";
+import { Lexer } from "./Baa";
+import { Token } from "./types";
 
 describe("lexer", () => {
   it("parses simple tokens", () => {
@@ -74,7 +75,7 @@ describe("lexer", () => {
     );
   });
 
-  it("returns an error token if one is configured and nothing matches", () => {
+  it("returns an error token containing the rest of the string, if one is configured and nothing matches", () => {
     const lexer = new Lexer({
       main: {
         A: {
@@ -91,6 +92,55 @@ describe("lexer", () => {
       token("ERROR", "---aa", "---aa", "1:2", "1:7")
     );
     expect(tokens.next().done).toBe(true);
+  });
+
+  it("resets stated when started again with a new string", () => {
+    const lexer = new Lexer({
+      main: {
+        A: {
+          match: /a/,
+        },
+        B: {
+          match: /b/,
+        },
+      },
+    });
+    const tokens1 = lexer.lex("abab");
+    expect(tokens1.next().value).toEqual(token("A", "a", "a", "1:0", "1:1"));
+    expect(tokens1.next().value).toEqual(token("B", "b", "b", "1:1", "1:2"));
+
+    const tokens2 = lexer.lex("aab");
+    expect(tokens2.next().value).toEqual(token("A", "a", "a", "1:0", "1:1"));
+    expect(tokens2.next().value).toEqual(token("A", "a", "a", "1:1", "1:2"));
+    expect(tokens2.next().value).toEqual(token("B", "b", "b", "1:2", "1:3"));
+  });
+
+  it("changes state if a 'push' or 'pop' property is set.", () => {
+    const lexer = new Lexer({
+      main: {
+        A: { match: /a/ },
+        OPEN: {
+          match: /\(/,
+          push: "brackets",
+        },
+      },
+      brackets: {
+        B: { match: /b/ },
+        CLOSE: {
+          match: /\)/,
+          pop: 1,
+        },
+      },
+    });
+
+    const tokens = lexer.lex("a(b)a");
+    expect([...tokens]).toEqual([
+      token("A", "a", "a", "1:0", "1:1"),
+      token("OPEN", "(", "(", "1:1", "1:2"),
+      token("B", "b", "b", "1:2", "1:3"),
+      token("CLOSE", ")", ")", "1:3", "1:4"),
+      token("A", "a", "a", "1:4", "1:5"),
+    ]);
   });
 });
 
