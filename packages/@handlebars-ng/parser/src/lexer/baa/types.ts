@@ -35,6 +35,7 @@ export interface Token<T extends string> {
 export interface InternalToken<T extends LexerTypings>
   extends Token<TokenTypes<T>> {
   offset: number;
+  rule: MatchRule<States<T>>;
 }
 
 export type States<T extends LexerTypings> = T["state"] | "main";

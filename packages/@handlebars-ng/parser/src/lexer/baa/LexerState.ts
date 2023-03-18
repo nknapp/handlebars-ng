@@ -19,12 +19,23 @@ import {
 import { isErrorRule } from "./utils/isErrorRule";
 import { isFallbackRule } from "./utils/isFallbackRule";
 
+type StateEnd<T extends LexerTypings> =
+  | {
+      type: "push";
+      state: States<T>;
+      endOffset: number;
+    }
+  | { type: "pop"; endOffset: number }
+  | { type: "finished" };
+
 export class LexerState<T extends LexerTypings> {
+  name: string;
   #fallback?: FallbackHandler<TokenTypes<T>>;
   #errorHandler: ErrorHandler<TokenTypes<T>>;
   #matchHandler: MatchHandler<T>;
 
-  constructor(rules: StateSpec<T>) {
+  constructor(name: string, rules: StateSpec<T>) {
+    this.name = name;
     const { matchRules, errorRule, fallbackRule } = splitByRuleType(rules);
     this.#matchHandler = new MatchHandler(
       matchRules.map(({ type }) => type),
@@ -49,18 +60,38 @@ export class LexerState<T extends LexerTypings> {
     }
   }
 
-  *lex(string: string): IterableIterator<Token<TokenTypes<T>>> {
-    let lastOffset = 0;
-    for (const { offset, ...token } of this.#matchHandler.matchAll(string)) {
+  *lex(
+    string: string,
+    startOffset: number
+  ): Iterator<Token<TokenTypes<T>>, StateEnd<T>> {
+    this.#matchHandler.reset(startOffset);
+    let lastOffset = startOffset;
+    for (const { offset, rule, ...token } of this.#matchHandler.matchAll(
+      string
+    )) {
       if (offset > lastOffset && this.#fallback) {
         yield this.#fallback.createToken(string, lastOffset, offset);
       }
       yield token;
       lastOffset = offset + token.original.length;
+      if (rule.push) {
+        return {
+          type: "push",
+          state: rule.push,
+          endOffset: lastOffset,
+        };
+      }
+      if (rule.pop) {
+        return {
+          type: "pop",
+          endOffset: lastOffset,
+        };
+      }
     }
     if (lastOffset < string.length) {
       yield this.#errorHandler.createErrorToken(string, lastOffset);
     }
+    return { type: "finished" };
   }
 }
 

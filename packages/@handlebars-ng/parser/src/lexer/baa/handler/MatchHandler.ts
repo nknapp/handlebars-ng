@@ -28,6 +28,10 @@ export class MatchHandler<T extends LexerTypings> {
     );
   }
 
+  reset(offset: number) {
+    this.#matchRegex.lastIndex = offset;
+  }
+
   *matchAll(string: string): Generator<InternalToken<T>> {
     for (const match of string.matchAll(this.#matchRegex)) {
       yield this.#createTokenFromMatch(match);
@@ -45,6 +49,7 @@ export class MatchHandler<T extends LexerTypings> {
           value: matchingGroup,
           start: { line: 1, column: match.index },
           end: { line: 1, column: match.index + matchingGroup.length },
+          rule: this.#matchRules[i - 1],
         };
       }
     }
