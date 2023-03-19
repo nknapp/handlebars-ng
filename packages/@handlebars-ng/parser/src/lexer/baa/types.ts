@@ -5,14 +5,14 @@ export interface LexerTypings {
   tokenType: string;
 }
 
-export type Rule<States extends string> =
-  | MatchRule<States>
+export type Rule<T extends LexerTypings> =
+  | MatchRule<T>
   | FallbackRule
   | ErrorRule;
 
-export interface MatchRule<States extends string> {
+export interface MatchRule<T extends LexerTypings> {
   match: RegExp;
-  push?: States;
+  push?: States<T>;
   pop?: 1;
 }
 
@@ -35,23 +35,14 @@ export interface Token<T extends string> {
 export interface InternalToken<T extends LexerTypings>
   extends Token<TokenTypes<T>> {
   offset: number;
-  rule: MatchRule<States<T>>;
+  rule: MatchRule<T>;
 }
 
 export type States<T extends LexerTypings> = T["state"] | "main";
 export type TokenTypes<T extends LexerTypings> = T["tokenType"];
 
 export type StateSpec<T extends LexerTypings> = Partial<
-  Record<TokenTypes<T>, Rule<States<T>>>
+  Record<TokenTypes<T>, Rule<T>>
 >;
 
 export type LexerSpec<T extends LexerTypings> = Record<States<T>, StateSpec<T>>;
-
-export type StateEnd<T extends LexerTypings> =
-  | {
-      type: "push";
-      state: States<T>;
-      endOffset: number;
-    }
-  | { type: "pop"; endOffset: number }
-  | { type: "finished" };

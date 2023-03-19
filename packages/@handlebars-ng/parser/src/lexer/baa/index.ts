@@ -1,6 +1,6 @@
 /**
  * "baa" is a replacement for https://github.com/no-context/moo, containing only the features that are required for Handlebars.
  */
-export { Lexer } from "./Baa";
+export { Lexer } from "./ConcurrentLexer";
 
-export type { Token, LexerSpec } from "./types";
+export type { Token, LexerSpec, LexerTypings } from "./types";

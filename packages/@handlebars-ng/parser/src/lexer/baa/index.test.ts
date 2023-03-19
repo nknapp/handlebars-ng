@@ -1,5 +1,5 @@
-import { Lexer } from "./Baa";
-import { Token } from "./types";
+import { Lexer } from "./index";
+import { Token } from "./index";
 
 describe("lexer", () => {
   it("parses simple tokens", () => {

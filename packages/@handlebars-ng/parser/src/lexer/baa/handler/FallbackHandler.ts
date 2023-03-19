@@ -1,15 +1,15 @@
-import { FallbackRule, Token } from "../types";
+import { FallbackRule, LexerTypings, Token, TokenTypes } from "../types";
 
-export class Fallback<Types extends string> {
+export class Fallback<T extends LexerTypings> {
   #rule: FallbackRule;
-  #type: Types;
+  #type: TokenTypes<T>;
 
-  constructor(type: Types, rule: FallbackRule) {
+  constructor(type: TokenTypes<T>, rule: FallbackRule) {
     this.#type = type;
     this.#rule = rule;
   }
 
-  createToken(string: string, from: number, to: number): Token<Types> {
+  createToken(string: string, from: number, to: number): Token<TokenTypes<T>> {
     const original = string.substring(from, to);
     return {
       type: this.#type,

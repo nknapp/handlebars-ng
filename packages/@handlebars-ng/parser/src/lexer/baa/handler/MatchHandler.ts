@@ -1,31 +1,22 @@
-import {
-  InternalToken,
-  LexerTypings,
-  MatchRule,
-  States,
-  TokenTypes,
-} from "../types";
+import { InternalToken, LexerTypings, MatchRule, TokenTypes } from "../types";
 
 export class MatchHandler<T extends LexerTypings> {
   readonly #matchRegex: RegExp;
-  readonly #matchRules: MatchRule<States<T>>[];
+  readonly #matchRules: MatchRule<T>[];
   readonly #matchTypes: TokenTypes<T>[];
 
   constructor(
     types: TokenTypes<T>[],
-    rules: MatchRule<States<T>>[],
-    fallbackExists: boolean
+    rules: MatchRule<T>[],
+    hasFallback: boolean
   ) {
     this.#matchRules = rules;
     this.#matchTypes = types;
     const regexes = this.#matchRules.map((rule) => rule.match);
     const sources = regexes.map((regex) => `(${regex.source})`);
-    // If there is no fallback rules, we assume that every token must directly follow the previous token
+    // If there is no fallback rule, we assume that every token must directly follow the previous token
     // thus, the regex must be sticky
-    this.#matchRegex = new RegExp(
-      sources.join("|"),
-      fallbackExists ? "g" : "yg"
-    );
+    this.#matchRegex = new RegExp(sources.join("|"), hasFallback ? "g" : "yg");
   }
 
   reset(offset: number) {

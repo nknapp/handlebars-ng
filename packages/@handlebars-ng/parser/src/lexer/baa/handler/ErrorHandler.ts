@@ -1,21 +1,21 @@
-import { ErrorRule, Token } from "../types";
+import { ErrorRule, LexerTypings, Token, TokenTypes } from "../types";
 
-export interface ErrorHandler<Types extends string> {
-  createErrorToken(string: string, offset: number): Token<Types>;
+export interface ErrorHandler<T extends LexerTypings> {
+  createErrorToken(string: string, offset: number): Token<TokenTypes<T>>;
 }
 
-export class TokenErrorHandler<Types extends string>
-  implements ErrorHandler<Types>
+export class TokenErrorHandler<T extends LexerTypings>
+  implements ErrorHandler<T>
 {
   #rule: ErrorRule;
-  #type: Types;
+  #type: TokenTypes<T>;
 
-  constructor(type: Types, rule: ErrorRule) {
+  constructor(type: TokenTypes<T>, rule: ErrorRule) {
     this.#type = type;
     this.#rule = rule;
   }
 
-  createErrorToken(string: string, offset: number): Token<Types> {
+  createErrorToken(string: string, offset: number): Token<TokenTypes<T>> {
     const original = string.substring(offset);
     return {
       type: this.#type,
@@ -27,16 +27,16 @@ export class TokenErrorHandler<Types extends string>
   }
 }
 
-export class ThrowingErrorHandler<Types extends string>
-  implements ErrorHandler<Types>
+export class ThrowingErrorHandler<T extends LexerTypings>
+  implements ErrorHandler<T>
 {
-  #expectedTypes: Types[];
+  #expectedTypes: TokenTypes<T>[];
 
-  constructor(expectedTypes: Types[]) {
+  constructor(expectedTypes: TokenTypes<T>[]) {
     this.#expectedTypes = expectedTypes;
   }
 
-  createErrorToken(string: string, offset: number): Token<Types> {
+  createErrorToken(string: string, offset: number): Token<TokenTypes<T>> {
     const expectedTypes = this.#expectedTypes.map((t) => `\`${t}\``).join(", ");
     throw new Error(
       `Syntax error at 1:${offset}, expected one of ${expectedTypes} but got '${string[offset]}'`

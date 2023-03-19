@@ -1,9 +1,9 @@
-import { BaaIterator } from "./BaaIterator";
+import { NonConcurrentLexer } from "./NonConcurrentLexer";
 import { LexerSpec, LexerTypings, Token } from "./types";
 
 export class Lexer<T extends LexerTypings> {
   #states: LexerSpec<T>;
-  #unusedIterators: BaaIterator<T>[];
+  #unusedIterators: NonConcurrentLexer<T>[];
 
   constructor(states: LexerSpec<T>) {
     this.#states = states;
@@ -13,15 +13,17 @@ export class Lexer<T extends LexerTypings> {
   *lex(string: string): Generator<Token<T["tokenType"]>> {
     const tokens = this.#getTokenIterator();
     tokens.init(string);
-    yield* tokens;
+    yield* tokens.lex();
     this.#storeForReuse(tokens);
   }
 
-  #getTokenIterator(): BaaIterator<T> {
-    return this.#unusedIterators.shift() ?? new BaaIterator(this.#states);
+  #getTokenIterator(): NonConcurrentLexer<T> {
+    return (
+      this.#unusedIterators.shift() ?? new NonConcurrentLexer(this.#states)
+    );
   }
 
-  #storeForReuse(iterator: BaaIterator<T>) {
+  #storeForReuse(iterator: NonConcurrentLexer<T>) {
     return this.#unusedIterators.push(iterator);
   }
 }
