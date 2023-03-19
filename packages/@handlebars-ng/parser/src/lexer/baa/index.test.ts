@@ -172,6 +172,24 @@ describe("lexer", () => {
   });
 });
 
+it("identifies line-breaks in the fallback rule", () => {
+  const lexer = new Lexer({
+    main: {
+      A: {
+        match: /aa/,
+      },
+      DEFAULT: {
+        fallback: true,
+      },
+    },
+  });
+  expect([...lexer.lex("aa\naa")]).toEqual([
+    token("A", "aa", "aa", "1:0", "1:2"),
+    token("DEFAULT", "\n", "\n", "1:2", "2:0"),
+    token("A", "aa", "aa", "2:0", "2:2"),
+  ]);
+});
+
 type LocationSpec = `${number}:${number}`;
 
 function token(

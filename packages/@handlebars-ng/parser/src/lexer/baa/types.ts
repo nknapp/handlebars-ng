@@ -18,6 +18,7 @@ export interface MatchRule<T extends LexerTypings> {
 
 export interface FallbackRule {
   fallback: true;
+  lineBreaks?: boolean;
 }
 
 export interface ErrorRule {
