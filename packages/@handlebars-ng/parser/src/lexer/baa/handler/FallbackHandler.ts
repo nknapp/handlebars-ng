@@ -9,7 +9,7 @@ export class Fallback<T extends LexerTypings> {
     this.#rule = rule;
   }
 
-  createToken(string: string, from: number, to: number): Token<TokenTypes<T>> {
+  createToken(string: string, from: number, to: number): Token<T> {
     const original = string.substring(from, to);
     return {
       type: this.#type,

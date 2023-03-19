@@ -10,7 +10,7 @@ export class Lexer<T extends LexerTypings> {
     this.#unusedIterators = [];
   }
 
-  *lex(string: string): Generator<Token<T["tokenType"]>> {
+  *lex(string: string): Generator<Token<T>> {
     const tokens = this.#getTokenIterator();
     tokens.init(string);
     yield* tokens.lex();

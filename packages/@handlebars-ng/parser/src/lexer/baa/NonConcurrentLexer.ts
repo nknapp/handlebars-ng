@@ -1,5 +1,5 @@
 import { CompiledState } from "./CompiledState";
-import { LexerSpec, LexerTypings, States, Token, TokenTypes } from "./types";
+import { LexerSpec, LexerTypings, States, Token } from "./types";
 import { mapValues } from "./utils/mapValues";
 
 const EMPTY_ITERATOR: Iterator<Token<never>> = {
@@ -10,7 +10,7 @@ export class NonConcurrentLexer<T extends LexerTypings> {
   states: Record<States<T>, CompiledState<T>>;
   stateStack: CompiledState<T>[] = [];
   offset = 0;
-  stateIterator: Iterator<Token<TokenTypes<T>>> = EMPTY_ITERATOR;
+  stateIterator: Iterator<Token<T>> = EMPTY_ITERATOR;
   string = "";
 
   constructor(states: LexerSpec<T>) {
@@ -26,13 +26,13 @@ export class NonConcurrentLexer<T extends LexerTypings> {
     this.stateStack.unshift(this.states.main);
   }
 
-  *lex(): Generator<Token<TokenTypes<T>>> {
+  *lex(): Generator<Token<T>> {
     while (this.offset < this.string.length) {
       yield* this.#iterateState();
     }
   }
 
-  *#iterateState(): Generator<Token<TokenTypes<T>>> {
+  *#iterateState(): Generator<Token<T>> {
     const { matchHandler, fallback, errorHandler } = this.#currentState;
     matchHandler.reset(this.offset);
     for (const { offset, rule, ...token } of matchHandler.matchAll(

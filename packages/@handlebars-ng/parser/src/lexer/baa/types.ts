@@ -24,16 +24,15 @@ export interface ErrorRule {
   error: true;
 }
 
-export interface Token<T extends string> {
-  type: T;
+export interface Token<T extends LexerTypings> {
+  type: TokenTypes<T>;
   original: string;
   value: string;
   start: Location;
   end: Location;
 }
 
-export interface InternalToken<T extends LexerTypings>
-  extends Token<TokenTypes<T>> {
+export interface InternalToken<T extends LexerTypings> extends Token<T> {
   offset: number;
   rule: MatchRule<T>;
 }

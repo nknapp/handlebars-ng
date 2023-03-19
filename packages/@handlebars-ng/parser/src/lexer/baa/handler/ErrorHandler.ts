@@ -1,7 +1,7 @@
 import { ErrorRule, LexerTypings, Token, TokenTypes } from "../types";
 
 export interface ErrorHandler<T extends LexerTypings> {
-  createErrorToken(string: string, offset: number): Token<TokenTypes<T>>;
+  createErrorToken(string: string, offset: number): Token<T>;
 }
 
 export class TokenErrorHandler<T extends LexerTypings>
@@ -15,7 +15,7 @@ export class TokenErrorHandler<T extends LexerTypings>
     this.#rule = rule;
   }
 
-  createErrorToken(string: string, offset: number): Token<TokenTypes<T>> {
+  createErrorToken(string: string, offset: number): Token<T> {
     const original = string.substring(offset);
     return {
       type: this.#type,
@@ -36,7 +36,7 @@ export class ThrowingErrorHandler<T extends LexerTypings>
     this.#expectedTypes = expectedTypes;
   }
 
-  createErrorToken(string: string, offset: number): Token<TokenTypes<T>> {
+  createErrorToken(string: string, offset: number): Token<T> {
     const expectedTypes = this.#expectedTypes.map((t) => `\`${t}\``).join(", ");
     throw new Error(
       `Syntax error at 1:${offset}, expected one of ${expectedTypes} but got '${string[offset]}'`

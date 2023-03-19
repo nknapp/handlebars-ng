@@ -155,7 +155,7 @@ function token(
   value: string,
   start: LocationSpec,
   end: LocationSpec
-): Token<string> {
+): Token<{ tokenType: string; state: string }> {
   // e.g. 1:0 - 1:5 (columns 0-5 on first line)
   return {
     type,
