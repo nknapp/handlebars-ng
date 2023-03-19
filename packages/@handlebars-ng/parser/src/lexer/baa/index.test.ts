@@ -97,12 +97,8 @@ describe("lexer", () => {
   it("allows concurrent parsing", () => {
     const lexer = new Lexer({
       main: {
-        A: {
-          match: /a/,
-        },
-        B: {
-          match: /b/,
-        },
+        A: { match: /a/ },
+        B: { match: /b/ },
       },
     });
 
@@ -116,7 +112,36 @@ describe("lexer", () => {
     expect(tokens2.next().value).toEqual(token("A", "a", "a", "1:1", "1:2"));
   });
 
-  it.todo("Prevent mem-leak when lexer encounters error");
+  it("reuses lexer after completion", () => {
+    const lexer = new Lexer({
+      main: {
+        A: { match: /a/ },
+        B: { match: /b/ },
+      },
+    });
+    const tokens1 = lexer.lex("ab");
+    expect(lexer.poolSize()).toEqual(0);
+    expect([...tokens1]).toEqual([
+      token("A", "a", "a", "1:0", "1:1"),
+      token("B", "b", "b", "1:1", "1:2"),
+    ]);
+    expect(lexer.poolSize()).toEqual(1);
+    lexer.lex("a").next();
+    expect(lexer.poolSize()).toEqual(0);
+  });
+
+  it("reuses lexer after throwing error", () => {
+    const lexer = new Lexer({
+      main: {
+        A: { match: /a/ },
+        B: { match: /b/ },
+      },
+    });
+
+    const tokens1 = lexer.lex("c");
+    expect(() => tokens1.next()).toThrowError();
+    expect(lexer.poolSize()).toEqual(1);
+  });
 
   it("changes state if a 'push' or 'pop' property is set.", () => {
     const lexer = new Lexer({

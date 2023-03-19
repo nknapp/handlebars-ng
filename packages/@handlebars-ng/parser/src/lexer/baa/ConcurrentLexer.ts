@@ -10,8 +10,15 @@ export class ConcurrentLexer<T extends LexerTypings> {
 
   *lex(string: string): Generator<Token<T>> {
     const lexer = this.#unusedLexers.popOrCreate();
-    yield* lexer.lex(string);
-    this.#unusedLexers.push(lexer);
+    try {
+      yield* lexer.lex(string);
+    } finally {
+      this.#unusedLexers.push(lexer);
+    }
+  }
+
+  poolSize() {
+    return this.#unusedLexers.size();
   }
 }
 
@@ -30,5 +37,9 @@ class Pool<T> {
 
   push(lexer: T): void {
     this.#objects.push(lexer);
+  }
+
+  size() {
+    return this.#objects.length;
   }
 }
