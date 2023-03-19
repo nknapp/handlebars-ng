@@ -2,9 +2,9 @@ import {
   ErrorHandler,
   ThrowingErrorHandler,
   TokenErrorHandler,
-} from "./handler/ErrorHandler";
-import { Fallback as FallbackHandler } from "./handler/FallbackHandler";
-import { MatchHandler } from "./handler/MatchHandler";
+} from "./ErrorHandler";
+import { Fallback as FallbackHandler } from "./FallbackHandler";
+import { MatchHandler } from "./MatchHandler";
 import {
   ErrorRule,
   FallbackRule,
@@ -13,9 +13,9 @@ import {
   Rule,
   StateSpec,
   TokenTypes,
-} from "./types";
-import { isErrorRule } from "./utils/isErrorRule";
-import { isFallbackRule } from "./utils/isFallbackRule";
+} from "../types";
+import { isErrorRule } from "../utils/isErrorRule";
+import { isFallbackRule } from "../utils/isFallbackRule";
 
 export class CompiledState<T extends LexerTypings> {
   name: string;

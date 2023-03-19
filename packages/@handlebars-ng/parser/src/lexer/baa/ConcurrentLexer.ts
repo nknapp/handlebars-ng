@@ -1,29 +1,34 @@
 import { NonConcurrentLexer } from "./NonConcurrentLexer";
 import { LexerSpec, LexerTypings, Token } from "./types";
 
-export class Lexer<T extends LexerTypings> {
-  #states: LexerSpec<T>;
-  #unusedIterators: NonConcurrentLexer<T>[];
+export class ConcurrentLexer<T extends LexerTypings> {
+  #unusedLexers: Pool<NonConcurrentLexer<T>>;
 
   constructor(states: LexerSpec<T>) {
-    this.#states = states;
-    this.#unusedIterators = [];
+    this.#unusedLexers = new Pool(() => new NonConcurrentLexer(states));
   }
 
   *lex(string: string): Generator<Token<T>> {
-    const tokens = this.#getTokenIterator();
-    tokens.init(string);
-    yield* tokens.lex();
-    this.#storeForReuse(tokens);
+    const lexer = this.#unusedLexers.popOrCreate();
+    yield* lexer.lex(string);
+    this.#unusedLexers.push(lexer);
+  }
+}
+
+class Pool<T> {
+  #objects: T[];
+  #create: () => T;
+
+  constructor(create: () => T) {
+    this.#create = create;
+    this.#objects = [];
   }
 
-  #getTokenIterator(): NonConcurrentLexer<T> {
-    return (
-      this.#unusedIterators.shift() ?? new NonConcurrentLexer(this.#states)
-    );
+  popOrCreate(): T {
+    return this.#objects.pop() ?? this.#create();
   }
 
-  #storeForReuse(iterator: NonConcurrentLexer<T>) {
-    return this.#unusedIterators.push(iterator);
+  push(lexer: T): void {
+    this.#objects.push(lexer);
   }
 }

@@ -1,4 +1,4 @@
-import { CompiledState } from "./CompiledState";
+import { CompiledState } from "./compiledState/CompiledState";
 import { LexerSpec, LexerTypings, States, Token } from "./types";
 import { mapValues } from "./utils/mapValues";
 
@@ -20,13 +20,10 @@ export class NonConcurrentLexer<T extends LexerTypings> {
     );
   }
 
-  init(string: string) {
+  *lex(string: string): Generator<Token<T>> {
     this.string = string;
     this.offset = 0;
     this.stateStack.unshift(this.states.main);
-  }
-
-  *lex(): Generator<Token<T>> {
     while (this.offset < this.string.length) {
       yield* this.#iterateState();
     }
