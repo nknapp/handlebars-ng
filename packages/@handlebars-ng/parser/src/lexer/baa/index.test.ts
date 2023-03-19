@@ -94,7 +94,9 @@ describe("lexer", () => {
     expect(tokens.next().done).toBe(true);
   });
 
-  it("resets stated when started again with a new string", () => {
+  it.todo("internal: reuses iterators when parsing multiple strings");
+
+  it("allows concurrent parsing", () => {
     const lexer = new Lexer({
       main: {
         A: {
@@ -105,14 +107,15 @@ describe("lexer", () => {
         },
       },
     });
-    const tokens1 = lexer.lex("abab");
-    expect(tokens1.next().value).toEqual(token("A", "a", "a", "1:0", "1:1"));
-    expect(tokens1.next().value).toEqual(token("B", "b", "b", "1:1", "1:2"));
 
-    const tokens2 = lexer.lex("aab");
-    expect(tokens2.next().value).toEqual(token("A", "a", "a", "1:0", "1:1"));
+    const tokens1 = lexer.lex("ab");
+    const tokens2 = lexer.lex("ba");
+
+    expect(tokens1.next().value).toEqual(token("A", "a", "a", "1:0", "1:1"));
+    expect(tokens2.next().value).toEqual(token("B", "b", "b", "1:0", "1:1"));
+
+    expect(tokens1.next().value).toEqual(token("B", "b", "b", "1:1", "1:2"));
     expect(tokens2.next().value).toEqual(token("A", "a", "a", "1:1", "1:2"));
-    expect(tokens2.next().value).toEqual(token("B", "b", "b", "1:2", "1:3"));
   });
 
   it("changes state if a 'push' or 'pop' property is set.", () => {

@@ -1,32 +1,23 @@
-import { LexerState } from "./LexerState";
-import { LexerSpec, LexerTypings, States, Token } from "./types";
-import { mapValues } from "./utils/mapValues";
+import { BaaIterator } from "./BaaIterator";
+import { LexerSpec, LexerTypings, Token } from "./types";
 
 export class Lexer<T extends LexerTypings> {
-  states: Record<States<T>, LexerState<T>>;
-  stateStack: LexerState<T>[] = [];
-  offset = 0;
+  #states: LexerSpec<T>;
+  #unusedIterators: BaaIterator<T>[];
 
   constructor(states: LexerSpec<T>) {
-    this.states = mapValues(states, (spec, name) => new LexerState(name, spec));
-    this.stateStack.unshift(this.states.main);
+    this.#states = states;
+    this.#unusedIterators = [];
   }
 
   *lex(string: string): Generator<Token<T["tokenType"]>> {
+    const iterator =
+      this.#unusedIterators.shift() ?? new BaaIterator(this.#states);
+    iterator.init(string);
     let next = null;
-    const nextState = this.stateStack[0];
-    const iterator = nextState.lex(string, this.offset);
     while (!(next = iterator.next()).done) {
       yield next.value;
     }
-    if (next.value.type === "push") {
-      this.stateStack.unshift(this.states[next.value.state]);
-      this.offset = next.value.endOffset;
-      yield* this.lex(string);
-    } else if (next.value.type === "pop") {
-      this.stateStack.shift();
-      this.offset = next.value.endOffset;
-      yield* this.lex(string);
-    }
+    this.#unusedIterators.push(iterator);
   }
 }

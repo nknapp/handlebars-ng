@@ -46,3 +46,12 @@ export type StateSpec<T extends LexerTypings> = Partial<
 >;
 
 export type LexerSpec<T extends LexerTypings> = Record<States<T>, StateSpec<T>>;
+
+export type StateEnd<T extends LexerTypings> =
+  | {
+      type: "push";
+      state: States<T>;
+      endOffset: number;
+    }
+  | { type: "pop"; endOffset: number }
+  | { type: "finished" };

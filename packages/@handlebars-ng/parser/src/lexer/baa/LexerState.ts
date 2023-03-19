@@ -11,6 +11,7 @@ import {
   LexerTypings,
   MatchRule,
   Rule,
+  StateEnd,
   States,
   StateSpec,
   Token,
@@ -19,44 +20,32 @@ import {
 import { isErrorRule } from "./utils/isErrorRule";
 import { isFallbackRule } from "./utils/isFallbackRule";
 
-type StateEnd<T extends LexerTypings> =
-  | {
-      type: "push";
-      state: States<T>;
-      endOffset: number;
-    }
-  | { type: "pop"; endOffset: number }
-  | { type: "finished" };
-
 export class LexerState<T extends LexerTypings> {
   name: string;
-  #fallback?: FallbackHandler<TokenTypes<T>>;
-  #errorHandler: ErrorHandler<TokenTypes<T>>;
-  #matchHandler: MatchHandler<T>;
+  fallback?: FallbackHandler<TokenTypes<T>>;
+  errorHandler: ErrorHandler<TokenTypes<T>>;
+  matchHandler: MatchHandler<T>;
 
   constructor(name: string, rules: StateSpec<T>) {
     this.name = name;
     const { matchRules, errorRule, fallbackRule } = splitByRuleType(rules);
-    this.#matchHandler = new MatchHandler(
+    this.matchHandler = new MatchHandler(
       matchRules.map(({ type }) => type),
       matchRules.map(({ rule }) => rule),
       fallbackRule != null
     );
     if (errorRule != null) {
-      this.#errorHandler = new TokenErrorHandler<TokenTypes<T>>(
+      this.errorHandler = new TokenErrorHandler<TokenTypes<T>>(
         errorRule.type,
         errorRule.rule
       );
     } else {
-      this.#errorHandler = new ThrowingErrorHandler(
+      this.errorHandler = new ThrowingErrorHandler(
         matchRules.map(({ type }) => type)
       );
     }
     if (fallbackRule != null) {
-      this.#fallback = new FallbackHandler(
-        fallbackRule.type,
-        fallbackRule.rule
-      );
+      this.fallback = new FallbackHandler(fallbackRule.type, fallbackRule.rule);
     }
   }
 
@@ -64,13 +53,13 @@ export class LexerState<T extends LexerTypings> {
     string: string,
     startOffset: number
   ): Iterator<Token<TokenTypes<T>>, StateEnd<T>> {
-    this.#matchHandler.reset(startOffset);
+    this.matchHandler.reset(startOffset);
     let lastOffset = startOffset;
-    for (const { offset, rule, ...token } of this.#matchHandler.matchAll(
+    for (const { offset, rule, ...token } of this.matchHandler.matchAll(
       string
     )) {
-      if (offset > lastOffset && this.#fallback) {
-        yield this.#fallback.createToken(string, lastOffset, offset);
+      if (offset > lastOffset && this.fallback) {
+        yield this.fallback.createToken(string, lastOffset, offset);
       }
       yield token;
       lastOffset = offset + token.original.length;
@@ -89,7 +78,7 @@ export class LexerState<T extends LexerTypings> {
       }
     }
     if (lastOffset < string.length) {
-      yield this.#errorHandler.createErrorToken(string, lastOffset);
+      yield this.errorHandler.createErrorToken(string, lastOffset);
     }
     return { type: "finished" };
   }
