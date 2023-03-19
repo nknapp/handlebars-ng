@@ -11,13 +11,17 @@ export class Lexer<T extends LexerTypings> {
   }
 
   *lex(string: string): Generator<Token<T["tokenType"]>> {
-    const iterator =
-      this.#unusedIterators.shift() ?? new BaaIterator(this.#states);
-    iterator.init(string);
-    let next = null;
-    while (!(next = iterator.next()).done) {
-      yield next.value;
-    }
-    this.#unusedIterators.push(iterator);
+    const tokens = this.#getTokenIterator();
+    tokens.init(string);
+    yield* tokens;
+    this.#storeForReuse(tokens);
+  }
+
+  #getTokenIterator(): BaaIterator<T> {
+    return this.#unusedIterators.shift() ?? new BaaIterator(this.#states);
+  }
+
+  #storeForReuse(iterator: BaaIterator<T>) {
+    return this.#unusedIterators.push(iterator);
   }
 }

@@ -94,8 +94,6 @@ describe("lexer", () => {
     expect(tokens.next().done).toBe(true);
   });
 
-  it.todo("internal: reuses iterators when parsing multiple strings");
-
   it("allows concurrent parsing", () => {
     const lexer = new Lexer({
       main: {
@@ -117,6 +115,8 @@ describe("lexer", () => {
     expect(tokens1.next().value).toEqual(token("B", "b", "b", "1:1", "1:2"));
     expect(tokens2.next().value).toEqual(token("A", "a", "a", "1:1", "1:2"));
   });
+
+  it.todo("Prevent mem-leak when lexer encounters error");
 
   it("changes state if a 'push' or 'pop' property is set.", () => {
     const lexer = new Lexer({

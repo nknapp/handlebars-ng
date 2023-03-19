@@ -14,7 +14,7 @@ const EMPTY_ITERATOR: Iterator<Token<never>> = {
 };
 
 export class BaaIterator<T extends LexerTypings>
-  implements Iterator<Token<TokenTypes<T>>>
+  implements IterableIterator<Token<TokenTypes<T>>>
 {
   states: Record<States<T>, LexerState<T>>;
   stateStack: LexerState<T>[] = [];
@@ -42,6 +42,10 @@ export class BaaIterator<T extends LexerTypings>
       value: next.value,
       done: false,
     };
+  }
+
+  [Symbol.iterator]() {
+    return this;
   }
 
   #handleStateChange(stateEnd: StateEnd<T>): void {
