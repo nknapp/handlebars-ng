@@ -1,4 +1,5 @@
-import { createLexer, Token } from "./index";
+import { Token } from "./baa";
+import { createLexer, HbsLexerTypes } from "./index";
 
 describe("Lexer", () => {
   describe("works for different templates", () => {
@@ -13,6 +14,7 @@ describe("Lexer", () => {
         },
       ]);
     });
+
     it("a multiple characters are one content token", () => {
       testTemplate("hello", [
         {
@@ -24,6 +26,7 @@ describe("Lexer", () => {
         },
       ]);
     });
+
     it("detects OPEN", () => {
       testTemplate("hello {{", [
         {
@@ -42,6 +45,7 @@ describe("Lexer", () => {
         },
       ]);
     });
+
     it("detects CLOSE", () => {
       testTemplate("hello {{ }}", [
         {
@@ -85,7 +89,7 @@ describe("Lexer", () => {
     "'$text' ends in line $line and column $column",
     ({ text, line, column }) => {
       const lexer = createLexer(text);
-      const token: Token = lexer[Symbol.iterator]().next().value;
+      const token: Token<HbsLexerTypes> = lexer[Symbol.iterator]().next().value;
       expect(token.original).toEqual(text);
       expect(token.end).toEqual({ line, column });
     }
@@ -134,7 +138,7 @@ describe("Lexer", () => {
   });
 });
 
-function testTemplate(template: string, expectedValue: Token[]) {
+function testTemplate(template: string, expectedValue: Token<HbsLexerTypes>[]) {
   const lexer = createLexer(template);
   const tokens = [...lexer];
   expect(JSON.parse(JSON.stringify(tokens))).toEqual(expectedValue);

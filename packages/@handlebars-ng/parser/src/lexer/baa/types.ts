@@ -14,6 +14,7 @@ export interface MatchRule<T extends LexerTypings> {
   match: RegExp;
   push?: States<T>;
   pop?: 1;
+  value?: (original: string) => string;
 }
 
 export interface FallbackRule {

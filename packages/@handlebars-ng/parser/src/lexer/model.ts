@@ -14,7 +14,8 @@ export type TokenType =
   | "STRING_LITERAL_SINGLE_QUOTE"
   | "NUMBER"
   | MustacheOpenType
-  | MustacheCloseType;
+  | MustacheCloseType
+  | "error";
 
 export type TokenTypes = Set<TokenType>;
 
@@ -26,11 +27,3 @@ export type Location = {
   column: number;
   line: number;
 };
-
-export interface Token {
-  type: TokenType;
-  start: Location;
-  end: Location;
-  value: string;
-  original: string;
-}

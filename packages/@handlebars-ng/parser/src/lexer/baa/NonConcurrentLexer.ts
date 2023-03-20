@@ -33,6 +33,7 @@ export class NonConcurrentLexer<T extends LexerTypings> {
     this.string = string;
     this.offset = 0;
     this.stateStack.unshift(this.states.main);
+    this.currentLocation = { line: 1, column: 0 };
     while (this.offset < this.string.length) {
       yield* this.#iterateState();
     }
@@ -64,19 +65,19 @@ export class NonConcurrentLexer<T extends LexerTypings> {
       }
     }
     if (this.offset < this.string.length) {
-      yield this.addLocation(
-        errorHandler.createErrorToken(this.string, this.offset)
-      );
+      const token =
+        fallback != null
+          ? fallback.createToken(this.string, this.offset, this.string.length)
+          : errorHandler.createErrorToken(this.string, this.offset);
+      yield this.addLocation(token);
       this.offset = this.string.length;
     }
   }
 
   addLocation(token: TokenWithoutLocation<T>): Token<T> {
     const start = this.currentLocation;
-    const end = (this.currentLocation = endLocationMultiline(
-      start,
-      token.original
-    ));
+    const end = endLocationMultiline(start, token.original);
+    this.currentLocation = end;
     return { ...token, start, end };
   }
 

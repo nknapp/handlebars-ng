@@ -40,6 +40,22 @@ describe("lexer", () => {
     ]);
   });
 
+  it("allows a string, that only consists of fallback", () => {
+    const lexer = new Lexer({
+      main: {
+        A: {
+          match: /a/,
+        },
+        DEFAULT: {
+          fallback: true,
+        },
+      },
+    });
+    expect([...lexer.lex("---")]).toEqual([
+      token("DEFAULT", "---", "---", "1:0", "1:3"),
+    ]);
+  });
+
   it("identifies boundary of fallback token surrounded by multi-char tokens", () => {
     const lexer = new Lexer({
       main: {
@@ -144,6 +160,22 @@ describe("lexer", () => {
     expect(lexer.poolSize()).toEqual(1);
   });
 
+  it("resets a reused lexer properly", () => {
+    const lexer = new Lexer({
+      main: {
+        A: { match: /a/ },
+        B: { match: /b/ },
+      },
+    });
+    for (let i = 0; i < 2; i++) {
+      const tokens = lexer.lex("ab");
+      expect([...tokens]).toEqual([
+        token("A", "a", "a", "1:0", "1:1"),
+        token("B", "b", "b", "1:1", "1:2"),
+      ]);
+    }
+  });
+
   it("changes state if a 'push' or 'pop' property is set.", () => {
     const lexer = new Lexer({
       main: {
@@ -171,24 +203,39 @@ describe("lexer", () => {
       token("A", "a", "a", "1:4", "1:5"),
     ]);
   });
-});
 
-it("identifies line-breaks in the fallback rule", () => {
-  const lexer = new Lexer({
-    main: {
-      A: {
-        match: /aa/,
+  it("identifies line-breaks in the fallback rule", () => {
+    const lexer = new Lexer({
+      main: {
+        A: {
+          match: /aa/,
+        },
+        DEFAULT: {
+          fallback: true,
+        },
       },
-      DEFAULT: {
-        fallback: true,
-      },
-    },
+    });
+    expect([...lexer.lex("aa\naa")]).toEqual([
+      token("A", "aa", "aa", "1:0", "1:2"),
+      token("DEFAULT", "\n", "\n", "1:2", "2:0"),
+      token("A", "aa", "aa", "2:0", "2:2"),
+    ]);
   });
-  expect([...lexer.lex("aa\naa")]).toEqual([
-    token("A", "aa", "aa", "1:0", "1:2"),
-    token("DEFAULT", "\n", "\n", "1:2", "2:0"),
-    token("A", "aa", "aa", "2:0", "2:2"),
-  ]);
+
+  it("transforms values", () => {
+    const lexer = new Lexer({
+      main: {
+        A: {
+          match: /a/,
+          value: (original) => `(${original})`,
+        },
+        DEFAULT: {
+          fallback: true,
+        },
+      },
+    });
+    expect([...lexer.lex("a")]).toEqual([token("A", "a", "(a)", "1:0", "1:1")]);
+  });
 });
 
 type LocationSpec = `${number}:${number}`;

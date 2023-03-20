@@ -33,12 +33,13 @@ export class MatchHandler<T extends LexerTypings> {
     for (let i = 1; i < match.length; i++) {
       const matchingGroup = match[i];
       if (matchingGroup != null && match.index != null) {
+        const rule = this.#matchRules[i - 1];
         return {
           type: this.#matchTypes[i - 1],
           offset: match.index,
           original: matchingGroup,
-          value: matchingGroup,
-          rule: this.#matchRules[i - 1],
+          value: rule.value ? rule.value(matchingGroup) : matchingGroup,
+          rule,
         };
       }
     }

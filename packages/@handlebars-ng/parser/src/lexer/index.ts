@@ -1,51 +1,71 @@
-import moo, { Lexer } from "moo";
 import { ParseError } from "../parser/ParseError";
-import { TokenType, Token } from "./model";
-import { createHandlebarsMooLexer } from "./moo-lexer";
+import { Lexer, Token as BaaToken } from "./baa";
+import { StateSpec } from "./baa/types";
+import { TokenType } from "./model";
 
 export * from "./model";
 
-const availableMooLexers: Lexer[] = [];
-
-export function* createLexer(template: string): Generator<Token> {
-  const mooLexer = availableMooLexers.shift() ?? createHandlebarsMooLexer();
-  mooLexer.reset(template);
-  for (const mooToken of mooLexer) {
-    if (mooToken.type === "error") {
-      throw new ParseError(
-        "Parse error",
-        {
-          line: mooToken.line,
-          column: mooToken.col - 1,
-        },
-        template
-      );
-    }
-
-    yield convertToken(mooToken);
-  }
-  availableMooLexers.push(mooLexer);
+export interface HbsLexerTypes {
+  state: "main" | "mustache" | "unescapedMustache";
+  tokenType: TokenType | "error";
 }
 
-function convertToken(token: moo.Token): Token {
-  const startColumn = token.col - 1;
+export type Token = BaaToken<HbsLexerTypes>;
 
-  const endColumn =
-    token.lineBreaks === 0
-      ? startColumn + token.text.length
-      : token.text.length - token.text.lastIndexOf("\n") - 1;
+const mustacheRules: StateSpec<HbsLexerTypes> = {
+  SPACE: { match: /[ \t\n]/, lineBreaks: true },
+  NUMBER: {
+    match: /-?\d+(?:\.\d+)?/,
+  },
+  ID: {
+    match: /[^\n \t!"#%&'()*+,./;<=>@[\\\]^`{|}~]+/,
+  },
+  SQUARE_WRAPPED_ID: {
+    match: /\[[^[]*?\]/,
+    value: (text) => text.slice(1, -1),
+  },
+  STRIP: { match: /~/ },
+  DOT: { match: /\./ },
+  SLASH: { match: /\// },
+  STRING_LITERAL_DOUBLE_QUOTE: {
+    match: /"[^"]+"/,
+    value: (text) => text.slice(1, -1),
+  },
+  STRING_LITERAL_SINGLE_QUOTE: {
+    match: /'[^']+'/,
+    value: (text) => text.slice(1, -1),
+  },
+  error: { error: true },
+};
 
-  return {
-    type: token.type as TokenType,
-    start: {
-      column: startColumn,
-      line: token.line,
+const lexer = new Lexer<HbsLexerTypes>({
+  main: {
+    OPEN_UNESCAPED: { match: /{{{/, push: "unescapedMustache" },
+    OPEN: { match: /{{/, push: "mustache" },
+    ESCAPED_MUSTACHE: { match: /\\\{\{/, value: (text) => text.slice(1) },
+    CONTENT: { fallback: true, lineBreaks: true },
+  },
+  mustache: {
+    CLOSE: {
+      match: /}}/,
+      pop: 1,
     },
-    end: {
-      column: endColumn,
-      line: token.line + token.lineBreaks,
+    ...mustacheRules,
+  },
+  unescapedMustache: {
+    CLOSE_UNESCAPED: {
+      match: /}}}/,
+      pop: 1,
     },
-    value: token.value,
-    original: token.text,
-  };
+    ...mustacheRules,
+  },
+});
+
+export function* createLexer(string: string): Generator<Token> {
+  for (const token of lexer.lex(string)) {
+    if (token.type === "error") {
+      throw new ParseError("Parse error", token.start, string);
+    }
+    yield token;
+  }
 }
