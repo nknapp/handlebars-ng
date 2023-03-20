@@ -33,7 +33,13 @@ export interface Token<T extends LexerTypings> {
   end: Location;
 }
 
-export interface InternalToken<T extends LexerTypings> extends Token<T> {
+export type TokenWithoutLocation<T extends LexerTypings> = Omit<
+  Token<T>,
+  "start" | "end"
+>;
+
+export interface InternalToken<T extends LexerTypings>
+  extends TokenWithoutLocation<T> {
   offset: number;
   rule: MatchRule<T>;
 }

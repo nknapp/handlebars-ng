@@ -1,5 +1,6 @@
 import { Lexer } from "./index";
 import { Token } from "./index";
+import { parseLocation } from "./test-utils/parseLocation";
 
 describe("lexer", () => {
   it("parses simple tokens", () => {
@@ -207,9 +208,4 @@ function token(
     start: parseLocation(start),
     end: parseLocation(end),
   };
-}
-
-function parseLocation(location: string): { line: number; column: number } {
-  const [line, column] = location.split(":").map(Number);
-  return { line, column };
 }

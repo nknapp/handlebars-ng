@@ -1,5 +1,13 @@
+import { Location } from "../model";
 import { CompiledState } from "./compiledState/CompiledState";
-import { LexerSpec, LexerTypings, States, Token } from "./types";
+import {
+  LexerSpec,
+  LexerTypings,
+  States,
+  Token,
+  TokenWithoutLocation,
+} from "./types";
+import { endLocationMultiline } from "./utils/endLocationMultiline";
 import { mapValues } from "./utils/mapValues";
 
 const EMPTY_ITERATOR: Iterator<Token<never>> = {
@@ -12,6 +20,7 @@ export class NonConcurrentLexer<T extends LexerTypings> {
   offset = 0;
   stateIterator: Iterator<Token<T>> = EMPTY_ITERATOR;
   string = "";
+  currentLocation: Location = { line: 1, column: 0 };
 
   constructor(states: LexerSpec<T>) {
     this.states = mapValues(
@@ -36,9 +45,14 @@ export class NonConcurrentLexer<T extends LexerTypings> {
       this.string
     )) {
       if (offset > this.offset && fallback != null) {
-        yield fallback.createToken(this.string, this.offset, offset);
+        const fallbackToken = fallback.createToken(
+          this.string,
+          this.offset,
+          offset
+        );
+        yield this.addLocation(fallbackToken);
       }
-      yield token;
+      yield this.addLocation(token);
       this.offset = offset + token.original.length;
       if (rule.push != null) {
         this.stateStack.unshift(this.states[rule.push]);
@@ -50,9 +64,20 @@ export class NonConcurrentLexer<T extends LexerTypings> {
       }
     }
     if (this.offset < this.string.length) {
-      yield errorHandler.createErrorToken(this.string, this.offset);
+      yield this.addLocation(
+        errorHandler.createErrorToken(this.string, this.offset)
+      );
       this.offset = this.string.length;
     }
+  }
+
+  addLocation(token: TokenWithoutLocation<T>): Token<T> {
+    const start = this.currentLocation;
+    const end = (this.currentLocation = endLocationMultiline(
+      start,
+      token.original
+    ));
+    return { ...token, start, end };
   }
 
   get #currentState() {

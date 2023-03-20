@@ -1,4 +1,9 @@
-import { FallbackRule, LexerTypings, Token, TokenTypes } from "../types";
+import {
+  FallbackRule,
+  LexerTypings,
+  TokenTypes,
+  TokenWithoutLocation,
+} from "../types";
 
 export class Fallback<T extends LexerTypings> {
   #rule: FallbackRule;
@@ -9,14 +14,16 @@ export class Fallback<T extends LexerTypings> {
     this.#rule = rule;
   }
 
-  createToken(string: string, from: number, to: number): Token<T> {
+  createToken(
+    string: string,
+    from: number,
+    to: number
+  ): TokenWithoutLocation<T> {
     const original = string.substring(from, to);
     return {
       type: this.#type,
       value: original,
       original,
-      start: { line: 1, column: from },
-      end: { line: 1, column: to },
     };
   }
 }

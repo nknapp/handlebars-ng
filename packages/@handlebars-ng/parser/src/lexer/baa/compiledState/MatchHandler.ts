@@ -38,8 +38,6 @@ export class MatchHandler<T extends LexerTypings> {
           offset: match.index,
           original: matchingGroup,
           value: matchingGroup,
-          start: { line: 1, column: match.index },
-          end: { line: 1, column: match.index + matchingGroup.length },
           rule: this.#matchRules[i - 1],
         };
       }
