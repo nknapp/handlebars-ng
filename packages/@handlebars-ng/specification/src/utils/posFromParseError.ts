@@ -7,7 +7,7 @@ export function posFromParseError(error: Error): Position {
   if (!/^-*\^$/.test(marker)) {
     throw new Error("Marker should have form '---^'");
   }
-  const column = marker.length;
+  const column = marker.length - 1;
   return { line: parseInt(lineAsString), column };
 }
 

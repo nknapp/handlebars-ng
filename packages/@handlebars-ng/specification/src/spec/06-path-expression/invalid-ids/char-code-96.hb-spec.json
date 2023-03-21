@@ -6,6 +6,6 @@
   "expected": {
     "message": "Parse error on line 1:\n{{a`b}}\n--^\nExpecting 'ID', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', got 'INVALID'",
     "line": 1,
-    "column": 3
+    "column": 2
   }
 }

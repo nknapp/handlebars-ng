@@ -12,8 +12,13 @@ export class MatchHandler<T extends LexerTypings> {
   ) {
     this.#matchRules = rules;
     this.#matchTypes = types;
-    const regexes = this.#matchRules.map((rule) => rule.match);
-    const sources = regexes.map((regex) => `(${regex.source})`);
+    const regexes = this.#matchRules.map((rule) => {
+      return (
+        rule.match.source +
+        (rule.lookaheadMatch ? `(?=${rule.lookaheadMatch.source})` : "")
+      );
+    });
+    const sources = regexes.map((regex) => `(${regex})`);
     // If there is no fallback rule, we assume that every token must directly follow the previous token
     // thus, the regex must be sticky
     this.#matchRegex = new RegExp(sources.join("|"), hasFallback ? "g" : "yg");
@@ -48,5 +53,11 @@ export class MatchHandler<T extends LexerTypings> {
 
   expectedTypesString(): string {
     return this.#matchTypes.map((t) => `\`${t}\``).join(", ");
+  }
+
+  toJson() {
+    return {
+      regex: this.#matchRegex.source,
+    };
   }
 }

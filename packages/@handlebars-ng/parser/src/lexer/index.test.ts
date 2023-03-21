@@ -96,7 +96,7 @@ describe("Lexer", () => {
   );
 
   it("multiple instances can work in parallel", () => {
-    const lexer1 = createLexer("a {{b")[Symbol.iterator]();
+    const lexer1 = createLexer("a {{b}}")[Symbol.iterator]();
     const lexer2 = createLexer("c")[Symbol.iterator]();
 
     expect(lexer1.next()).toEqual({
@@ -121,6 +121,11 @@ describe("Lexer", () => {
     expect(lexer1.next()).toEqual({
       done: false,
       value: expect.objectContaining({ value: "b" }),
+    });
+
+    expect(lexer1.next()).toEqual({
+      done: false,
+      value: expect.objectContaining({ value: "}}" }),
     });
 
     expect(lexer1.next()).toEqual({

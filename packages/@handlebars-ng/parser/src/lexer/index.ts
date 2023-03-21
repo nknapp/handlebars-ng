@@ -12,13 +12,18 @@ export interface HbsLexerTypes {
 
 export type Token = BaaToken<HbsLexerTypes>;
 
+const LOOK_AHEAD = /[=~}\s/.)|]/;
+const LITERAL_LOOKAHEAD = /[~}\s)]/;
+
 const mustacheRules: StateSpec<HbsLexerTypes> = {
   SPACE: { match: /[ \t\n]/, lineBreaks: true },
   NUMBER: {
     match: /-?\d+(?:\.\d+)?/,
+    lookaheadMatch: LITERAL_LOOKAHEAD,
   },
   ID: {
     match: /[^\n \t!"#%&'()*+,./;<=>@[\\\]^`{|}~]+/,
+    lookaheadMatch: LOOK_AHEAD,
   },
   SQUARE_WRAPPED_ID: {
     match: /\[[^[]*?\]/,

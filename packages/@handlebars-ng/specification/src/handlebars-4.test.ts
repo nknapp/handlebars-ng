@@ -113,6 +113,10 @@ class ExpectedParseError {
     const { line, column } = posFromParseError(error);
     try {
       expect(error.message).toEqual(this.testcase.expected.message);
+      expect({ line, column }).toEqual({
+        line: this.testcase.expected.line,
+        column: this.testcase.expected.column,
+      });
     } catch (failedExpectation) {
       const actual: ParseErrorTest = {
         ...this.testcase,

@@ -236,6 +236,31 @@ describe("lexer", () => {
     });
     expect([...lexer.lex("a")]).toEqual([token("A", "a", "(a)", "1:0", "1:1")]);
   });
+
+  it("uses lookahead to determine token type", () => {
+    const lexer = new Lexer({
+      main: {
+        A1: {
+          match: /a/,
+          lookaheadMatch: /1/,
+        },
+        A2: {
+          match: /a/,
+          lookaheadMatch: /2/,
+        },
+        NUMBER: {
+          match: /\d/,
+        },
+      },
+    });
+
+    expect([...lexer.lex("a1a2")]).toEqual([
+      token("A1", "a", "a", "1:0", "1:1"),
+      token("NUMBER", "1", "1", "1:1", "1:2"),
+      token("A2", "a", "a", "1:2", "1:3"),
+      token("NUMBER", "2", "2", "1:3", "1:4"),
+    ]);
+  });
 });
 
 type LocationSpec = `${number}:${number}`;
