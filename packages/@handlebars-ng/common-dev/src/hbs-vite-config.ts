@@ -27,6 +27,7 @@ export function hbsViteConfig({
       dts({
         include: dtsConfig.include ?? srcDir,
         exclude: dtsConfig.exclude,
+        copyDtsFiles: true,
         compilerOptions: {
           paths: {
             "@/*": ["dist/*"],
@@ -57,5 +58,5 @@ export function hbsViteConfig({
     test: {
       globals: true,
     },
-  });
+  } as UserConfigExport);
 }

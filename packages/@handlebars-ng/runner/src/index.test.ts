@@ -1,8 +1,11 @@
 import { handlebarsSpec, helpers } from "@handlebars-ng/specification";
+import type { HandlebarsTest } from "@handlebars-ng/specification";
 import { HandlebarsNgRunner } from ".";
 
 describe("the runner runs templates from the spec", () => {
-  for (const [filename, testCase] of Object.entries(handlebarsSpec)) {
+  for (const [filename, testCase] of Object.entries<HandlebarsTest>(
+    handlebarsSpec
+  )) {
     if (testCase.type === "success") {
       describe(filename, () => {
         it(testCase.description, () => {

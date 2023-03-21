@@ -25,23 +25,26 @@ export const Sidebar: Component<{ children?: JSXElement }> = (props) => {
     showSidebar.set(false);
   });
 
-  onMount(() => {
-    detector.install();
-  });
-  onCleanup(() => {
-    detector.uninstall();
-  });
-
   const show = useStore(showSidebar);
 
-  createEffect(() => {
-    if (show()) {
-      clickOutSide.install();
-    } else {
-      clickOutSide.uninstall();
-    }
-  });
+  if (typeof window === "object") {
+    onMount(() => {
+      detector.install();
+    });
+    onCleanup(() => {
+      detector.uninstall();
+    });
 
+
+    createEffect(() => {
+      if (show()) {
+        clickOutSide.install();
+      } else {
+        clickOutSide.uninstall();
+      }
+    });
+  }
+  
   return (
     <aside
       ref={clickOutSide.setElement}
