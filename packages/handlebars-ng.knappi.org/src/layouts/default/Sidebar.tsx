@@ -35,7 +35,6 @@ export const Sidebar: Component<{ children?: JSXElement }> = (props) => {
       detector.uninstall();
     });
 
-
     createEffect(() => {
       if (show()) {
         clickOutSide.install();
@@ -44,7 +43,7 @@ export const Sidebar: Component<{ children?: JSXElement }> = (props) => {
       }
     });
   }
-  
+
   return (
     <aside
       ref={clickOutSide.setElement}
