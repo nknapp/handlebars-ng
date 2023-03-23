@@ -1,4 +1,4 @@
-/// <reference types="vitest" />
+/// <reference types="vitest/config" />
 
 import { defineConfig, UserConfigExport } from "vite";
 import dts from "vite-plugin-dts";
@@ -58,5 +58,5 @@ export function hbsViteConfig({
     test: {
       globals: true,
     },
-  } as UserConfigExport);
+  });
 }

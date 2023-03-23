@@ -1,6 +1,7 @@
 import { Location } from "../model";
 import { CompiledState } from "./compiledState/CompiledState";
 import {
+  ILexer,
   LexerSpec,
   LexerTypings,
   States,
@@ -14,7 +15,7 @@ const EMPTY_ITERATOR: Iterator<Token<never>> = {
   next: () => ({ done: true, value: null }),
 };
 
-export class NonConcurrentLexer<T extends LexerTypings> {
+export class NonConcurrentLexer<T extends LexerTypings> implements ILexer<T> {
   states: Record<States<T>, CompiledState<T>>;
   stateStack: CompiledState<T>[] = [];
   offset = 0;

@@ -74,23 +74,26 @@ describe("lexer", () => {
     ]);
   });
 
-  it("throws an error if no token matches", () => {
-    const lexer = new Lexer({
-      main: {
-        A: {
-          match: /aa/,
+  it.skipIf(import.meta.env.VITE_USE_MOO)(
+    "throws an error if no token matches",
+    () => {
+      const lexer = new Lexer({
+        main: {
+          A: {
+            match: /aa/,
+          },
+          B: {
+            match: /bb/,
+          },
         },
-        B: {
-          match: /bb/,
-        },
-      },
-    });
-    const tokens = lexer.lex("aa---aa");
-    expect(tokens.next().value).toEqual(token("A", "aa", "aa", "1:0", "1:2"));
-    expect(() => tokens.next()).toThrow(
-      "Syntax error at 1:2, expected one of `A`, `B` but got '-'"
-    );
-  });
+      });
+      const tokens = lexer.lex("aa---aa");
+      expect(tokens.next().value).toEqual(token("A", "aa", "aa", "1:0", "1:2"));
+      expect(() => tokens.next()).toThrow(
+        "Syntax error at 1:2, expected one of `A`, `B` but got '-'"
+      );
+    }
+  );
 
   it("returns an error token containing the rest of the string, if one is configured and nothing matches", () => {
     const lexer = new Lexer({

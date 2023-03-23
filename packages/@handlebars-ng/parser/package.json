@@ -41,5 +41,7 @@
     "vite-plugin-dts": "2.1.0",
     "vitest": "0.29.7"
   },
-  "dependencies": {}
+  "dependencies": {
+    "moo": "^0.5.2"
+  }
 }
