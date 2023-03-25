@@ -40,8 +40,9 @@ export type TokenWithoutLocation<T extends LexerTypings> = Omit<
   "start" | "end"
 >;
 
-export interface InternalToken<T extends LexerTypings>
-  extends TokenWithoutLocation<T> {
+export interface InternalToken<T extends LexerTypings> {
+  type: TokenTypes<T>;
+  original: string;
   offset: number;
   rule: MatchRule<T>;
 }
@@ -58,3 +59,7 @@ export type LexerSpec<T extends LexerTypings> = Record<States<T>, StateSpec<T>>;
 export interface ILexer<T extends LexerTypings> {
   lex(string: string): Generator<Token<T>>;
 }
+
+export type LexerFactory<T extends LexerTypings> = (
+  states: LexerSpec<T>
+) => ILexer<T>;

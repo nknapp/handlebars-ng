@@ -1,270 +1,288 @@
-import { Lexer } from "./index";
+import {
+  AlternativeMooWrappingLexer,
+  ConcurrentLexer,
+  NonConcurrentLexer,
+} from "./index";
 import { Token } from "./index";
 import { parseLocation } from "./test-utils/parseLocation";
+import { LexerSpec, LexerTypings } from "./types";
 
-describe("lexer", () => {
-  it("parses simple tokens", () => {
-    const lexer = new Lexer({
-      main: {
-        A: {
-          match: /a/,
+describe.each([NonConcurrentLexer, AlternativeMooWrappingLexer])(
+  "lexer (%s)",
+  (LexerImpl) => {
+    function createLexer<T extends LexerTypings>(
+      states: LexerSpec<T>
+    ): ConcurrentLexer<T> {
+      return new ConcurrentLexer(() => new LexerImpl(states));
+    }
+
+    it("parses simple tokens", () => {
+      const lexer = createLexer({
+        main: {
+          A: {
+            match: /a/,
+          },
+          B: {
+            match: /b/,
+          },
         },
-        B: {
-          match: /b/,
-        },
-      },
+      });
+      expect([...lexer.lex("abab")]).toEqual([
+        token("A", "a", "a", "1:0", "1:1"),
+        token("B", "b", "b", "1:1", "1:2"),
+        token("A", "a", "a", "1:2", "1:3"),
+        token("B", "b", "b", "1:3", "1:4"),
+      ]);
     });
-    expect([...lexer.lex("abab")]).toEqual([
-      token("A", "a", "a", "1:0", "1:1"),
-      token("B", "b", "b", "1:1", "1:2"),
-      token("A", "a", "a", "1:2", "1:3"),
-      token("B", "b", "b", "1:3", "1:4"),
-    ]);
-  });
 
-  it("allows fallback tokens", () => {
-    const lexer = new Lexer({
-      main: {
-        A: {
-          match: /a/,
+    it("allows fallback tokens", () => {
+      const lexer = createLexer({
+        main: {
+          A: {
+            match: /a/,
+          },
+          DEFAULT: {
+            fallback: true,
+          },
         },
-        DEFAULT: {
-          fallback: true,
-        },
-      },
+      });
+      expect([...lexer.lex("a---a")]).toEqual([
+        token("A", "a", "a", "1:0", "1:1"),
+        token("DEFAULT", "---", "---", "1:1", "1:4"),
+        token("A", "a", "a", "1:4", "1:5"),
+      ]);
     });
-    expect([...lexer.lex("a---a")]).toEqual([
-      token("A", "a", "a", "1:0", "1:1"),
-      token("DEFAULT", "---", "---", "1:1", "1:4"),
-      token("A", "a", "a", "1:4", "1:5"),
-    ]);
-  });
 
-  it("allows a string, that only consists of fallback", () => {
-    const lexer = new Lexer({
-      main: {
-        A: {
-          match: /a/,
+    it("allows a string, that only consists of fallback", () => {
+      const lexer = createLexer({
+        main: {
+          A: {
+            match: /a/,
+          },
+          DEFAULT: {
+            fallback: true,
+          },
         },
-        DEFAULT: {
-          fallback: true,
-        },
-      },
+      });
+      expect([...lexer.lex("---")]).toEqual([
+        token("DEFAULT", "---", "---", "1:0", "1:3"),
+      ]);
     });
-    expect([...lexer.lex("---")]).toEqual([
-      token("DEFAULT", "---", "---", "1:0", "1:3"),
-    ]);
-  });
 
-  it("identifies boundary of fallback token surrounded by multi-char tokens", () => {
-    const lexer = new Lexer({
-      main: {
-        A: {
-          match: /aa/,
-        },
-        DEFAULT: {
-          fallback: true,
-        },
-      },
-    });
-    expect([...lexer.lex("aa---aa")]).toEqual([
-      token("A", "aa", "aa", "1:0", "1:2"),
-      token("DEFAULT", "---", "---", "1:2", "1:5"),
-      token("A", "aa", "aa", "1:5", "1:7"),
-    ]);
-  });
-
-  it.skipIf(import.meta.env.VITE_USE_MOO)(
-    "throws an error if no token matches",
-    () => {
-      const lexer = new Lexer({
+    it("identifies boundary of fallback token surrounded by multi-char tokens", () => {
+      const lexer = createLexer({
         main: {
           A: {
             match: /aa/,
           },
-          B: {
-            match: /bb/,
+          DEFAULT: {
+            fallback: true,
+          },
+        },
+      });
+      expect([...lexer.lex("aa---aa")]).toEqual([
+        token("A", "aa", "aa", "1:0", "1:2"),
+        token("DEFAULT", "---", "---", "1:2", "1:5"),
+        token("A", "aa", "aa", "1:5", "1:7"),
+      ]);
+    });
+
+    it.skipIf(LexerImpl === AlternativeMooWrappingLexer)(
+      "throws an error if no token matches",
+      () => {
+        const lexer = createLexer({
+          main: {
+            A: {
+              match: /aa/,
+            },
+            B: {
+              match: /bb/,
+            },
+          },
+        });
+        const tokens = lexer.lex("aa---aa");
+        expect(tokens.next().value).toEqual(
+          token("A", "aa", "aa", "1:0", "1:2")
+        );
+        expect(() => tokens.next()).toThrow(
+          "Syntax error at 1:2, expected one of `A`, `B` but got '-'"
+        );
+      }
+    );
+
+    it("returns an error token containing the rest of the string, if one is configured and nothing matches", () => {
+      const lexer = createLexer({
+        main: {
+          A: {
+            match: /aa/,
+          },
+          ERROR: {
+            error: true,
           },
         },
       });
       const tokens = lexer.lex("aa---aa");
       expect(tokens.next().value).toEqual(token("A", "aa", "aa", "1:0", "1:2"));
-      expect(() => tokens.next()).toThrow(
-        "Syntax error at 1:2, expected one of `A`, `B` but got '-'"
+      expect(tokens.next().value).toEqual(
+        token("ERROR", "---aa", "---aa", "1:2", "1:7")
       );
-    }
-  );
+      expect(tokens.next().done).toBe(true);
+    });
 
-  it("returns an error token containing the rest of the string, if one is configured and nothing matches", () => {
-    const lexer = new Lexer({
-      main: {
-        A: {
-          match: /aa/,
+    it("allows concurrent parsing", () => {
+      const lexer = createLexer({
+        main: {
+          A: { match: /a/ },
+          B: { match: /b/ },
         },
-        ERROR: {
-          error: true,
+      });
+
+      const tokens1 = lexer.lex("ab");
+      const tokens2 = lexer.lex("ba");
+
+      expect(tokens1.next().value).toEqual(token("A", "a", "a", "1:0", "1:1"));
+      expect(tokens2.next().value).toEqual(token("B", "b", "b", "1:0", "1:1"));
+
+      expect(tokens1.next().value).toEqual(token("B", "b", "b", "1:1", "1:2"));
+      expect(tokens2.next().value).toEqual(token("A", "a", "a", "1:1", "1:2"));
+    });
+
+    it("reuses lexer after completion", () => {
+      const lexer = createLexer({
+        main: {
+          A: { match: /a/ },
+          B: { match: /b/ },
         },
-      },
-    });
-    const tokens = lexer.lex("aa---aa");
-    expect(tokens.next().value).toEqual(token("A", "aa", "aa", "1:0", "1:2"));
-    expect(tokens.next().value).toEqual(
-      token("ERROR", "---aa", "---aa", "1:2", "1:7")
-    );
-    expect(tokens.next().done).toBe(true);
-  });
-
-  it("allows concurrent parsing", () => {
-    const lexer = new Lexer({
-      main: {
-        A: { match: /a/ },
-        B: { match: /b/ },
-      },
-    });
-
-    const tokens1 = lexer.lex("ab");
-    const tokens2 = lexer.lex("ba");
-
-    expect(tokens1.next().value).toEqual(token("A", "a", "a", "1:0", "1:1"));
-    expect(tokens2.next().value).toEqual(token("B", "b", "b", "1:0", "1:1"));
-
-    expect(tokens1.next().value).toEqual(token("B", "b", "b", "1:1", "1:2"));
-    expect(tokens2.next().value).toEqual(token("A", "a", "a", "1:1", "1:2"));
-  });
-
-  it("reuses lexer after completion", () => {
-    const lexer = new Lexer({
-      main: {
-        A: { match: /a/ },
-        B: { match: /b/ },
-      },
-    });
-    const tokens1 = lexer.lex("ab");
-    expect(lexer.poolSize()).toEqual(0);
-    expect([...tokens1]).toEqual([
-      token("A", "a", "a", "1:0", "1:1"),
-      token("B", "b", "b", "1:1", "1:2"),
-    ]);
-    expect(lexer.poolSize()).toEqual(1);
-    lexer.lex("a").next();
-    expect(lexer.poolSize()).toEqual(0);
-  });
-
-  it("reuses lexer after throwing error", () => {
-    const lexer = new Lexer({
-      main: {
-        A: { match: /a/ },
-        B: { match: /b/ },
-      },
-    });
-
-    const tokens1 = lexer.lex("c");
-    expect(() => tokens1.next()).toThrowError();
-    expect(lexer.poolSize()).toEqual(1);
-  });
-
-  it("resets a reused lexer properly", () => {
-    const lexer = new Lexer({
-      main: {
-        A: { match: /a/ },
-        B: { match: /b/ },
-      },
-    });
-    for (let i = 0; i < 2; i++) {
-      const tokens = lexer.lex("ab");
-      expect([...tokens]).toEqual([
+      });
+      const tokens1 = lexer.lex("ab");
+      expect(lexer.poolSize()).toEqual(0);
+      expect([...tokens1]).toEqual([
         token("A", "a", "a", "1:0", "1:1"),
         token("B", "b", "b", "1:1", "1:2"),
       ]);
-    }
-  });
-
-  it("changes state if a 'push' or 'pop' property is set.", () => {
-    const lexer = new Lexer({
-      main: {
-        A: { match: /a/ },
-        OPEN: {
-          match: /\(/,
-          push: "brackets",
-        },
-      },
-      brackets: {
-        B: { match: /b/ },
-        CLOSE: {
-          match: /\)/,
-          pop: 1,
-        },
-      },
+      expect(lexer.poolSize()).toEqual(1);
+      lexer.lex("a").next();
+      expect(lexer.poolSize()).toEqual(0);
     });
 
-    const tokens = lexer.lex("a(b)a");
-    expect([...tokens]).toEqual([
-      token("A", "a", "a", "1:0", "1:1"),
-      token("OPEN", "(", "(", "1:1", "1:2"),
-      token("B", "b", "b", "1:2", "1:3"),
-      token("CLOSE", ")", ")", "1:3", "1:4"),
-      token("A", "a", "a", "1:4", "1:5"),
-    ]);
-  });
+    it("reuses lexer after throwing error", () => {
+      const lexer = createLexer({
+        main: {
+          A: { match: /a/ },
+          B: { match: /b/ },
+        },
+      });
 
-  it("identifies line-breaks in the fallback rule", () => {
-    const lexer = new Lexer({
-      main: {
-        A: {
-          match: /aa/,
-        },
-        DEFAULT: {
-          fallback: true,
-        },
-      },
-    });
-    expect([...lexer.lex("aa\naa")]).toEqual([
-      token("A", "aa", "aa", "1:0", "1:2"),
-      token("DEFAULT", "\n", "\n", "1:2", "2:0"),
-      token("A", "aa", "aa", "2:0", "2:2"),
-    ]);
-  });
-
-  it("transforms values", () => {
-    const lexer = new Lexer({
-      main: {
-        A: {
-          match: /a/,
-          value: (original) => `(${original})`,
-        },
-        DEFAULT: {
-          fallback: true,
-        },
-      },
-    });
-    expect([...lexer.lex("a")]).toEqual([token("A", "a", "(a)", "1:0", "1:1")]);
-  });
-
-  it("uses lookahead to determine token type", () => {
-    const lexer = new Lexer({
-      main: {
-        A1: {
-          match: /a/,
-          lookaheadMatch: /1/,
-        },
-        A2: {
-          match: /a/,
-          lookaheadMatch: /2/,
-        },
-        NUMBER: {
-          match: /\d/,
-        },
-      },
+      const tokens1 = lexer.lex("c");
+      expect(() => tokens1.next()).toThrowError();
+      expect(lexer.poolSize()).toEqual(1);
     });
 
-    expect([...lexer.lex("a1a2")]).toEqual([
-      token("A1", "a", "a", "1:0", "1:1"),
-      token("NUMBER", "1", "1", "1:1", "1:2"),
-      token("A2", "a", "a", "1:2", "1:3"),
-      token("NUMBER", "2", "2", "1:3", "1:4"),
-    ]);
-  });
-});
+    it("resets a reused lexer properly", () => {
+      const lexer = createLexer({
+        main: {
+          A: { match: /a/ },
+          B: { match: /b/ },
+        },
+      });
+      for (let i = 0; i < 2; i++) {
+        const tokens = lexer.lex("ab");
+        expect([...tokens]).toEqual([
+          token("A", "a", "a", "1:0", "1:1"),
+          token("B", "b", "b", "1:1", "1:2"),
+        ]);
+      }
+    });
+
+    it("changes state if a 'push' or 'pop' property is set.", () => {
+      const lexer = createLexer({
+        main: {
+          A: { match: /a/ },
+          OPEN: {
+            match: /\(/,
+            push: "brackets",
+          },
+        },
+        brackets: {
+          B: { match: /b/ },
+          CLOSE: {
+            match: /\)/,
+            pop: 1,
+          },
+        },
+      });
+
+      const tokens = lexer.lex("a(b)a");
+      expect([...tokens]).toEqual([
+        token("A", "a", "a", "1:0", "1:1"),
+        token("OPEN", "(", "(", "1:1", "1:2"),
+        token("B", "b", "b", "1:2", "1:3"),
+        token("CLOSE", ")", ")", "1:3", "1:4"),
+        token("A", "a", "a", "1:4", "1:5"),
+      ]);
+    });
+
+    it("identifies line-breaks in the fallback rule", () => {
+      const lexer = createLexer({
+        main: {
+          A: {
+            match: /aa/,
+          },
+          DEFAULT: {
+            fallback: true,
+          },
+        },
+      });
+      expect([...lexer.lex("aa\naa")]).toEqual([
+        token("A", "aa", "aa", "1:0", "1:2"),
+        token("DEFAULT", "\n", "\n", "1:2", "2:0"),
+        token("A", "aa", "aa", "2:0", "2:2"),
+      ]);
+    });
+
+    it("transforms values", () => {
+      const lexer = createLexer({
+        main: {
+          A: {
+            match: /a/,
+            value: (original) => `(${original})`,
+          },
+          DEFAULT: {
+            fallback: true,
+          },
+        },
+      });
+      expect([...lexer.lex("a")]).toEqual([
+        token("A", "a", "(a)", "1:0", "1:1"),
+      ]);
+    });
+
+    it("uses lookahead to determine token type", () => {
+      const lexer = createLexer({
+        main: {
+          A1: {
+            match: /a/,
+            lookaheadMatch: /1/,
+          },
+          A2: {
+            match: /a/,
+            lookaheadMatch: /2/,
+          },
+          NUMBER: {
+            match: /\d/,
+          },
+        },
+      });
+
+      expect([...lexer.lex("a1a2")]).toEqual([
+        token("A1", "a", "a", "1:0", "1:1"),
+        token("NUMBER", "1", "1", "1:1", "1:2"),
+        token("A2", "a", "a", "1:2", "1:3"),
+        token("NUMBER", "2", "2", "1:3", "1:4"),
+      ]);
+    });
+  }
+);
 
 type LocationSpec = `${number}:${number}`;
 

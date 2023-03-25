@@ -3,7 +3,7 @@ import {
   MustacheOpenType,
   tok,
   TokenType,
-} from "../../lexer";
+} from "../../lexer/rules";
 import { ParserContext } from "../ParserContext";
 
 export function mustacheStatement(

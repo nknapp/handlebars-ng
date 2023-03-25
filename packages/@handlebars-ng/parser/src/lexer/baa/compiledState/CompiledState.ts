@@ -16,6 +16,7 @@ import {
 } from "../types";
 import { isErrorRule } from "../utils/isErrorRule";
 import { isFallbackRule } from "../utils/isFallbackRule";
+import { TokenFactory } from "./TokenFactory";
 
 export class CompiledState<T extends LexerTypings> {
   name: string;
@@ -23,18 +24,35 @@ export class CompiledState<T extends LexerTypings> {
   errorHandler: ErrorHandler<T>;
   matchHandler: MatchHandler<T>;
 
-  constructor(name: string, rules: StateSpec<T>) {
+  constructor(
+    name: string,
+    rules: StateSpec<T>,
+    tokenFactory: TokenFactory<T>
+  ) {
     this.name = name;
     const { match, error, fallback } = splitByRuleType(rules);
     const hasFallback = fallback != null;
-    this.matchHandler = new MatchHandler(match.types, match.rules, hasFallback);
+    this.matchHandler = new MatchHandler(
+      match.types,
+      match.rules,
+      hasFallback,
+      tokenFactory
+    );
     if (error != null) {
-      this.errorHandler = new TokenErrorHandler<T>(error.type, error.rule);
+      this.errorHandler = new TokenErrorHandler<T>(
+        error.type,
+        error.rule,
+        tokenFactory
+      );
     } else {
       this.errorHandler = new ThrowingErrorHandler(match.types);
     }
     if (fallback != null) {
-      this.fallback = new FallbackHandler(fallback.type, fallback.rule);
+      this.fallback = new FallbackHandler(
+        fallback.type,
+        fallback.rule,
+        tokenFactory
+      );
     }
   }
 }

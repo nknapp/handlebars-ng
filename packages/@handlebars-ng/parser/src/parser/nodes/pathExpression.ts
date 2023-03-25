@@ -1,4 +1,4 @@
-import { tok } from "../../lexer";
+import { tok } from "../../lexer/rules";
 import { ParserContext } from "../ParserContext";
 
 const TOK_ID = tok("ID", "SQUARE_WRAPPED_ID");

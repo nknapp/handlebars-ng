@@ -1,7 +1,12 @@
+import { createHbsLexer } from ".";
 import { Token } from "./baa";
-import { createLexer, HbsLexerTypes } from "./index";
+import { HbsLexerTypes } from "./rules";
 
-describe("Lexer", () => {
+describe.each(["moo", "hbs"] as const)("Lexer (%s)", (lexerImpl) => {
+  function createLexer(template: string): Generator<Token<HbsLexerTypes>> {
+    return createHbsLexer(lexerImpl).lex(template);
+  }
+
   describe("works for different templates", () => {
     it("a single character is a content token", () => {
       testTemplate("a", [
@@ -141,10 +146,13 @@ describe("Lexer", () => {
       "[ ]",
     ]);
   });
-});
 
-function testTemplate(template: string, expectedValue: Token<HbsLexerTypes>[]) {
-  const lexer = createLexer(template);
-  const tokens = [...lexer];
-  expect(JSON.parse(JSON.stringify(tokens))).toEqual(expectedValue);
-}
+  function testTemplate(
+    template: string,
+    expectedValue: Token<HbsLexerTypes>[]
+  ) {
+    const lexer = createLexer(template);
+    const tokens = [...lexer];
+    expect(JSON.parse(JSON.stringify(tokens))).toEqual(expectedValue);
+  }
+});

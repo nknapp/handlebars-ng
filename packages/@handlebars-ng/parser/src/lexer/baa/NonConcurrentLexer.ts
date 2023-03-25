@@ -1,14 +1,6 @@
-import { Location } from "../model";
 import { CompiledState } from "./compiledState/CompiledState";
-import {
-  ILexer,
-  LexerSpec,
-  LexerTypings,
-  States,
-  Token,
-  TokenWithoutLocation,
-} from "./types";
-import { endLocationMultiline } from "./utils/endLocationMultiline";
+import { TokenFactory } from "./compiledState/TokenFactory";
+import { ILexer, LexerSpec, LexerTypings, States, Token } from "./types";
 import { mapValues } from "./utils/mapValues";
 
 const EMPTY_ITERATOR: Iterator<Token<never>> = {
@@ -21,12 +13,12 @@ export class NonConcurrentLexer<T extends LexerTypings> implements ILexer<T> {
   offset = 0;
   stateIterator: Iterator<Token<T>> = EMPTY_ITERATOR;
   string = "";
-  currentLocation: Location = { line: 1, column: 0 };
+  tokenFactory: TokenFactory<T> = new TokenFactory();
 
   constructor(states: LexerSpec<T>) {
     this.states = mapValues(
       states,
-      (spec, name) => new CompiledState(name, spec)
+      (spec, name) => new CompiledState(name, spec, this.tokenFactory)
     );
   }
 
@@ -34,7 +26,7 @@ export class NonConcurrentLexer<T extends LexerTypings> implements ILexer<T> {
     this.string = string;
     this.offset = 0;
     this.stateStack.unshift(this.states.main);
-    this.currentLocation = { line: 1, column: 0 };
+    this.tokenFactory.reset();
     while (this.offset < this.string.length) {
       yield* this.#iterateState();
     }
@@ -43,19 +35,19 @@ export class NonConcurrentLexer<T extends LexerTypings> implements ILexer<T> {
   *#iterateState(): Generator<Token<T>> {
     const { matchHandler, fallback, errorHandler } = this.#currentState;
     matchHandler.reset(this.offset);
-    for (const { offset, rule, ...token } of matchHandler.matchAll(
+    for (const { offset, rule, type, original } of matchHandler.matchAll(
       this.string
     )) {
       if (offset > this.offset && fallback != null) {
-        const fallbackToken = fallback.createToken(
-          this.string,
-          this.offset,
-          offset
-        );
-        yield this.addLocation(fallbackToken);
+        yield fallback.createToken(this.string, this.offset, offset);
       }
-      yield this.addLocation(token);
-      this.offset = offset + token.original.length;
+
+      yield this.tokenFactory.createToken(
+        type,
+        original,
+        rule.value ? rule.value(original) : original
+      ),
+        (this.offset = offset + original.length);
       if (rule.push != null) {
         this.stateStack.unshift(this.states[rule.push]);
         return;
@@ -70,16 +62,9 @@ export class NonConcurrentLexer<T extends LexerTypings> implements ILexer<T> {
         fallback != null
           ? fallback.createToken(this.string, this.offset, this.string.length)
           : errorHandler.createErrorToken(this.string, this.offset);
-      yield this.addLocation(token);
+      yield token;
       this.offset = this.string.length;
     }
-  }
-
-  addLocation(token: TokenWithoutLocation<T>): Token<T> {
-    const start = this.currentLocation;
-    const end = endLocationMultiline(start, token.original);
-    this.currentLocation = end;
-    return { ...token, start, end };
   }
 
   get #currentState() {

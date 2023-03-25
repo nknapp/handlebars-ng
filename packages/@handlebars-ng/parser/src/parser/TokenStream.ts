@@ -1,4 +1,5 @@
-import { createLexer, Token, TokenTypes } from "../lexer";
+import { createHbsLexer } from "../lexer";
+import { Token, TokenTypes } from "../lexer/rules";
 import { SourceLocation } from "../model/ast";
 import { ParseError } from "./ParseError";
 
@@ -11,7 +12,7 @@ export class TokenStream {
 
   constructor(template: string) {
     this.template = template;
-    const lexer = createLexer(template);
+    const lexer = createHbsLexer().lex(template);
     this.tokens = lexer[Symbol.iterator]();
     this.lookAhead = this.tokens.next().value ?? null;
   }

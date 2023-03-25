@@ -1,17 +1,21 @@
 import { InternalToken, LexerTypings, MatchRule, TokenTypes } from "../types";
+import { TokenFactory } from "./TokenFactory";
 
 export class MatchHandler<T extends LexerTypings> {
   readonly #matchRegex: RegExp;
   readonly #matchRules: MatchRule<T>[];
   readonly #matchTypes: TokenTypes<T>[];
+  #tokenFactory: TokenFactory<T>;
 
   constructor(
     types: TokenTypes<T>[],
     rules: MatchRule<T>[],
-    hasFallback: boolean
+    hasFallback: boolean,
+    tokenFactory: TokenFactory<T>
   ) {
     this.#matchRules = rules;
     this.#matchTypes = types;
+    this.#tokenFactory = tokenFactory;
     const regexes = this.#matchRules.map((rule) => {
       return (
         rule.match.source +
@@ -40,10 +44,9 @@ export class MatchHandler<T extends LexerTypings> {
       if (matchingGroup != null && match.index != null) {
         const rule = this.#matchRules[i - 1];
         return {
+          original: matchingGroup,
           type: this.#matchTypes[i - 1],
           offset: match.index,
-          original: matchingGroup,
-          value: rule.value ? rule.value(matchingGroup) : matchingGroup,
           rule,
         };
       }

@@ -1,17 +1,10 @@
-/// <reference types="vite/client" />
+import { ILexer, LexerTypings, Token } from "./types";
 
-import { NonConcurrentLexer } from "./NonConcurrentLexer";
-import { ILexer, LexerSpec, LexerTypings, Token } from "./types";
-import { AlternativeMooWrappingLexer } from "./AlternativeMooWrappingLexer";
-
-export class ConcurrentLexer<T extends LexerTypings> {
+export class ConcurrentLexer<T extends LexerTypings> implements ILexer<T> {
   #unusedLexers: Pool<ILexer<T>>;
 
-  constructor(states: LexerSpec<T>) {
-    const LexerClass = import.meta.env.VITE_USE_MOO
-      ? AlternativeMooWrappingLexer
-      : NonConcurrentLexer;
-    this.#unusedLexers = new Pool(() => new LexerClass(states));
+  constructor(factory: () => ILexer<T>) {
+    this.#unusedLexers = new Pool(() => factory());
   }
 
   *lex(string: string): Generator<Token<T>> {
