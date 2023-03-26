@@ -1,6 +1,6 @@
 import { CompiledRule } from "./compiledState/CompiledRule";
 import { CompiledState } from "./compiledState/CompiledState";
-import { Fallback } from "./compiledState/FallbackHandler";
+import { Match } from "./compiledState/MatchHandler";
 import { TokenFactory } from "./compiledState/TokenFactory";
 import { ILexer, LexerSpec, LexerTypings, States, Token } from "./types";
 import { mapValues } from "./utils/mapValues";
@@ -12,7 +12,7 @@ export class NonConcurrentLexer<T extends LexerTypings> implements ILexer<T> {
   offset = 0;
   string = "";
   tokenFactory: TokenFactory<T> = new TokenFactory();
-  matchPending = false;
+  pendingMatch: Match<T> | null = null;
   pendingStateUpdate: CompiledRule<T> | null = null;
 
   constructor(states: LexerSpec<T>) {
@@ -28,8 +28,7 @@ export class NonConcurrentLexer<T extends LexerTypings> implements ILexer<T> {
     this.offset = 0;
     this.stateStack.reset();
     this.tokenFactory.reset();
-    this.#currentState.matchHandler.reset(this.offset, this.string);
-    this.matchPending = false;
+    this.#currentState.matchHandler.reset(this.offset);
   }
 
   lex(string: string): IterableIterator<Token<T>> {
@@ -49,25 +48,28 @@ export class NonConcurrentLexer<T extends LexerTypings> implements ILexer<T> {
   }
 
   nextToken(): Token<T> | null {
-    if (this.matchPending) {
-      this.matchPending = false;
-      return this.continueWithCurrentMatch();
+    if (this.pendingMatch != null) {
+      const match = this.pendingMatch;
+      this.pendingMatch = null;
+      return this.#createMatchToken(match);
     }
 
     if (this.offset >= this.string.length) return null;
 
     if (this.pendingStateUpdate) {
       this.stateStack.update(this.pendingStateUpdate);
-      this.#currentState.matchHandler.reset(this.offset, this.string);
+      this.#currentState.matchHandler.reset(this.offset);
       this.pendingStateUpdate = null;
     }
 
     const matchHandler = this.#currentState.matchHandler;
     const fallback = this.#currentState.fallback;
 
-    if (!matchHandler.next()) {
+    const match = matchHandler.exec(this.string);
+    if (match == null) {
       if (fallback) {
-        return this.fallbackToken(fallback, this.string.length);
+        this.pendingMatch = match;
+        return this.#createFallbackToken(fallback, this.string.length);
       } else {
         return this.#currentState.errorHandler.createErrorToken(
           this.string,
@@ -77,26 +79,23 @@ export class NonConcurrentLexer<T extends LexerTypings> implements ILexer<T> {
     }
 
     if (matchHandler.offset > this.offset && fallback != null) {
-      this.matchPending = true;
-      return this.fallbackToken(fallback, matchHandler.offset);
+      this.pendingMatch = match;
+      return this.#createFallbackToken(fallback, matchHandler.offset);
     }
-    return this.continueWithCurrentMatch();
+    return this.#createMatchToken(match);
   }
 
-  fallbackToken(fallback: Fallback<T>, endOffset: number): Token<T> {
+  #createFallbackToken(fallback: CompiledRule<T>, endOffset: number): Token<T> {
     const original = this.string.substring(this.offset, endOffset);
     return this.tokenFactory.createToken(fallback.type, original, original);
   }
 
-  continueWithCurrentMatch(): Token<T> {
-    const matchHandler = this.#currentState.matchHandler;
-    this.pendingStateUpdate = matchHandler.rule;
+  #createMatchToken(match: Match<T>): Token<T> {
+    this.pendingStateUpdate = match.rule;
     return this.tokenFactory.createToken(
-      matchHandler.rule.type,
-      matchHandler.original,
-      matchHandler.rule.value
-        ? matchHandler.rule.value(matchHandler.original)
-        : matchHandler.original
+      match.rule.type,
+      match.text,
+      match.rule.value ? match.rule.value(match.text) : match.text
     );
   }
 

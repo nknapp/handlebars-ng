@@ -3,15 +3,15 @@ import {
   ThrowingErrorHandler,
   TokenErrorHandler,
 } from "./ErrorHandler";
-import { Fallback as FallbackHandler } from "./FallbackHandler";
 import { MatchHandler } from "./MatchHandler";
 import { LexerTypings, StateSpec } from "../types";
 import { TokenFactory } from "./TokenFactory";
 import { splitByRuleKind } from "../utils/splitByRuleKind";
+import { CompiledRule } from "./CompiledRule";
 
 export class CompiledState<T extends LexerTypings> {
   name: string;
-  fallback?: FallbackHandler<T>;
+  fallback?: CompiledRule<T>;
   errorHandler: ErrorHandler<T>;
   matchHandler: MatchHandler<T>;
 
@@ -36,11 +36,9 @@ export class CompiledState<T extends LexerTypings> {
       );
     }
     if (fallback != null) {
-      this.fallback = new FallbackHandler(
-        fallback.type,
-        fallback.rule,
-        tokenFactory
-      );
+      this.fallback = {
+        type: fallback.type,
+      };
     }
   }
 }
