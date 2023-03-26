@@ -57,7 +57,7 @@ export type StateSpec<T extends LexerTypings> = Partial<
 export type LexerSpec<T extends LexerTypings> = Record<States<T>, StateSpec<T>>;
 
 export interface ILexer<T extends LexerTypings> {
-  lex(string: string): Generator<Token<T>>;
+  lex(string: string): IterableIterator<Token<T>>;
 }
 
 export type LexerFactory<T extends LexerTypings> = (

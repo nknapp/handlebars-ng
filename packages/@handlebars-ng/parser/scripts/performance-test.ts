@@ -13,11 +13,27 @@ const parserNg: ObjectUnderTest = {
   },
 };
 
-const hbsLexer: ObjectUnderTest = {
-  name: "hbs-lexer",
+const mooLexer = createHbsLexer("moo");
+
+const hbsLexerMoo: ObjectUnderTest = {
+  name: "hbs-lexer moo",
   testFn(test) {
     return () => {
-      const lexer = createHbsLexer().lex(test.template);
+      const lexer = mooLexer.lex(test.template);
+      for (const ignoredToken of lexer) {
+        /* noop */
+      }
+    };
+  },
+};
+
+const baaLexer = createHbsLexer("hbs");
+
+const hbsLexerBaa: ObjectUnderTest = {
+  name: "hbs-lexer baa",
+  testFn(test) {
+    return () => {
+      const lexer = baaLexer.lex(test.template);
       for (const ignoredToken of lexer) {
         /* noop */
       }
@@ -31,7 +47,8 @@ const bench = new TestBench({
   .addTests(tests)
   .addTestee(originalHandlebars.parser)
   .addTestee(parserNg)
-  .addTestee(hbsLexer);
+  .addTestee(hbsLexerMoo)
+  .addTestee(hbsLexerBaa);
 
 await bench.run({ iterations: 200, warmupIterations: 100 });
 

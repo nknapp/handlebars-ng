@@ -1,73 +1,135 @@
+import { CompiledRule } from "./compiledState/CompiledRule";
 import { CompiledState } from "./compiledState/CompiledState";
+import { Fallback } from "./compiledState/FallbackHandler";
 import { TokenFactory } from "./compiledState/TokenFactory";
 import { ILexer, LexerSpec, LexerTypings, States, Token } from "./types";
 import { mapValues } from "./utils/mapValues";
 
-const EMPTY_ITERATOR: Iterator<Token<never>> = {
-  next: () => ({ done: true, value: null }),
-};
+const done = { done: true, value: undefined } as const;
 
 export class NonConcurrentLexer<T extends LexerTypings> implements ILexer<T> {
-  states: Record<States<T>, CompiledState<T>>;
-  stateStack: CompiledState<T>[] = [];
+  stateStack: StateStack<T>;
   offset = 0;
-  stateIterator: Iterator<Token<T>> = EMPTY_ITERATOR;
   string = "";
   tokenFactory: TokenFactory<T> = new TokenFactory();
+  matchPending = false;
+  pendingStateUpdate: CompiledRule<T> | null = null;
 
   constructor(states: LexerSpec<T>) {
-    this.states = mapValues(
+    const compiledStates = mapValues(
       states,
       (spec, name) => new CompiledState(name, spec, this.tokenFactory)
     );
+    this.stateStack = new StateStack<T>(compiledStates);
   }
 
-  *lex(string: string): Generator<Token<T>> {
+  reset(string: string): void {
     this.string = string;
     this.offset = 0;
-    this.stateStack.unshift(this.states.main);
+    this.stateStack.reset();
     this.tokenFactory.reset();
-    while (this.offset < this.string.length) {
-      yield* this.#iterateState();
-    }
+    this.#currentState.matchHandler.reset(this.offset, this.string);
+    this.matchPending = false;
   }
 
-  *#iterateState(): Generator<Token<T>> {
-    const { matchHandler, fallback, errorHandler } = this.#currentState;
-    matchHandler.reset(this.offset);
-    for (const { offset, rule, type, original } of matchHandler.matchAll(
-      this.string
-    )) {
-      if (offset > this.offset && fallback != null) {
-        yield fallback.createToken(this.string, this.offset, offset);
-      }
+  lex(string: string): IterableIterator<Token<T>> {
+    this.reset(string);
+    return this;
+  }
 
-      yield this.tokenFactory.createToken(
-        type,
-        original,
-        rule.value ? rule.value(original) : original
-      ),
-        (this.offset = offset + original.length);
-      if (rule.push != null) {
-        this.stateStack.unshift(this.states[rule.push]);
-        return;
-      }
-      if (rule.pop != null) {
-        this.stateStack.shift();
-        return;
+  [Symbol.iterator]() {
+    return this;
+  }
+
+  next(): IteratorResult<Token<T>> {
+    const token = this.nextToken();
+    if (token == null) return done;
+    this.offset += token.original.length;
+    return { done: false, value: token };
+  }
+
+  nextToken(): Token<T> | null {
+    if (this.matchPending) {
+      this.matchPending = false;
+      return this.continueWithCurrentMatch();
+    }
+
+    if (this.offset >= this.string.length) return null;
+
+    if (this.pendingStateUpdate) {
+      this.stateStack.update(this.pendingStateUpdate);
+      this.#currentState.matchHandler.reset(this.offset, this.string);
+      this.pendingStateUpdate = null;
+    }
+
+    const matchHandler = this.#currentState.matchHandler;
+    const fallback = this.#currentState.fallback;
+
+    if (!matchHandler.next()) {
+      if (fallback) {
+        return this.fallbackToken(fallback, this.string.length);
+      } else {
+        return this.#currentState.errorHandler.createErrorToken(
+          this.string,
+          this.offset
+        );
       }
     }
-    if (this.offset < this.string.length) {
-      const token =
-        fallback != null
-          ? fallback.createToken(this.string, this.offset, this.string.length)
-          : errorHandler.createErrorToken(this.string, this.offset);
-      yield token;
-      this.offset = this.string.length;
+
+    if (matchHandler.offset > this.offset && fallback != null) {
+      this.matchPending = true;
+      return this.fallbackToken(fallback, matchHandler.offset);
     }
+    return this.continueWithCurrentMatch();
+  }
+
+  fallbackToken(fallback: Fallback<T>, endOffset: number): Token<T> {
+    const original = this.string.substring(this.offset, endOffset);
+    return this.tokenFactory.createToken(fallback.type, original, original);
+  }
+
+  continueWithCurrentMatch(): Token<T> {
+    const matchHandler = this.#currentState.matchHandler;
+    this.pendingStateUpdate = matchHandler.rule;
+    return this.tokenFactory.createToken(
+      matchHandler.rule.type,
+      matchHandler.original,
+      matchHandler.rule.value
+        ? matchHandler.rule.value(matchHandler.original)
+        : matchHandler.original
+    );
   }
 
   get #currentState() {
-    return this.stateStack[0];
+    return this.stateStack.current;
+  }
+}
+
+class StateStack<T extends LexerTypings> {
+  stack: CompiledState<T>[];
+  states: Record<States<T>, CompiledState<T>>;
+
+  constructor(states: Record<States<T>, CompiledState<T>>) {
+    this.states = states;
+    this.stack = [this.states.main];
+  }
+
+  reset() {
+    this.stack = [this.states.main];
+  }
+
+  update(rule: CompiledRule<T>): boolean {
+    if (!rule) return false;
+    if (rule.push) {
+      this.stack.unshift(this.states[rule.push]);
+    }
+    if (rule.pop) {
+      this.stack.shift();
+    }
+    return true;
+  }
+
+  get current() {
+    return this.stack[0];
   }
 }

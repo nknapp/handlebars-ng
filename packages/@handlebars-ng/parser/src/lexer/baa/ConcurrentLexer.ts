@@ -10,7 +10,9 @@ export class ConcurrentLexer<T extends LexerTypings> implements ILexer<T> {
   *lex(string: string): Generator<Token<T>> {
     const lexer = this.#unusedLexers.popOrCreate();
     try {
-      yield* lexer.lex(string);
+      for (const token of lexer.lex(string)) {
+        yield token;
+      }
     } finally {
       this.#unusedLexers.push(lexer);
     }

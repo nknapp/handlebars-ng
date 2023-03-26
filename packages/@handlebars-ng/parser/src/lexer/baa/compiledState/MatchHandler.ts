@@ -1,61 +1,64 @@
-import { InternalToken, LexerTypings, MatchRule, TokenTypes } from "../types";
-import { TokenFactory } from "./TokenFactory";
+import { LexerTypings, MatchRule, Rule, TokenTypes } from "../types";
+import { CompiledRule } from "./CompiledRule";
+
+interface RuleWithType<T extends LexerTypings, R extends Rule<T>> {
+  type: TokenTypes<T>;
+  rule: R;
+}
 
 export class MatchHandler<T extends LexerTypings> {
   readonly #matchRegex: RegExp;
-  readonly #matchRules: MatchRule<T>[];
-  readonly #matchTypes: TokenTypes<T>[];
-  #tokenFactory: TokenFactory<T>;
+  readonly #matchRules: CompiledRule<T>[];
+  string = "";
+  offset = 0;
+  rule: CompiledRule<T>;
+  original: string;
 
-  constructor(
-    types: TokenTypes<T>[],
-    rules: MatchRule<T>[],
-    hasFallback: boolean,
-    tokenFactory: TokenFactory<T>
-  ) {
-    this.#matchRules = rules;
-    this.#matchTypes = types;
-    this.#tokenFactory = tokenFactory;
-    const regexes = this.#matchRules.map((rule) => {
+  constructor(rules: RuleWithType<T, MatchRule<T>>[], hasFallback: boolean) {
+    this.#matchRules = rules.map(({ rule, type }) => {
+      return {
+        type,
+        value: rule.value,
+        pop: rule.pop,
+        push: rule.push,
+      };
+    });
+    const regexes = rules.map(({ rule }) => {
       return (
+        "(" +
         rule.match.source +
+        ")" +
         (rule.lookaheadMatch ? `(?=${rule.lookaheadMatch.source})` : "")
       );
     });
-    const sources = regexes.map((regex) => `(${regex})`);
+    const sources = regexes.map((regex) => `${regex}`);
     // If there is no fallback rule, we assume that every token must directly follow the previous token
     // thus, the regex must be sticky
-    this.#matchRegex = new RegExp(sources.join("|"), hasFallback ? "g" : "yg");
+    this.#matchRegex = new RegExp(sources.join("|"), hasFallback ? "g" : "y");
+    this.rule = this.#matchRules[0];
+    this.original = "";
   }
 
-  reset(offset: number) {
+  reset(offset: number, string: string) {
     this.#matchRegex.lastIndex = offset;
+    this.string = string;
   }
 
-  *matchAll(string: string): Generator<InternalToken<T>> {
-    for (const match of string.matchAll(this.#matchRegex)) {
-      yield this.#createTokenFromMatch(match);
+  next(): boolean {
+    const match = this.#matchRegex.exec(this.string);
+    if (match == null) return false;
+    let matchingGroup = 1;
+    while (match[matchingGroup] == null && matchingGroup <= match.length) {
+      matchingGroup++;
     }
-  }
-
-  #createTokenFromMatch(match: RegExpMatchArray): InternalToken<T> {
-    for (let i = 1; i < match.length; i++) {
-      const matchingGroup = match[i];
-      if (matchingGroup != null && match.index != null) {
-        const rule = this.#matchRules[i - 1];
-        return {
-          original: matchingGroup,
-          type: this.#matchTypes[i - 1],
-          offset: match.index,
-          rule,
-        };
-      }
-    }
-    throw new Error("Unexpected: Did not find token in matcher array");
+    this.offset = match.index ?? 0;
+    this.original = match[matchingGroup];
+    this.rule = this.#matchRules[matchingGroup - 1];
+    return true;
   }
 
   expectedTypesString(): string {
-    return this.#matchTypes.map((t) => `\`${t}\``).join(", ");
+    return this.#matchRules.map((rule) => `\`${rule.type}\``).join(", ");
   }
 
   toJson() {
