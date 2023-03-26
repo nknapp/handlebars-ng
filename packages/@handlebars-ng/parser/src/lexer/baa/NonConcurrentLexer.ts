@@ -6,7 +6,6 @@ import { ILexer, LexerSpec, LexerTypings, States, Token } from "./types";
 import { mapValues } from "./utils/mapValues";
 
 const done = { done: true, value: undefined } as const;
-
 export class NonConcurrentLexer<T extends LexerTypings> implements ILexer<T> {
   stateStack: StateStack<T>;
   offset = 0;
@@ -26,6 +25,7 @@ export class NonConcurrentLexer<T extends LexerTypings> implements ILexer<T> {
   reset(string: string): void {
     this.string = string;
     this.offset = 0;
+    this.pendingStateUpdate = null;
     this.stateStack.reset();
     this.tokenFactory.reset();
     this.#currentState.matchHandler.reset(this.offset);
@@ -68,7 +68,6 @@ export class NonConcurrentLexer<T extends LexerTypings> implements ILexer<T> {
     const match = matchHandler.exec(this.string);
     if (match == null) {
       if (fallback) {
-        this.pendingMatch = match;
         return this.#createFallbackToken(fallback, this.string.length);
       } else {
         return this.#currentState.errorHandler.createErrorToken(
@@ -107,14 +106,17 @@ export class NonConcurrentLexer<T extends LexerTypings> implements ILexer<T> {
 class StateStack<T extends LexerTypings> {
   stack: CompiledState<T>[];
   states: Record<States<T>, CompiledState<T>>;
+  current: CompiledState<T>;
 
   constructor(states: Record<States<T>, CompiledState<T>>) {
     this.states = states;
     this.stack = [this.states.main];
+    this.current = this.states.main;
   }
 
   reset() {
     this.stack = [this.states.main];
+    this.current = this.states.main;
   }
 
   update(rule: CompiledRule<T>): boolean {
@@ -125,10 +127,7 @@ class StateStack<T extends LexerTypings> {
     if (rule.pop) {
       this.stack.shift();
     }
+    this.current = this.stack[0];
     return true;
-  }
-
-  get current() {
-    return this.stack[0];
   }
 }

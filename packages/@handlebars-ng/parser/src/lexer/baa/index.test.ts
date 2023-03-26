@@ -130,12 +130,10 @@ describe.each(lexerImpl)("lexer (%s)", (LexerImpl) => {
         },
       },
     });
-    const tokens = lexer.lex("aa---aa");
-    expect(tokens.next().value).toEqual(token("A", "aa", "aa", "1:0", "1:2"));
-    expect(tokens.next().value).toEqual(
-      token("ERROR", "---aa", "---aa", "1:2", "1:7")
-    );
-    expect(tokens.next().done).toBe(true);
+    expectTokens(lexer, "aa---aa", [
+      token("A", "aa", "aa", "1:0", "1:2"),
+      token("ERROR", "---aa", "---aa", "1:2", "1:7"),
+    ]);
   });
 
   it("allows concurrent parsing", () => {
@@ -187,22 +185,6 @@ describe.each(lexerImpl)("lexer (%s)", (LexerImpl) => {
     expect(lexer.poolSize()).toEqual(1);
   });
 
-  it("resets a reused lexer properly", () => {
-    const lexer = createLexer({
-      main: {
-        A: { match: /a/ },
-        B: { match: /b/ },
-      },
-    });
-    for (let i = 0; i < 2; i++) {
-      const tokens = lexer.lex("ab");
-      expect([...tokens]).toEqual([
-        token("A", "a", "a", "1:0", "1:1"),
-        token("B", "b", "b", "1:1", "1:2"),
-      ]);
-    }
-  });
-
   it("changes state if a 'push' or 'pop' property is set.", () => {
     const lexer = createLexer({
       main: {
@@ -221,13 +203,38 @@ describe.each(lexerImpl)("lexer (%s)", (LexerImpl) => {
       },
     });
 
-    const tokens = lexer.lex("a(b)a");
-    expect([...tokens]).toEqual([
+    expectTokens(lexer, "a(b)a", [
       token("A", "a", "a", "1:0", "1:1"),
       token("OPEN", "(", "(", "1:1", "1:2"),
       token("B", "b", "b", "1:2", "1:3"),
       token("CLOSE", ")", ")", "1:3", "1:4"),
       token("A", "a", "a", "1:4", "1:5"),
+    ]);
+  });
+
+  it("'pop' at the end of the string", () => {
+    const lexer = createLexer({
+      main: {
+        A: { match: /a/ },
+        OPEN: {
+          match: /\(/,
+          push: "brackets",
+        },
+      },
+      brackets: {
+        B: { match: /b/ },
+        CLOSE: {
+          match: /\)/,
+          pop: 1,
+        },
+      },
+    });
+
+    expectTokens(lexer, "a(b)", [
+      token("A", "a", "a", "1:0", "1:1"),
+      token("OPEN", "(", "(", "1:1", "1:2"),
+      token("B", "b", "b", "1:2", "1:3"),
+      token("CLOSE", ")", ")", "1:3", "1:4"),
     ]);
   });
 
@@ -316,46 +323,17 @@ describe.each(lexerImpl)("lexer (%s)", (LexerImpl) => {
     ]);
   });
 
-  describe("can be used again", () => {
-    it("for multiple matching tokens", () => {
-      const lexer = createLexer({
-        main: {
-          A: { match: /a/ },
-          B: { match: /b/ },
-        },
-      });
-      const tokens1 = lexer.lex("ab");
-      expect([...tokens1]).toEqual([
-        token("A", "a", "a", "1:0", "1:1"),
-        token("B", "b", "b", "1:1", "1:2"),
-      ]);
-
-      const tokens2 = lexer.lex("ab");
-      expect([...tokens2]).toEqual([
-        token("A", "a", "a", "1:0", "1:1"),
-        token("B", "b", "b", "1:1", "1:2"),
-      ]);
+  it("fallback as last token", () => {
+    const lexer = createLexer({
+      main: {
+        A: { match: /a/ },
+        B: { fallback: true },
+      },
     });
-
-    it("when havin the fallback at the end tokens", () => {
-      const lexer = createLexer({
-        main: {
-          A: { match: /a/ },
-          B: { fallback: true },
-        },
-      });
-      const tokens1 = lexer.lex("ab");
-      expect([...tokens1]).toEqual([
-        token("A", "a", "a", "1:0", "1:1"),
-        token("B", "b", "b", "1:1", "1:2"),
-      ]);
-
-      const tokens2 = lexer.lex("ab");
-      expect([...tokens2]).toEqual([
-        token("A", "a", "a", "1:0", "1:1"),
-        token("B", "b", "b", "1:1", "1:2"),
-      ]);
-    });
+    expectTokens(lexer, "ab", [
+      token("A", "a", "a", "1:0", "1:1"),
+      token("B", "b", "b", "1:1", "1:2"),
+    ]);
   });
 
   function expectTokens<T extends LexerTypings>(
