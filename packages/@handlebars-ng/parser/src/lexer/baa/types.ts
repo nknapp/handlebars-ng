@@ -12,6 +12,7 @@ export type Rule<T extends LexerTypings> =
 
 export interface MatchRule<T extends LexerTypings> {
   match: RegExp;
+  lineBreaks?: boolean;
   lookaheadMatch?: RegExp;
   push?: States<T>;
   pop?: 1;

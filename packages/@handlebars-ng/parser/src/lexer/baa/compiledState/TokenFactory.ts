@@ -1,6 +1,7 @@
 import { Location } from "../../model";
-import { LexerTypings, Token, TokenTypes } from "../types";
+import { LexerTypings, Token } from "../types";
 import { endLocationMultiline } from "../utils/endLocationMultiline";
+import { CompiledRule } from "./CompiledRule";
 
 export class TokenFactory<T extends LexerTypings> {
   currentLocation: Location = { line: 1, column: 0 };
@@ -9,12 +10,18 @@ export class TokenFactory<T extends LexerTypings> {
     this.currentLocation = { line: 1, column: 0 };
   }
 
-  createToken(type: TokenTypes<T>, original: string, value: string): Token<T> {
+  createToken(
+    rule: CompiledRule<T>,
+    original: string,
+    value: string
+  ): Token<T> {
     const start = this.currentLocation;
-    const end = endLocationMultiline(start, original);
+    const end: Location = rule.lineBreaks
+      ? endLocationMultiline(start, original)
+      : { column: start.column + original.length, line: start.line };
     this.currentLocation = end;
     return {
-      type,
+      type: rule.type,
       original,
       value,
       start,

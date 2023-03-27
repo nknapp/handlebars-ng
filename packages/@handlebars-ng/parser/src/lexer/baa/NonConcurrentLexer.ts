@@ -17,7 +17,7 @@ export class NonConcurrentLexer<T extends LexerTypings> implements ILexer<T> {
   constructor(states: LexerSpec<T>) {
     const compiledStates = mapValues(
       states,
-      (spec, name) => new CompiledState(name, spec, this.tokenFactory)
+      (spec, name) => new CompiledState(name, spec)
     );
     this.stateStack = new StateStack<T>(compiledStates);
   }
@@ -63,38 +63,42 @@ export class NonConcurrentLexer<T extends LexerTypings> implements ILexer<T> {
     }
 
     const matchHandler = this.#currentState.matchHandler;
-    const fallback = this.#currentState.fallback;
+    const fallbackRule = this.#currentState.fallbackRule;
+    const errorRule = this.#currentState.errorRule;
 
     const match = matchHandler.exec(this.string);
     if (match == null) {
-      if (fallback) {
-        return this.#createFallbackToken(fallback, this.string.length);
-      } else {
-        return this.#currentState.errorHandler.createErrorToken(
-          this.string,
-          this.offset
-        );
-      }
+      const nextRule = fallbackRule ?? errorRule ?? this.throwSyntaxError();
+      return this.#createTokenUpTo(nextRule, this.string.length);
     }
 
-    if (matchHandler.offset > this.offset && fallback != null) {
+    if (matchHandler.offset > this.offset && fallbackRule != null) {
       this.pendingMatch = match;
-      return this.#createFallbackToken(fallback, matchHandler.offset);
+      return this.#createTokenUpTo(fallbackRule, matchHandler.offset);
     }
     return this.#createMatchToken(match);
   }
 
-  #createFallbackToken(fallback: CompiledRule<T>, endOffset: number): Token<T> {
+  #createTokenUpTo(fallback: CompiledRule<T>, endOffset: number): Token<T> {
     const original = this.string.substring(this.offset, endOffset);
-    return this.tokenFactory.createToken(fallback.type, original, original);
+    return this.tokenFactory.createToken(fallback, original, original);
   }
 
   #createMatchToken(match: Match<T>): Token<T> {
     this.pendingStateUpdate = match.rule;
     return this.tokenFactory.createToken(
-      match.rule.type,
+      match.rule,
       match.text,
-      match.rule.value ? match.rule.value(match.text) : match.text
+      match.rule.value != null ? match.rule.value(match.text) : match.text
+    );
+  }
+
+  private throwSyntaxError(): never {
+    const offset = this.offset;
+    const found = this.string[offset];
+    const expectedTypes = this.#currentState.matchHandler.expectedTypesString();
+    throw new Error(
+      `Syntax error at 1:${offset}, expected one of ${expectedTypes} but got '${found}'`
     );
   }
 

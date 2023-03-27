@@ -23,14 +23,15 @@ export class MatchHandler<T extends LexerTypings> {
         value: rule.value,
         pop: rule.pop,
         push: rule.push,
+        lineBreaks: rule.lineBreaks ?? false,
       };
     });
     const regexes = rules.map(({ rule }) => {
       return (
         "(" +
         rule.match.source +
-        (rule.lookaheadMatch ? `(?=${rule.lookaheadMatch.source})` : "") +
-        ")"
+        ")" +
+        (rule.lookaheadMatch ? `(?=${rule.lookaheadMatch.source})` : "")
       );
     });
     const sources = regexes.map((regex) => `${regex}`);

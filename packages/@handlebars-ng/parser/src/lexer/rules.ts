@@ -22,7 +22,7 @@ export function createHbsLexerSpec(): LexerSpec<HbsLexerTypes> {
       lookaheadMatch: LITERAL_LOOKAHEAD,
     },
     ID: {
-      match: /[^\n \t!"#%&'()*+,./;<=>@[\\\]^`{|}~]+/,
+      match: /[^\n \t!"#%&'()*+,./;<=>@[\\\]^`{|}~]+?/,
       lookaheadMatch: LOOK_AHEAD,
     },
     SQUARE_WRAPPED_ID: {
@@ -33,11 +33,11 @@ export function createHbsLexerSpec(): LexerSpec<HbsLexerTypes> {
     DOT: { match: /\./ },
     SLASH: { match: /\// },
     STRING_LITERAL_DOUBLE_QUOTE: {
-      match: /"[^"]+"/,
+      match: /"[^"]+?"/,
       value: (text) => text.slice(1, -1),
     },
     STRING_LITERAL_SINGLE_QUOTE: {
-      match: /'[^']+'/,
+      match: /'[^']+?'/,
       value: (text) => text.slice(1, -1),
     },
     error: { error: true },

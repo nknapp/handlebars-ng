@@ -5,4 +5,5 @@ export interface CompiledRule<T extends LexerTypings> {
   value?: (original: string) => string;
   push?: States<T>;
   pop?: 1;
+  lineBreaks: boolean;
 }

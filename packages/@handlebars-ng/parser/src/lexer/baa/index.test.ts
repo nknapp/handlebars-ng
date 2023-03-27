@@ -273,6 +273,7 @@ describe.each(lexerImpl)("lexer (%s)", (LexerImpl) => {
         },
         DEFAULT: {
           fallback: true,
+          lineBreaks: true,
         },
       },
     });
@@ -280,6 +281,25 @@ describe.each(lexerImpl)("lexer (%s)", (LexerImpl) => {
       token("A", "aa", "aa", "1:0", "1:2"),
       token("DEFAULT", "\n", "\n", "1:2", "2:0"),
       token("A", "aa", "aa", "2:0", "2:2"),
+    ]);
+  });
+
+  it("identifies line-breaks in the match rule", () => {
+    const lexer = createLexer({
+      main: {
+        A: {
+          match: /a/,
+        },
+        NEWLINE: {
+          match: /\n/,
+          lineBreaks: true,
+        },
+      },
+    });
+    expectTokens(lexer, "a\na", [
+      token("A", "a", "a", "1:0", "1:1"),
+      token("NEWLINE", "\n", "\n", "1:1", "2:0"),
+      token("A", "a", "a", "2:0", "2:1"),
     ]);
   });
 
