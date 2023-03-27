@@ -28,9 +28,7 @@ export class MatchHandler<T extends LexerTypings> {
     });
     const regexes = rules.map(({ rule }) => {
       return (
-        "(" +
-        rule.match.source +
-        ")" +
+        `(${rule.match.source})` +
         (rule.lookaheadMatch ? `(?=${rule.lookaheadMatch.source})` : "")
       );
     });
