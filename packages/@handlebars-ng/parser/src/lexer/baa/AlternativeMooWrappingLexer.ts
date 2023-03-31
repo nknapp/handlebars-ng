@@ -23,9 +23,11 @@ export class AlternativeMooWrappingLexer<T extends LexerTypings>
         stateSpec as Record<string, Rule<T>>
       )) {
         if (isMatchRule(rule) && rule.lookaheadMatch) {
-          rule.match = new RegExp(
-            rule.match.source + `(?=${rule.lookaheadMatch.source})`
-          );
+          if (rule.match instanceof RegExp) {
+            rule.match = new RegExp(
+              rule.match.source + `(?=${rule.lookaheadMatch.source})`
+            );
+          }
         }
       }
     }

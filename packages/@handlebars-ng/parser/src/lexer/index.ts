@@ -11,7 +11,7 @@ export type { Location } from "./baa";
 export type { TokenType, MustacheOpenType, MustacheCloseType } from "./rules";
 export type Token = BaaToken<HbsLexerTypes>;
 
-export function createHbsLexer(impl: "moo" | "hbs" = "moo") {
+export function createHbsLexer(impl: "moo" | "hbs" = "hbs") {
   return new ConcurrentLexer(
     impl === "moo"
       ? () => new AlternativeMooWrappingLexer(createHbsLexerSpec())

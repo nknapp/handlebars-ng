@@ -48,7 +48,26 @@ describe.each(lexerImpl)("lexer (%s)", (LexerImpl) => {
     ]);
   });
 
-  it.only("allows fallback tokens", () => {
+  it("allows string-tokens", () => {
+    const lexer = createLexer({
+      main: {
+        A: {
+          match: "a",
+        },
+        B: {
+          match: "b",
+        },
+      },
+    });
+    expectTokens(lexer, "abab", [
+      token("A", "a", "a", "1:0", "1:1"),
+      token("B", "b", "b", "1:1", "1:2"),
+      token("A", "a", "a", "1:2", "1:3"),
+      token("B", "b", "b", "1:3", "1:4"),
+    ]);
+  });
+
+  it("allows fallback tokens", () => {
     const lexer = createLexer({
       main: {
         A: {

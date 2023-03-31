@@ -9,7 +9,7 @@ export type Rule<T extends LexerTypings> =
   | ErrorRule;
 
 export interface MatchRule<T extends LexerTypings> {
-  match: RegExp;
+  match: RegExp | string;
   lineBreaks?: boolean;
   lookaheadMatch?: RegExp;
   push?: States<T>;
