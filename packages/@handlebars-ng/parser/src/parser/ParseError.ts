@@ -1,4 +1,4 @@
-import { Location } from "../lexer/model";
+import { Location } from "../lexer";
 
 export class ParseError extends Error {
   location: Location;

@@ -1,4 +1,4 @@
-import { Location } from "../../model";
+import { Location } from "../types";
 
 export function endLocationMultiline(
   startPosition: Location,

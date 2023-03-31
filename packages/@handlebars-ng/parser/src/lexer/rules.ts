@@ -1,8 +1,23 @@
-import { LexerSpec, Token as BaaToken } from "./baa";
-import { StateSpec } from "./baa/types";
-import { TokenType } from "./model";
+import { LexerSpec, Token as BaaToken, StateSpec } from "./baa";
 
-export * from "./model";
+export type MustacheOpenType = "OPEN_UNESCAPED" | "OPEN";
+export type MustacheCloseType = "CLOSE_UNESCAPED" | "CLOSE";
+export type TokenType =
+  | "CONTENT"
+  | "NEWLLINE"
+  | "SPACE"
+  | "ID"
+  | "SQUARE_WRAPPED_ID"
+  | "ESCAPED_MUSTACHE"
+  | "STRIP"
+  | "DOT"
+  | "SLASH"
+  | "STRING_LITERAL_DOUBLE_QUOTE"
+  | "STRING_LITERAL_SINGLE_QUOTE"
+  | "NUMBER"
+  | MustacheOpenType
+  | MustacheCloseType
+  | "error";
 
 export interface HbsLexerTypes {
   state: "main" | "mustache" | "unescapedMustache";
@@ -26,7 +41,7 @@ export function createHbsLexerSpec(): LexerSpec<HbsLexerTypes> {
       lookaheadMatch: LOOK_AHEAD,
     },
     SQUARE_WRAPPED_ID: {
-      match: /\[[^[]*?\]/,
+      match: /\[[^[]*?]/,
       value: (text) => text.slice(1, -1),
     },
     STRIP: { match: /~/ },
@@ -41,7 +56,7 @@ export function createHbsLexerSpec(): LexerSpec<HbsLexerTypes> {
       value: (text) => text.slice(1, -1),
     },
     error: { error: true },
-  };
+  } as const;
 
   return {
     main: {

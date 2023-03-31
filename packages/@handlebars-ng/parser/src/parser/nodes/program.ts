@@ -13,6 +13,6 @@ export const program: ParserContext["program"] = (context) => {
     type: "Program",
     strip: {},
     body,
-    loc: context.tokens.loc(firstToken, context.tokens.currentToken),
+    loc: context.tokens.location(firstToken, context.tokens.currentToken),
   };
 };

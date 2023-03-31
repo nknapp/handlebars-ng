@@ -51,7 +51,7 @@ export class NonConcurrentLexer<T extends LexerTypings> implements ILexer<T> {
     if (this.pendingMatch != null) {
       const match = this.pendingMatch;
       this.pendingMatch = null;
-      return this.#createMatchToken(match);
+      return this.#createTokenFromMatch(match);
     }
 
     if (this.offset >= this.string.length) return null;
@@ -76,21 +76,17 @@ export class NonConcurrentLexer<T extends LexerTypings> implements ILexer<T> {
       this.pendingMatch = match;
       return this.#createTokenUpTo(fallbackRule, matchHandler.offset);
     }
-    return this.#createMatchToken(match);
+    return this.#createTokenFromMatch(match);
   }
 
   #createTokenUpTo(fallback: CompiledRule<T>, endOffset: number): Token<T> {
     const original = this.string.substring(this.offset, endOffset);
-    return this.tokenFactory.createToken(fallback, original, original);
+    return this.tokenFactory.createToken(fallback, original);
   }
 
-  #createMatchToken(match: Match<T>): Token<T> {
+  #createTokenFromMatch(match: Match<T>): Token<T> {
     this.pendingStateUpdate = match.rule;
-    return this.tokenFactory.createToken(
-      match.rule,
-      match.text,
-      match.rule.value != null ? match.rule.value(match.text) : match.text
-    );
+    return this.tokenFactory.createToken(match.rule, match.text);
   }
 
   private throwSyntaxError(): never {

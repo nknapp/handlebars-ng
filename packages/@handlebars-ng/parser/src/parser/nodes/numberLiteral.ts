@@ -1,4 +1,4 @@
-import { tok } from "../../lexer/rules";
+import { tok } from "../../lexer";
 import { ParserContext } from "../ParserContext";
 
 const numberLiteralToken = tok("NUMBER");
@@ -9,6 +9,6 @@ export const numberLiteral: ParserContext["numberLiteral"] = (context) => {
     type: "NumberLiteral",
     original: token.original,
     value: parseFloat(token.value),
-    loc: context.tokens.loc(token, token),
+    loc: context.tokens.location(token, token),
   };
 };

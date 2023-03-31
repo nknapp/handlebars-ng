@@ -1,5 +1,3 @@
-import { Location } from "../model";
-
 export interface LexerTypings {
   state: string;
   tokenType: string;
@@ -36,18 +34,6 @@ export interface Token<T extends LexerTypings> {
   end: Location;
 }
 
-export type TokenWithoutLocation<T extends LexerTypings> = Omit<
-  Token<T>,
-  "start" | "end"
->;
-
-export interface InternalToken<T extends LexerTypings> {
-  type: TokenTypes<T>;
-  original: string;
-  offset: number;
-  rule: MatchRule<T>;
-}
-
 export type States<T extends LexerTypings> = T["state"] | "main";
 export type TokenTypes<T extends LexerTypings> = T["tokenType"];
 
@@ -64,3 +50,8 @@ export interface ILexer<T extends LexerTypings> {
 export type LexerFactory<T extends LexerTypings> = (
   states: LexerSpec<T>
 ) => ILexer<T>;
+
+export interface Location {
+  column: number;
+  line: number;
+}

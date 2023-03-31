@@ -1,9 +1,4 @@
-import {
-  MustacheCloseType,
-  MustacheOpenType,
-  tok,
-  TokenType,
-} from "../../lexer/rules";
+import { MustacheCloseType, MustacheOpenType, tok } from "../../lexer";
 import { ParserContext } from "../ParserContext";
 
 export function mustacheStatement(
@@ -23,7 +18,7 @@ export function mustacheStatement(
     const params = [];
     while (context.tokens.lookAhead?.type === "SPACE") {
       context.tokens.ignore(TOK_SPACE);
-      if (!TOK_PARAM_END.has(context.tokens.lookAhead.type as TokenType)) {
+      if (!TOK_PARAM_END.has(context.tokens.lookAhead.type)) {
         params.push(context.expression(context));
       }
     }
@@ -37,7 +32,7 @@ export function mustacheStatement(
       escaped,
       params,
       strip: { close: stripRight != null, open: stripLeft != null },
-      loc: context.tokens.loc(open, close),
+      loc: context.tokens.location(open, close),
     };
   };
 }

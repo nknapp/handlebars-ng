@@ -1,4 +1,4 @@
-import { tok } from "../../lexer/rules";
+import { tok } from "../../lexer";
 import { ParserContext } from "../ParserContext";
 
 const TOK_CONTENT_ESCAPED_MUSTACHE = tok("CONTENT", "ESCAPED_MUSTACHE");
@@ -14,7 +14,7 @@ export const contentStatement: ParserContext["content"] = (context) => {
   return {
     type: "ContentStatement",
     original: combinedOriginals,
-    loc: context.tokens.loc(firstToken, lastToken),
+    loc: context.tokens.location(firstToken, lastToken),
     value: combinedValues,
   };
 };
