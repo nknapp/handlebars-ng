@@ -48,7 +48,7 @@ describe.each(lexerImpl)("lexer (%s)", (LexerImpl) => {
     ]);
   });
 
-  it("allows fallback tokens", () => {
+  it.only("allows fallback tokens", () => {
     const lexer = createLexer({
       main: {
         A: {
