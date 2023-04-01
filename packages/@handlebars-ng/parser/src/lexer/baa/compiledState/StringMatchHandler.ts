@@ -22,6 +22,7 @@ export class StringMatchHandler<T extends LexerTypings>
         value: rule.value,
         pop: rule.pop,
         push: rule.push,
+        next: rule.next,
         lineBreaks: rule.lineBreaks ?? false,
       });
       if (typeof rule.match !== "string")

@@ -82,6 +82,9 @@ class StateStack<T extends LexerTypings> {
     if (rule.pop) {
       this.stack.shift();
     }
+    if (rule.next) {
+      this.stack[0] = this.states[rule.next];
+    }
     this.current = this.stack[0];
     return true;
   }

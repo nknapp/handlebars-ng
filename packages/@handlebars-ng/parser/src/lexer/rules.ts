@@ -60,22 +60,22 @@ export function createHbsLexerSpec(): LexerSpec<HbsLexerTypes> {
 
   return {
     main: {
-      OPEN_UNESCAPED: { match: "{{{", push: "unescapedMustache" },
-      OPEN: { match: "{{", push: "mustache" },
+      OPEN_UNESCAPED: { match: "{{{", next: "unescapedMustache" },
+      OPEN: { match: "{{", next: "mustache" },
       ESCAPED_MUSTACHE: { match: "\\{{", value: (text) => text.slice(1) },
       CONTENT: { fallback: true, lineBreaks: true },
     },
     mustache: {
       CLOSE: {
         match: /}}/,
-        pop: 1,
+        next: "main",
       },
       ...mustacheRules,
     },
     unescapedMustache: {
       CLOSE_UNESCAPED: {
         match: /}}}/,
-        pop: 1,
+        next: "main",
       },
       ...mustacheRules,
     },

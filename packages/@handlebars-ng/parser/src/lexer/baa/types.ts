@@ -14,6 +14,7 @@ export interface MatchRule<T extends LexerTypings> {
   lookaheadMatch?: RegExp;
   push?: States<T>;
   pop?: 1;
+  next?: States<T>;
   value?: (original: string) => string;
 }
 

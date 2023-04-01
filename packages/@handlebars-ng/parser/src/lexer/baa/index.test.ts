@@ -252,6 +252,33 @@ describe.each(lexerImpl)("lexer (%s)", (LexerImpl) => {
     ]);
   });
 
+  it("changes state if a 'next' property is set.", () => {
+    const lexer = createLexer({
+      main: {
+        A: { match: /a/ },
+        OPEN: {
+          match: /\(/,
+          next: "brackets",
+        },
+      },
+      brackets: {
+        B: { match: /b/ },
+        CLOSE: {
+          match: /\)/,
+          next: "main",
+        },
+      },
+    });
+
+    expectTokens(lexer, "a(b)a", [
+      token("A", "a", "a", "1:0", "1:1"),
+      token("OPEN", "(", "(", "1:1", "1:2"),
+      token("B", "b", "b", "1:2", "1:3"),
+      token("CLOSE", ")", ")", "1:3", "1:4"),
+      token("A", "a", "a", "1:4", "1:5"),
+    ]);
+  });
+
   it("'pop' at the end of the string", () => {
     const lexer = createLexer({
       main: {
