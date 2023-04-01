@@ -8,7 +8,6 @@ export class RegexMatchHandler<T extends LexerTypings>
   readonly #matchRegex: RegExp;
   readonly #matchRules: CompiledRule<T>[];
   offset = 0;
-
   constructor(rules: RuleWithType<T, MatchRule<T>>[], hasFallback: boolean) {
     this.#matchRules = rules.map(({ rule, type }) => {
       return {

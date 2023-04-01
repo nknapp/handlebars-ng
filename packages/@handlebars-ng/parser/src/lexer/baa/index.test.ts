@@ -67,6 +67,27 @@ describe.each(lexerImpl)("lexer (%s)", (LexerImpl) => {
     ]);
   });
 
+  it("allows string-tokens with common chars and fallback", () => {
+    const lexer = createLexer({
+      main: {
+        AB: {
+          match: "ab",
+        },
+        CA: {
+          match: "ca",
+        },
+        FALLBACK: {
+          fallback: true,
+        },
+      },
+    });
+    expectTokens(lexer, "abfffca", [
+      token("AB", "ab", "ab", "1:0", "1:2"),
+      token("FALLBACK", "fff", "fff", "1:2", "1:5"),
+      token("CA", "ca", "ca", "1:5", "1:7"),
+    ]);
+  });
+
   it("allows fallback tokens", () => {
     const lexer = createLexer({
       main: {

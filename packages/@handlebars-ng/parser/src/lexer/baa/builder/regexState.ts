@@ -1,7 +1,7 @@
 import { LexerTypings, TokenTypes } from "../types";
 import { CompiledState } from "../compiledState/CompiledState";
 import { CompiledRule } from "../compiledState/CompiledRule";
-import { MatchHandler } from "../compiledState/MatchHandler";
+import { RegexMatchHandler } from "../compiledState/RegexMatchHandler";
 
 export interface BuilderFallbackRule<T extends LexerTypings> {
   type: TokenTypes<T>;
@@ -25,6 +25,6 @@ export function regexState<T extends LexerTypings>(
     name,
     fallbackRule,
     null,
-    new MatchHandler([], false)
+    new RegexMatchHandler([], false)
   );
 }
