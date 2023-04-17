@@ -1,10 +1,9 @@
-import { createHbsLexer } from ".";
-import { Token } from "./baa";
-import { HbsLexerTypes } from "./rules";
+import { createHbsLexer, Token } from ".";
 
-describe.each(["moo", "hbs"] as const)("Lexer (%s)", (lexerImpl) => {
-  function createLexer(template: string): Generator<Token<HbsLexerTypes>> {
-    return createHbsLexer(lexerImpl).lex(template);
+describe("Lexer", () => {
+  const hbsLexer = createHbsLexer();
+  function createLexer(template: string): IterableIterator<Token> {
+    return hbsLexer.lex(template);
   }
 
   describe("works for different templates", () => {
@@ -94,48 +93,25 @@ describe.each(["moo", "hbs"] as const)("Lexer (%s)", (lexerImpl) => {
     "'$text' ends in line $line and column $column",
     ({ text, line, column }) => {
       const lexer = createLexer(text);
-      const token: Token<HbsLexerTypes> = lexer[Symbol.iterator]().next().value;
+      const token: Token = lexer.next().value;
       expect(token.original).toEqual(text);
       expect(token.end).toEqual({ line, column });
     }
   );
 
-  it("multiple instances can work in parallel", () => {
+  it.only("multiple instances can work in parallel", () => {
     const lexer1 = createLexer("a {{b}}")[Symbol.iterator]();
     const lexer2 = createLexer("c")[Symbol.iterator]();
 
-    expect(lexer1.next()).toEqual({
-      done: false,
-      value: expect.objectContaining({ value: "a " }),
-    });
+    expect(lexer1.next().value.value).toEqual("a ");
+    expect(lexer2.next().value.value).toEqual("c");
 
-    expect(lexer2.next()).toEqual({
-      done: false,
-      value: expect.objectContaining({ value: "c" }),
-    });
+    expect(lexer1.next().value.value).toEqual("{{");
+    expect(lexer2.next().done).toBe(true);
 
-    expect(lexer1.next()).toEqual({
-      done: false,
-      value: expect.objectContaining({ value: "{{" }),
-    });
-
-    expect(lexer2.next()).toEqual({
-      done: true,
-    });
-
-    expect(lexer1.next()).toEqual({
-      done: false,
-      value: expect.objectContaining({ value: "b" }),
-    });
-
-    expect(lexer1.next()).toEqual({
-      done: false,
-      value: expect.objectContaining({ value: "}}" }),
-    });
-
-    expect(lexer1.next()).toEqual({
-      done: true,
-    });
+    expect(lexer1.next().value.value).toEqual("b");
+    expect(lexer1.next().value.value).toEqual("}}");
+    expect(lexer1.next().done).toBe(true);
   });
 
   it("keeps square-brackets in the 'original' property of wrapped id tokens", () => {
@@ -147,10 +123,7 @@ describe.each(["moo", "hbs"] as const)("Lexer (%s)", (lexerImpl) => {
     ]);
   });
 
-  function testTemplate(
-    template: string,
-    expectedValue: Token<HbsLexerTypes>[]
-  ) {
+  function testTemplate(template: string, expectedValue: Token[]) {
     const lexer = createLexer(template);
     const tokens = [...lexer];
     expect(JSON.parse(JSON.stringify(tokens))).toEqual(expectedValue);

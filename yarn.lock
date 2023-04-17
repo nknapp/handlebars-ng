@@ -2034,6 +2034,11 @@ axios@^1.0.0:
     form-data "^4.0.0"
     proxy-from-env "^1.1.0"
 
+baa-lexer@0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/baa-lexer/-/baa-lexer-0.2.2.tgz#6508e6e0e3fda1f7890e836f3dd04e4160420f0a"
+  integrity sha512-AKzDJ7RS9o1S1p8cf5Bfk+EsQfF5rIfWZbUK+pE7SgVyV69C4v4YdlPOAcBE00C85KC7jh8N/hDTVWDrS+8gEw==
+
 babel-plugin-jsx-dom-expressions@^0.35.19:
   version "0.35.19"
   resolved "https://registry.yarnpkg.com/babel-plugin-jsx-dom-expressions/-/babel-plugin-jsx-dom-expressions-0.35.19.tgz#9c2db7bbf173afab70acfa74335a328186e246ea"

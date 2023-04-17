@@ -22,7 +22,7 @@
     "site": "lerna run --scope handlebars-ng.knappi.org",
     "---- chores ----": "",
     "prepare": "husky install",
-    "deps": "yarn upgrade-interactive"
+    "deps": "yarn upgrade-interactive --latest"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "5.56.0",
