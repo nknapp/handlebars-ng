@@ -99,7 +99,7 @@ describe("Lexer", () => {
     }
   );
 
-  it.only("multiple instances can work in parallel", () => {
+  it("multiple instances can work in parallel", () => {
     const lexer1 = createLexer("a {{b}}")[Symbol.iterator]();
     const lexer2 = createLexer("c")[Symbol.iterator]();
 
