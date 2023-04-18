@@ -26,9 +26,9 @@
   "devDependencies": {
     "@handlebars-ng/common-dev": "0.0.1",
     "@handlebars-ng/eslint-plugin": "0.0.1",
-    "concurrently": "7.6.0",
-    "typescript": "5.0.2",
+    "concurrently": "8.0.1",
+    "typescript": "5.0.4",
     "vite": "4.2.1",
-    "vitest": "0.29.7"
+    "vitest": "0.30.1"
   }
 }

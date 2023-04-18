@@ -4,7 +4,7 @@ module.exports = {
   parserOptions: {
     sourceType: "module",
   },
-  plugins: ["@typescript-eslint/eslint-plugin"],
+  plugins: ["@typescript-eslint/eslint-plugin", "vitest"],
 
   extends: [
     "eslint:recommended",
@@ -32,6 +32,8 @@ module.exports = {
         ],
       },
     ],
+    "vitest/no-focused-tests": "error",
+    "vitest/no-disabled-tests": "error",
   },
   overrides: [
     {

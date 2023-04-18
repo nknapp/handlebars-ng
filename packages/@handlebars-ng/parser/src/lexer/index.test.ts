@@ -103,14 +103,14 @@ describe("Lexer", () => {
     const lexer1 = createLexer("a {{b}}")[Symbol.iterator]();
     const lexer2 = createLexer("c")[Symbol.iterator]();
 
-    expect(lexer1.next().value.value).toEqual("a ");
-    expect(lexer2.next().value.value).toEqual("c");
+    expect(lexer1.next().value.value).toBe("a ");
+    expect(lexer2.next().value.value).toBe("c");
 
-    expect(lexer1.next().value.value).toEqual("{{");
+    expect(lexer1.next().value.value).toBe("{{");
     expect(lexer2.next().done).toBe(true);
 
-    expect(lexer1.next().value.value).toEqual("b");
-    expect(lexer1.next().value.value).toEqual("}}");
+    expect(lexer1.next().value.value).toBe("b");
+    expect(lexer1.next().value.value).toBe("}}");
     expect(lexer1.next().done).toBe(true);
   });
 
