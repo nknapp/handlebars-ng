@@ -36,7 +36,7 @@
     "assemblyscript": "0.27.2",
     "handlebars": "4.7.7",
     "typescript": "5.0.4",
-    "vite": "4.2.1",
+    "vite": "4.3.1",
     "vite-plugin-dts": "2.3.0",
     "vitest": "0.30.1"
   },
