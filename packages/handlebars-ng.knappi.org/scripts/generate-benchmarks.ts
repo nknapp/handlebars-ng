@@ -9,7 +9,7 @@ import {
   TestBench,
   tests,
 } from "@handlebars-ng/benchmarks";
-import { parse } from "@handlebars-ng/parser";
+import { HandlebarsParser } from "@handlebars-ng/parser";
 import { HandlebarsNgRunner } from "@handlebars-ng/runner";
 import mkdirp from "make-dir";
 import path from "path";
@@ -19,8 +19,9 @@ const force = import.meta.env.VITE_FORCE === "true";
 const ngParser: ObjectUnderTest = {
   name: "ng-parser",
   testFn(test) {
+    const parser = new HandlebarsParser();
     return () => {
-      parse(test.template);
+      parser.parse(test.template);
     };
   },
 };
@@ -28,7 +29,8 @@ const ngParser: ObjectUnderTest = {
 const ngRunner: ObjectUnderTest = {
   name: "ng-runner",
   testFn(test) {
-    const ast = parse(test.template);
+    const parser = new HandlebarsParser();
+    const ast = parser.parse(test.template);
     const runner = new HandlebarsNgRunner();
     const compiledTemplate = runner.compile(ast);
     return () => {

@@ -5,13 +5,14 @@ import {
   originalHandlebars,
   tests,
 } from "@handlebars-ng/benchmarks";
-import { parse } from "@handlebars-ng/parser";
+import { HandlebarsParser } from "@handlebars-ng/parser";
 import { HandlebarsNgRunner } from ".";
 
+const parser = new HandlebarsParser();
 const ngRunner: ObjectUnderTest = {
   name: "ng runner",
   testFn(test) {
-    const ast = parse(test.template);
+    const ast = parser.parse(test.template);
     const instance = new HandlebarsNgRunner();
     const compiledTemplate = instance.compile(ast);
     return () => {
