@@ -15,6 +15,8 @@ export const expression: ParserContext["expression"] = (context) => {
       return context.stringLiteral(context);
     case "NUMBER":
       return context.numberLiteral(context);
+    case "BOOLEAN":
+      return context.booleanLiteral(context);
   }
 
   throw new Error(`Unexpected token: '${lookAhead.type}'`);

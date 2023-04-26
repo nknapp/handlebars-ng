@@ -2,6 +2,26 @@
   "$ref": "#/definitions/Program",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
+    "BooleanLiteral": {
+      "additionalProperties": false,
+      "properties": {
+        "loc": {
+          "$ref": "#/definitions/SourceLocation"
+        },
+        "original": {
+          "type": "string"
+        },
+        "type": {
+          "const": "BooleanLiteral",
+          "type": "string"
+        },
+        "value": {
+          "type": "boolean"
+        }
+      },
+      "required": ["loc", "original", "type", "value"],
+      "type": "object"
+    },
     "ContentStatement": {
       "additionalProperties": false,
       "properties": {
@@ -39,6 +59,9 @@
         },
         {
           "$ref": "#/definitions/NumberLiteral"
+        },
+        {
+          "$ref": "#/definitions/BooleanLiteral"
         }
       ]
     },

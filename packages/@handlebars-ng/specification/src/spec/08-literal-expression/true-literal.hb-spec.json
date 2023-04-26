@@ -1,0 +1,127 @@
+{
+  "$schema": "../schema/testcase.json",
+  "type": "success",
+  "description": "The literal 'true' is passed as boolean to helpers",
+  "template": "{{if_then_else true 'yes' 'no'}}",
+  "helpers": { "if_then_else": "if_then_else" },
+  "input": {},
+  "output": "yes",
+  "ast": {
+    "type": "Program",
+    "body": [
+      {
+        "type": "MustacheStatement",
+        "escaped": true,
+        "params": [
+          {
+            "type": "BooleanLiteral",
+            "value": true,
+            "original": "true",
+            "loc": {
+              "start": { "line": 1, "column": 15 },
+              "end": { "line": 1, "column": 19 }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "yes",
+            "original": "'yes'",
+            "loc": {
+              "start": { "line": 1, "column": 20 },
+              "end": { "line": 1, "column": 25 }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "no",
+            "original": "'no'",
+            "loc": {
+              "start": { "line": 1, "column": 26 },
+              "end": { "line": 1, "column": 30 }
+            }
+          }
+        ],
+        "path": {
+          "type": "PathExpression",
+          "original": "if_then_else",
+          "data": false,
+          "depth": 0,
+          "parts": ["if_then_else"],
+          "loc": {
+            "start": { "line": 1, "column": 2 },
+            "end": { "line": 1, "column": 14 }
+          }
+        },
+        "strip": { "open": false, "close": false },
+        "loc": {
+          "start": { "line": 1, "column": 0 },
+          "end": { "line": 1, "column": 32 }
+        }
+      }
+    ],
+    "strip": {},
+    "loc": {
+      "start": { "line": 1, "column": 0 },
+      "end": { "line": 1, "column": 32 }
+    }
+  },
+  "originalAst": {
+    "type": "Program",
+    "body": [
+      {
+        "type": "MustacheStatement",
+        "escaped": true,
+        "params": [
+          {
+            "type": "BooleanLiteral",
+            "value": true,
+            "original": true,
+            "loc": {
+              "start": { "line": 1, "column": 15 },
+              "end": { "line": 1, "column": 19 }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "yes",
+            "original": "yes",
+            "loc": {
+              "start": { "line": 1, "column": 20 },
+              "end": { "line": 1, "column": 25 }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "no",
+            "original": "no",
+            "loc": {
+              "start": { "line": 1, "column": 26 },
+              "end": { "line": 1, "column": 30 }
+            }
+          }
+        ],
+        "path": {
+          "type": "PathExpression",
+          "original": "if_then_else",
+          "data": false,
+          "depth": 0,
+          "parts": ["if_then_else"],
+          "loc": {
+            "start": { "line": 1, "column": 2 },
+            "end": { "line": 1, "column": 14 }
+          }
+        },
+        "strip": { "open": false, "close": false },
+        "loc": {
+          "start": { "line": 1, "column": 0 },
+          "end": { "line": 1, "column": 32 }
+        }
+      }
+    ],
+    "strip": {},
+    "loc": {
+      "start": { "line": 1, "column": 0 },
+      "end": { "line": 1, "column": 32 }
+    }
+  }
+}
