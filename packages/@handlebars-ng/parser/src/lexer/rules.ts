@@ -15,6 +15,7 @@ export type TokenType =
   | "STRING_LITERAL_DOUBLE_QUOTE"
   | "STRING_LITERAL_SINGLE_QUOTE"
   | "NUMBER"
+  | "BOOLEAN"
   | MustacheOpenType
   | MustacheCloseType
   | "error";
@@ -34,6 +35,9 @@ export function createHbsLexerSpec(): MooStates<HbsLexerTypes> {
     SPACE: { match: /[ \t\n]/, lineBreaks: true },
     NUMBER: {
       match: withLookAhead(/-?\d+(?:\.\d+)?/, LITERAL_LOOKAHEAD),
+    },
+    BOOLEAN: {
+      match: withLookAhead(/true|false/, LITERAL_LOOKAHEAD),
     },
     ID: {
       match: withLookAhead(

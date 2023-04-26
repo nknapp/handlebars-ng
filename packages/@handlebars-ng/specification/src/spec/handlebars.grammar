@@ -75,6 +75,7 @@ MustacheParameter ::
 Literal ::
     StringLiteral
     NumberLiteral
+    BooleanLiteral
 
 StringLiteral ::
     `"` AnythingExceptDoubleQuote `"`
@@ -98,6 +99,9 @@ Digits ::
 Digit :: one of
     `0` `1` `2` `3` `4` `5` `6` `7` `8` `9`
 
-
 Fraction ::
     `.` Digits
+
+BooleanLiteral :: one of
+    `true` `false`
+

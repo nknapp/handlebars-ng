@@ -1,4 +1,5 @@
 import {
+  BooleanLiteral,
   ContentStatement,
   Expression,
   MustacheStatement,
@@ -22,4 +23,5 @@ export interface ParserContext {
   expression(context: ParserContext): Expression;
   stringLiteral(context: ParserContext): StringLiteral;
   numberLiteral(context: ParserContext): NumberLiteral;
+  booleanLiteral(context: ParserContext): BooleanLiteral;
 }

@@ -2,6 +2,26 @@
   "$ref": "#/definitions/HandlebarsTest",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
+    "BooleanLiteral": {
+      "additionalProperties": false,
+      "properties": {
+        "loc": {
+          "$ref": "#/definitions/SourceLocation"
+        },
+        "original": {
+          "type": "string"
+        },
+        "type": {
+          "const": "BooleanLiteral",
+          "type": "string"
+        },
+        "value": {
+          "type": "boolean"
+        }
+      },
+      "required": ["loc", "original", "type", "value"],
+      "type": "object"
+    },
     "ContentStatement": {
       "additionalProperties": false,
       "properties": {
@@ -62,7 +82,13 @@
       ]
     },
     "Helper": {
-      "enum": ["return_literal_a", "concat_strings", "identity", "add"],
+      "enum": [
+        "return_literal_a",
+        "concat_strings",
+        "identity",
+        "add",
+        "if_then_else"
+      ],
       "type": "string"
     },
     "Literal": {
@@ -72,6 +98,9 @@
         },
         {
           "$ref": "#/definitions/NumberLiteral"
+        },
+        {
+          "$ref": "#/definitions/BooleanLiteral"
         }
       ]
     },

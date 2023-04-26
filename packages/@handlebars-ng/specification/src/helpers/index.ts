@@ -37,4 +37,12 @@ export const helpers: Record<Helper, HelperSpec> = {
       return x + y;
     },
   },
+  if_then_else: {
+    description: "returns seconds param if first is true, otherwise the third",
+    fn(condition, trueResult, falseResult) {
+      if (typeof condition != "boolean")
+        throw new Error("Condition must be a boolean");
+      return condition ? trueResult : falseResult;
+    },
+  },
 };

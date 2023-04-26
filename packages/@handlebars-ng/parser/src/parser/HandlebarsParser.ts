@@ -11,6 +11,7 @@ import { stringLiteral } from "./nodes/stringLiteral";
 import { numberLiteral } from "./nodes/numberLiteral";
 import { createHbsLexer, HbsLexer } from "../lexer";
 import { Traverser } from "../traverser/Traverser";
+import { booleanLiteral } from "./nodes/booleanLiteral";
 
 export class HandlebarsParser {
   #lexer: HbsLexer;
@@ -35,6 +36,7 @@ export class HandlebarsParser {
       expression: expression,
       stringLiteral: stringLiteral,
       numberLiteral: numberLiteral,
+      booleanLiteral: booleanLiteral,
     };
     return context.program(context);
   }
