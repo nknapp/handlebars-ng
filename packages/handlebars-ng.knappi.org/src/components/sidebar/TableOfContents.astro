@@ -3,7 +3,7 @@ import TocItem from "./TocItem.astro";
 
 const allPages = await Astro.glob("../../pages/spec/**/*.(mdx|md)");
 const specPages = allPages.filter((page) => {
-  return page.url !== "/spec";
+  return page.url !== "/spec/";
 });
 ---
 
