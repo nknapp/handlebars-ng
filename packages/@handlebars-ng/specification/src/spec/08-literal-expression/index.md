@@ -1,4 +1,4 @@
-# Literal Expressions
+# Literal ParameterExpression
 
 A literal expression resolves to a constant value or the following types
 
@@ -10,7 +10,7 @@ A literal expression resolves to a constant value or the following types
 
 TODO: Undefined does not make sense in most non-js languages.
 
-[Literal Expressions Grammar](../handlebars.grammar#LiteralExpressions)
+[Literal ParameterExpression Grammar](../handlebars.grammar#LiteralExpressions)
 
 ## String literals
 

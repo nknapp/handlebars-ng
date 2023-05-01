@@ -54,9 +54,12 @@ PathExpressionTail ::
     `/` PathExpression
 
 Id ::
-    SourceCharacter but not one of NonId or Whitespace
+    IdCharacter Id?
 
-NonId :: one of 
+IdCharacter ::
+    SourceCharacter but not one of NonIdCharacter or Whitespace
+
+NonIdCharacter :: one of
     `!` `"` `#` `%` `&` `'` `(` `)` `*` `+` `,` `.` `/` `;` `<` `=` `>` `@` `[` `\` `]` `^` ``` `{` `|` `}` `~`
 
 
@@ -65,9 +68,12 @@ NonId :: one of
 MustacheParameters ::
     Whitespace MustacheParameter MustacheParameters?
 
+// Note: This production is ambiguous: A Literal like `true` or `123` is also a valid
+//       PathExpression. In this case, the parser prefers the Literal over
+//       the PathExpression.
 MustacheParameter ::
-    PathExpression
     Literal
+    PathExpression
 
 
 // @section:LiteralExpressions

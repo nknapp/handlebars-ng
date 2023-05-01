@@ -3,10 +3,7 @@ import {
   ParseErrorTest,
   SuccessTest,
 } from "@handlebars-ng/specification";
-import { HandlebarsParser } from "./index";
-import { ParseError } from "./parser/ParseError";
-
-const parser = new HandlebarsParser();
+import { createDefaultParser, ParseError } from "./index";
 
 describe("test against Handlebars spec", () => {
   for (const [filename, testCase] of Object.entries(handlebarsSpec)) {
@@ -24,13 +21,22 @@ describe("test against Handlebars spec", () => {
 });
 
 function expectSameAst(testCase: SuccessTest) {
-  const ast = parser.parse(testCase.template);
+  let ast;
+  try {
+    const parser = createDefaultParser();
+    ast = parser.parse(testCase.template);
+  } catch (error) {
+    // Allow console in this case since it helps adjusting test-cases in case they are wrong
+    // eslint-disable-next-line no-console
+    console.log(testCase);
+    throw error;
+  }
   try {
     expect(ast).toEqual(testCase.ast);
   } catch (error) {
     // Allow console in this case since it helps adjusting test-cases in case they are wrong
     // eslint-disable-next-line no-console
-    console.log(JSON.stringify(ast));
+    console.log(testCase.template, JSON.stringify(ast));
     throw error;
   }
 }
@@ -62,6 +68,7 @@ function expectSameError(testcase: ParseErrorTest) {
 
 function getParseError(template: string): ParseError {
   try {
+    const parser = createDefaultParser();
     parser.parse(template);
   } catch (error) {
     if (error instanceof ParseError) {
