@@ -1,23 +1,36 @@
 import { AnyNode, Program } from "../model/ast";
-import { pathExpression } from "./nodes/pathExpression";
 import { contentStatement } from "./nodes/contentStatement";
 import { statement } from "./nodes/statement";
 import { mustacheStatement } from "./nodes/mustacheStatement";
 import { program } from "./nodes/program";
 import { TokenStream } from "./TokenStream";
 import { ParserContext } from "./ParserContext";
-import { expression } from "./nodes/expression";
 import { stringLiteral } from "./nodes/stringLiteral";
 import { numberLiteral } from "./nodes/numberLiteral";
 import { createHbsLexer, HbsLexer } from "../lexer";
 import { Traverser } from "../traverser/Traverser";
 import { booleanLiteral } from "./nodes/booleanLiteral";
+import { Registry } from "./core/Registry";
+import { BooleanLiteralParser } from "./expressions/BooleanLiteralParser";
+import { PathExpressionParser } from "./expressions/PathExpression";
+import { StringLiteralParser } from "./expressions/StringLiteral";
+import { NumberLiteralParser } from "./expressions/NumberLiteralParser";
 
 export class HandlebarsParser {
   #lexer: HbsLexer;
+  #registry: Registry;
+  #pathExpressionParser: PathExpressionParser;
+  #expressionParser: ParserContext["expression"];
 
-  constructor({ lexer = createHbsLexer() } = {}) {
-    this.#lexer = lexer;
+  constructor({ lexer: createLexer = createHbsLexer } = {}) {
+    this.#registry = new Registry();
+    this.#registry.registerExpression(new BooleanLiteralParser());
+    this.#registry.registerExpression(new NumberLiteralParser());
+    this.#pathExpressionParser = new PathExpressionParser();
+    this.#registry.registerExpression(this.#pathExpressionParser);
+    this.#registry.registerExpression(new StringLiteralParser());
+    this.#expressionParser = this.#registry.createExpressionParser();
+    this.#lexer = createLexer(this.#registry.expressionRules);
   }
 
   parseWithoutProcessing(template: string): Program {
@@ -32,8 +45,8 @@ export class HandlebarsParser {
         false
       ),
       content: contentStatement,
-      pathExpression: pathExpression,
-      expression: expression,
+      pathExpression: (context) => this.#pathExpressionParser.parse(context),
+      expression: this.#expressionParser,
       stringLiteral: stringLiteral,
       numberLiteral: numberLiteral,
       booleanLiteral: booleanLiteral,

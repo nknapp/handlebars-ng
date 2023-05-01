@@ -1,7 +1,8 @@
 import { createHbsLexer, Token } from ".";
+import { mustacheRules } from "./rules";
 
 describe("Lexer", () => {
-  const hbsLexer = createHbsLexer();
+  const hbsLexer = createHbsLexer(mustacheRules);
   function createLexer(template: string): IterableIterator<Token> {
     return hbsLexer.lex(template);
   }

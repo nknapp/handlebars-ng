@@ -4,6 +4,7 @@ import {
   createLexer,
   createTokenFactory,
   Lexer,
+  MooState,
   mooState,
 } from "baa-lexer";
 
@@ -12,8 +13,10 @@ export type { TokenType, MustacheOpenType, MustacheCloseType } from "./rules";
 export type Token = BaaToken<HbsLexerTypes>;
 export type HbsLexer = Lexer<HbsLexerTypes>;
 
-export function createHbsLexer(): HbsLexer {
-  const rules = createHbsLexerSpec();
+export function createHbsLexer(
+  expressionRules: MooState<HbsLexerTypes>
+): HbsLexer {
+  const rules = createHbsLexerSpec(expressionRules);
   return createLexer<HbsLexerTypes>(
     {
       main: mooState(rules.main),

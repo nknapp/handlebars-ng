@@ -24,42 +24,42 @@ export interface HbsLexerTypes {
   stateName: "main" | "mustache" | "unescapedMustache";
 }
 
-export function createHbsLexerSpec(): MooStates<HbsLexerTypes> {
-  const LOOK_AHEAD = /[=~}\s/.)|]/;
-  const LITERAL_LOOKAHEAD = /[~}\s)]/;
+export const LOOK_AHEAD = /[=~}\s/.)|]/;
+export const LITERAL_LOOKAHEAD = /[~}\s)]/;
 
-  const mustacheRules: MooState<HbsLexerTypes> = {
-    SPACE: { match: /[ \t\n]/, lineBreaks: true },
-    NUMBER: {
-      match: withLookAhead(/-?\d+(?:\.\d+)?/, LITERAL_LOOKAHEAD),
-    },
-    BOOLEAN: {
-      match: withLookAhead(/true|false/, LITERAL_LOOKAHEAD),
-    },
-    ID: {
-      match: withLookAhead(
-        /[^\n \t!"#%&'()*+,./;<=>@[\\\]^`{|}~]+?/,
-        LOOK_AHEAD
-      ),
-    },
-    SQUARE_WRAPPED_ID: {
-      match: /\[[^[]*?]/,
-      value: (text) => text.slice(1, -1),
-    },
-    STRIP: { match: /~/ },
-    DOT: { match: /\./ },
-    SLASH: { match: /\// },
-    STRING_LITERAL_DOUBLE_QUOTE: {
-      match: /"[^"]+?"/,
-      value: (text) => text.slice(1, -1),
-    },
-    STRING_LITERAL_SINGLE_QUOTE: {
-      match: /'[^']+?'/,
-      value: (text) => text.slice(1, -1),
-    },
-    error: { error: true },
-  } as const;
+/* @deprecated To be replaced by dynamic rules from register expression parsers */
+export const mustacheRules: MooState<HbsLexerTypes> = {
+  SPACE: { match: /[ \t\n]/, lineBreaks: true },
+  NUMBER: {
+    match: withLookAhead(/-?\d+(?:\.\d+)?/, LITERAL_LOOKAHEAD),
+  },
+  BOOLEAN: {
+    match: withLookAhead(/true|false/, LITERAL_LOOKAHEAD),
+  },
+  ID: {
+    match: withLookAhead(/[^\n \t!"#%&'()*+,./;<=>@[\\\]^`{|}~]+?/, LOOK_AHEAD),
+  },
+  SQUARE_WRAPPED_ID: {
+    match: /\[[^[]*?]/,
+    value: (text) => text.slice(1, -1),
+  },
+  STRIP: { match: /~/ },
+  DOT: { match: /\./ },
+  SLASH: { match: /\// },
+  STRING_LITERAL_DOUBLE_QUOTE: {
+    match: /"[^"]+?"/,
+    value: (text) => text.slice(1, -1),
+  },
+  STRING_LITERAL_SINGLE_QUOTE: {
+    match: /'[^']+?'/,
+    value: (text) => text.slice(1, -1),
+  },
+  error: { error: true },
+} as const;
 
+export function createHbsLexerSpec(
+  expressionRules: MooState<HbsLexerTypes>
+): MooStates<HbsLexerTypes> {
   return {
     main: {
       OPEN_UNESCAPED: { match: "{{{", next: "unescapedMustache" },
@@ -72,14 +72,20 @@ export function createHbsLexerSpec(): MooStates<HbsLexerTypes> {
         match: "}}",
         next: "main",
       },
-      ...mustacheRules,
+      SPACE: { match: /[ \t\n]/, lineBreaks: true },
+      STRIP: { match: /~/ },
+      error: { error: true },
+      ...expressionRules,
     },
     unescapedMustache: {
       CLOSE_UNESCAPED: {
         match: "}}}",
         next: "main",
       },
-      ...mustacheRules,
+      SPACE: { match: /[ \t\n]/, lineBreaks: true },
+      STRIP: { match: /~/ },
+      error: { error: true },
+      ...expressionRules,
     },
   };
 }

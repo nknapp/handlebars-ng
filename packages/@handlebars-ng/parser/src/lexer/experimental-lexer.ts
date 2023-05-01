@@ -3,13 +3,16 @@ import {
   createStateProcessor,
   createTokenFactory,
   Lexer,
+  MooState,
   mooState,
 } from "baa-lexer";
 import { createHbsLexerSpec, HbsLexerTypes } from "./rules";
 import { ExperimentalMainMatcher } from "./ExperimentalMainMatcher";
 
-export function createExperimentalLexer(): Lexer<HbsLexerTypes> {
-  const rules = createHbsLexerSpec();
+export function createExperimentalLexer(
+  expressionRules: MooState<HbsLexerTypes>
+): Lexer<HbsLexerTypes> {
+  const rules = createHbsLexerSpec(expressionRules);
   return createLexer<HbsLexerTypes>(
     {
       main: createStateProcessor(

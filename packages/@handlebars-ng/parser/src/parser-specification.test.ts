@@ -24,7 +24,15 @@ describe("test against Handlebars spec", () => {
 });
 
 function expectSameAst(testCase: SuccessTest) {
-  const ast = parser.parse(testCase.template);
+  let ast;
+  try {
+    ast = parser.parse(testCase.template);
+  } catch (error) {
+    // Allow console in this case since it helps adjusting test-cases in case they are wrong
+    // eslint-disable-next-line no-console
+    console.log(testCase);
+    throw error;
+  }
   try {
     expect(ast).toEqual(testCase.ast);
   } catch (error) {

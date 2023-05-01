@@ -4,6 +4,7 @@ import { tests } from "@handlebars-ng/benchmarks";
 import { HandlebarsParser } from "../src";
 import { createHbsLexer } from "../src/lexer";
 import { createExperimentalLexer } from "../src/lexer/experimental-lexer";
+import { mustacheRules } from "../src/lexer/rules";
 
 const parserNg: ObjectUnderTest = {
   name: "ng parser",
@@ -18,7 +19,7 @@ const parserNg: ObjectUnderTest = {
 const experimentalParserNg: ObjectUnderTest = {
   name: "ng parser experimental",
   testFn(test) {
-    const parser = new HandlebarsParser({ lexer: createExperimentalLexer() });
+    const parser = new HandlebarsParser({ lexer: createExperimentalLexer });
     return () => {
       parser.parse(test.template);
     };
@@ -28,7 +29,7 @@ const experimentalParserNg: ObjectUnderTest = {
 const lexer: ObjectUnderTest = {
   name: "ng lexer",
   testFn(test) {
-    const lexer = createHbsLexer();
+    const lexer = createHbsLexer(mustacheRules);
     return () => {
       for (const ignoredToken of lexer.lex(test.template)) {
         /* do nothing */
@@ -40,7 +41,7 @@ const lexer: ObjectUnderTest = {
 const alternativeLexer: ObjectUnderTest = {
   name: "alternative ng parser",
   testFn(test) {
-    const lexer = createExperimentalLexer();
+    const lexer = createExperimentalLexer(mustacheRules);
     return () => {
       for (const ignoredToken of lexer.lex(test.template)) {
         /* do nothing */
