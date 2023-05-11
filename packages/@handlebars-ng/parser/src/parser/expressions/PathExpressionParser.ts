@@ -5,10 +5,9 @@ import { tok } from "../../lexer";
 import { ParserContext } from "../ParserContext";
 import { PathExpression } from "@handlebars-ng/abstract-syntax-tree";
 
-const TOK_ID = tok("ID", "SQUARE_WRAPPED_ID");
-const TOK_SEPARATOR = tok("DOT", "SLASH");
-
 export class PathExpressionParser implements ExpressionParser {
+  readonly TOK_ID = tok("ID", "SQUARE_WRAPPED_ID");
+  readonly TOK_SEPARATOR = tok("DOT", "SLASH");
   readonly startTokens = ["ID", "SQUARE_WRAPPED_ID"] as const;
   readonly rules = {
     ID: {
@@ -26,15 +25,17 @@ export class PathExpressionParser implements ExpressionParser {
   } satisfies MooState<HbsLexerTypes>;
 
   parse(context: ParserContext): PathExpression {
-    const firstToken = context.tokens.eat(TOK_ID);
+    const firstToken = context.tokens.eat(this.TOK_ID);
     let original = firstToken.original;
 
     const restValues: string[] = [];
     let lastToken = firstToken;
     let dotToken = null;
-    while ((dotToken = context.tokens.eatOptional(TOK_SEPARATOR)) != null) {
+    while (
+      (dotToken = context.tokens.eatOptional(this.TOK_SEPARATOR)) != null
+    ) {
       original += dotToken.original;
-      const idToken = context.tokens.eat(TOK_ID);
+      const idToken = context.tokens.eat(this.TOK_ID);
       restValues.push(idToken.value);
       original += idToken.original;
       lastToken = idToken;

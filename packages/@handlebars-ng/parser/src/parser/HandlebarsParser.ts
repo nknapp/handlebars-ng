@@ -5,32 +5,35 @@ import { mustacheStatement } from "./nodes/mustacheStatement";
 import { program } from "./nodes/program";
 import { TokenStream } from "./TokenStream";
 import { ParserContext } from "./ParserContext";
-import { stringLiteral } from "./nodes/stringLiteral";
-import { numberLiteral } from "./nodes/numberLiteral";
 import { createHbsLexer, HbsLexer } from "../lexer";
 import { Traverser } from "../traverser/Traverser";
-import { booleanLiteral } from "./nodes/booleanLiteral";
-import { Registry } from "./core/Registry";
 import { BooleanLiteralParser } from "./expressions/BooleanLiteralParser";
-import { PathExpressionParser } from "./expressions/PathExpression";
-import { StringLiteralParser } from "./expressions/StringLiteral";
+import { PathExpressionParser } from "./expressions/PathExpressionParser";
+import { StringLiteralParser } from "./expressions/StringLiteralParser";
 import { NumberLiteralParser } from "./expressions/NumberLiteralParser";
+import { ExpressionParser } from "./core/ExpressionParser";
+import { UnionExpressionParser } from "./core/UnionExpressionParser";
 
 export class HandlebarsParser {
   #lexer: HbsLexer;
-  #registry: Registry;
+  #expressionParser: ExpressionParser;
   #pathExpressionParser: PathExpressionParser;
-  #expressionParser: ParserContext["expression"];
 
   constructor({ lexer: createLexer = createHbsLexer } = {}) {
-    this.#registry = new Registry();
-    this.#registry.registerExpression(new BooleanLiteralParser());
-    this.#registry.registerExpression(new NumberLiteralParser());
+    this.#expressionParser = new UnionExpressionParser([
+      new BooleanLiteralParser(),
+      new NumberLiteralParser(),
+      new StringLiteralParser(),
+      new PathExpressionParser(),
+    ]);
     this.#pathExpressionParser = new PathExpressionParser();
-    this.#registry.registerExpression(this.#pathExpressionParser);
-    this.#registry.registerExpression(new StringLiteralParser());
-    this.#expressionParser = this.#registry.createExpressionParser();
-    this.#lexer = createLexer(this.#registry.expressionRules);
+
+    // TODO: This union is not optimal since pathexpression is also part of
+    // the expression rules.
+    this.#lexer = createLexer({
+      ...this.#expressionParser.rules,
+      ...this.#pathExpressionParser.rules,
+    });
   }
 
   parseWithoutProcessing(template: string): Program {
@@ -45,11 +48,10 @@ export class HandlebarsParser {
         false
       ),
       content: contentStatement,
-      pathExpression: (context) => this.#pathExpressionParser.parse(context),
-      expression: this.#expressionParser,
-      stringLiteral: stringLiteral,
-      numberLiteral: numberLiteral,
-      booleanLiteral: booleanLiteral,
+      pathExpression: this.#pathExpressionParser.parse.bind(
+        this.#pathExpressionParser
+      ),
+      expression: this.#expressionParser.parse.bind(this.#expressionParser),
     };
     return context.program(context);
   }

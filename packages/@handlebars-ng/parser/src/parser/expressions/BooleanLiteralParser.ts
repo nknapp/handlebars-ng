@@ -5,9 +5,8 @@ import { ParserContext } from "../ParserContext";
 import { withLookAhead } from "baa-lexer";
 import { LITERAL_LOOKAHEAD } from "../../lexer/rules";
 
-const booleanLiteralToken = tok("BOOLEAN");
-
 export class BooleanLiteralParser implements ExpressionParser {
+  readonly TOK_BOOLEAN = tok("BOOLEAN");
   readonly startTokens = ["BOOLEAN"] as const;
   readonly tokens = ["BOOLEAN"] as const;
   readonly rules = {
@@ -17,7 +16,7 @@ export class BooleanLiteralParser implements ExpressionParser {
   };
 
   parse(context: ParserContext): Expression {
-    const token = context.tokens.eat(booleanLiteralToken);
+    const token = context.tokens.eat(this.TOK_BOOLEAN);
     return {
       type: "BooleanLiteral",
       original: token.original,

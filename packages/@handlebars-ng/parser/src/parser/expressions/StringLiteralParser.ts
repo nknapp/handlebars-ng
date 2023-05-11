@@ -5,12 +5,11 @@ import { MooState, TokenType } from "baa-lexer";
 import { HbsLexerTypes } from "../../lexer/rules";
 import { Expression } from "@handlebars-ng/abstract-syntax-tree";
 
-const stringLiteralToken = tok(
-  "STRING_LITERAL_DOUBLE_QUOTE",
-  "STRING_LITERAL_SINGLE_QUOTE"
-);
-
 export class StringLiteralParser implements ExpressionParser {
+  readonly TOK_STRING_LITERAL = tok(
+    "STRING_LITERAL_DOUBLE_QUOTE",
+    "STRING_LITERAL_SINGLE_QUOTE"
+  );
   readonly rules: MooState<HbsLexerTypes> = {
     STRING_LITERAL_DOUBLE_QUOTE: {
       match: /"[^"]+?"/,
@@ -26,7 +25,7 @@ export class StringLiteralParser implements ExpressionParser {
     "STRING_LITERAL_DOUBLE_QUOTE",
   ] as const;
   parse(context: ParserContext): Expression {
-    const token = context.tokens.eat(stringLiteralToken);
+    const token = context.tokens.eat(this.TOK_STRING_LITERAL);
     return {
       type: "StringLiteral",
       original: token.original,

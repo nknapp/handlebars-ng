@@ -68,9 +68,12 @@ NonIdCharacter :: one of
 MustacheParameters ::
     Whitespace MustacheParameter MustacheParameters?
 
+// Note: This production is ambiguous: A Literal like `true` or `123` is also a valid
+//       PathExpression. In this case, the parser prefers the Literal over
+//       the PathExpression.
 MustacheParameter ::
-    PathExpression
     Literal
+    PathExpression
 
 
 // @section:LiteralExpressions
