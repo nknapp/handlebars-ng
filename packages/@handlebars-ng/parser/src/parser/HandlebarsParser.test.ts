@@ -33,6 +33,24 @@ describe("parser", () => {
       strip: {},
     });
   });
+
+  it("lexer applies lookahead on ID token and does not match 'a' in '{{a{b}}", () => {
+    const tokens = new HandlebarsParser().lexer.lex("{{a{b}}");
+    expect([...tokens]).toEqual([
+      {
+        type: "OPEN",
+        value: "{{",
+        original: "{{",
+        ...loc(1, 0, 1, 2),
+      },
+      {
+        type: "error",
+        value: "a{b}}",
+        original: "a{b}}",
+        ...loc(1, 2, 1, 7),
+      },
+    ]);
+  });
 });
 
 function expectAst(template: string, expectedAst: Program) {

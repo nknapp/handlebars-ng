@@ -1,9 +1,9 @@
-import { MustacheCloseType, MustacheOpenType, tok } from "../../lexer";
+import { tok, TokenTypes } from "../../lexer";
 import { ParserContext } from "../ParserContext";
 
 export function mustacheStatement(
-  openToken: Set<MustacheOpenType>,
-  closeToken: Set<MustacheCloseType>,
+  openToken: TokenTypes,
+  closeToken: TokenTypes,
   escaped: boolean
 ): ParserContext["mustache"] {
   const TOK_STRIP = tok("STRIP");

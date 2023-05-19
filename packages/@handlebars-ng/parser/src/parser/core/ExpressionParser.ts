@@ -1,10 +1,11 @@
-import { MooState, TokenType } from "baa-lexer";
+import { BaaMatchRule } from "baa-lexer";
 import { HbsLexerTypes } from "../../lexer/rules";
 import { ParserContext } from "../ParserContext";
 import { Expression } from "@handlebars-ng/abstract-syntax-tree";
+import { TokenTypes } from "../../lexer";
 
-export interface ExpressionParser {
-  readonly startTokens: ReadonlyArray<TokenType<HbsLexerTypes>>;
-  readonly rules: MooState<HbsLexerTypes>;
-  parse(context: ParserContext): Expression;
+export interface ExpressionParser<T extends Expression = Expression> {
+  readonly startTokens: TokenTypes;
+  readonly rules: BaaMatchRule<HbsLexerTypes>[];
+  parse(context: ParserContext): T;
 }

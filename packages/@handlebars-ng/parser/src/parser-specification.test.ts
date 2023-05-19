@@ -6,8 +6,6 @@ import {
 import { HandlebarsParser } from "./index";
 import { ParseError } from "./parser/ParseError";
 
-const parser = new HandlebarsParser();
-
 describe("test against Handlebars spec", () => {
   for (const [filename, testCase] of Object.entries(handlebarsSpec)) {
     describe(filename, () => {
@@ -26,6 +24,7 @@ describe("test against Handlebars spec", () => {
 function expectSameAst(testCase: SuccessTest) {
   let ast;
   try {
+    const parser = new HandlebarsParser();
     ast = parser.parse(testCase.template);
   } catch (error) {
     // Allow console in this case since it helps adjusting test-cases in case they are wrong
@@ -70,6 +69,7 @@ function expectSameError(testcase: ParseErrorTest) {
 
 function getParseError(template: string): ParseError {
   try {
+    const parser = new HandlebarsParser();
     parser.parse(template);
   } catch (error) {
     if (error instanceof ParseError) {

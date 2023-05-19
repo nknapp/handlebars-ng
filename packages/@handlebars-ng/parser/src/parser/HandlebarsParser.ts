@@ -5,40 +5,53 @@ import { mustacheStatement } from "./nodes/mustacheStatement";
 import { program } from "./nodes/program";
 import { TokenStream } from "./TokenStream";
 import { ParserContext } from "./ParserContext";
-import { createHbsLexer, HbsLexer } from "../lexer";
+import { HbsLexer } from "../lexer";
 import { Traverser } from "../traverser/Traverser";
 import { BooleanLiteralParser } from "./expressions/BooleanLiteralParser";
 import { PathExpressionParser } from "./expressions/PathExpressionParser";
 import { StringLiteralParser } from "./expressions/StringLiteralParser";
 import { NumberLiteralParser } from "./expressions/NumberLiteralParser";
-import { ExpressionParser } from "./core/ExpressionParser";
-import { UnionExpressionParser } from "./core/UnionExpressionParser";
+import { ParameterExpressionParser } from "./core/ParameterExpressionParser";
+import { Expressions } from "./core/Expressions";
+import { createLexer, createTokenFactory, mooState } from "baa-lexer";
+import { HbsLexerTypes, mainRules } from "../lexer/rules";
 
 export class HandlebarsParser {
-  #lexer: HbsLexer;
-  #expressionParser: ExpressionParser;
-  #pathExpressionParser: PathExpressionParser;
+  readonly lexer: HbsLexer;
+  readonly #expressions: Expressions;
 
-  constructor({ lexer: createLexer = createHbsLexer } = {}) {
-    this.#expressionParser = new UnionExpressionParser([
-      new BooleanLiteralParser(),
-      new NumberLiteralParser(),
-      new StringLiteralParser(),
-      new PathExpressionParser(),
-    ]);
-    this.#pathExpressionParser = new PathExpressionParser();
+  constructor() {
+    this.#expressions = new Expressions(
+      PathExpressionParser,
+      new ParameterExpressionParser([
+        BooleanLiteralParser,
+        NumberLiteralParser,
+        StringLiteralParser,
+        PathExpressionParser,
+      ])
+    );
 
-    // TODO: This union is not optimal since pathexpression is also part of
-    // the expression rules.
-    this.#lexer = createLexer({
-      ...this.#expressionParser.rules,
-      ...this.#pathExpressionParser.rules,
-    });
+    this.lexer = createLexer<HbsLexerTypes>(
+      {
+        main: mooState(mainRules),
+        mustache: this.#expressions.createLexerState({
+          type: "CLOSE",
+          match: "}}",
+          next: "main",
+        }),
+        unescapedMustache: this.#expressions.createLexerState({
+          type: "CLOSE_UNESCAPED",
+          match: "}}}",
+          next: "main",
+        }),
+      },
+      createTokenFactory
+    );
   }
 
   parseWithoutProcessing(template: string): Program {
     const context: ParserContext = {
-      tokens: new TokenStream(template, this.#lexer),
+      tokens: new TokenStream(template, this.lexer),
       program: program,
       statement: statement,
       mustache: mustacheStatement(new Set(["OPEN"]), new Set(["CLOSE"]), true),
@@ -48,10 +61,12 @@ export class HandlebarsParser {
         false
       ),
       content: contentStatement,
-      pathExpression: this.#pathExpressionParser.parse.bind(
-        this.#pathExpressionParser
+      pathExpression: this.#expressions.pathExpressionParser.parse.bind(
+        this.#expressions.pathExpressionParser
       ),
-      expression: this.#expressionParser.parse.bind(this.#expressionParser),
+      expression: this.#expressions.parameterExpressionParser.parse.bind(
+        this.#expressions.parameterExpressionParser
+      ),
     };
     return context.program(context);
   }

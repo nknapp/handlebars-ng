@@ -1,31 +1,10 @@
-import { createHbsLexerSpec, HbsLexerTypes, TokenType } from "./rules";
-import {
-  BaaToken,
-  createLexer,
-  createTokenFactory,
-  Lexer,
-  MooState,
-  mooState,
-} from "baa-lexer";
+import { HbsLexerTypes, TokenType } from "./rules";
+import { BaaToken, Lexer } from "baa-lexer";
 
 export type { Location } from "baa-lexer";
 export type { TokenType, MustacheOpenType, MustacheCloseType } from "./rules";
 export type Token = BaaToken<HbsLexerTypes>;
 export type HbsLexer = Lexer<HbsLexerTypes>;
-
-export function createHbsLexer(
-  expressionRules: MooState<HbsLexerTypes>
-): HbsLexer {
-  const rules = createHbsLexerSpec(expressionRules);
-  return createLexer<HbsLexerTypes>(
-    {
-      main: mooState(rules.main),
-      mustache: mooState(rules.mustache),
-      unescapedMustache: mooState(rules.unescapedMustache),
-    },
-    createTokenFactory
-  );
-}
 
 export interface TokenTypes extends Iterable<TokenType> {
   has(token: TokenType): boolean;
@@ -34,6 +13,6 @@ export interface TokenTypes extends Iterable<TokenType> {
 export function tok(...types: TokenType[]): TokenTypes {
   return {
     has: (typeToCheck) => types.includes(typeToCheck),
-    [Symbol.iterator]: types[Symbol.iterator],
+    [Symbol.iterator]: types[Symbol.iterator].bind(types),
   };
 }
