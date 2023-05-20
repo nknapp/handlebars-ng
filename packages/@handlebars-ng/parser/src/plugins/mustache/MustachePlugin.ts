@@ -8,52 +8,76 @@ import {
   PathExpression,
 } from "@handlebars-ng/abstract-syntax-tree";
 import { tok } from "../../core/utils/tok";
+import { HbsLexerState, HbsMatchRule } from "../../model/lexer";
 
-const TOK_OPEN = tok("OPEN");
-const TOK_CLOSE = tok("CLOSE");
 const TOK_ID = tok("ID");
-const TOK_SPACE = tok("SPACE");
-const TOK_STRIP = tok("STRIP");
-const TOK_PARAM_END = tok("STRIP", ...TOK_CLOSE);
 
-export const MustachePlugin: HandlebarsParserPlugin = {
-  statement(registry: StatementRegistry) {
-    registry.addMatchRule({ type: "OPEN", match: "{{", next: "mustache" });
-    registry.addState("mustache", {
-      fallbackRule: { type: "ID" },
-      matchRules: [
-        { type: "CLOSE", match: "}}", next: "main" },
-        { type: "STRIP", match: "~" },
-        { type: "SPACE", match: /[ \t\n]/, lineBreaks: true },
-      ],
-    });
-    registry.addParser<MustacheStatement>(TOK_OPEN, parseMustacheStatement);
-  },
-};
+export const MustachePluginEscaped = createMustachePlugin(
+  { type: "OPEN", match: "{{", next: "mustache" },
+  { type: "CLOSE", match: "}}", next: "main" },
+  "mustache",
+  true
+);
 
-function parseMustacheStatement(context: ParseContext): MustacheStatement {
-  const open = context.tokens.eat(TOK_OPEN);
-  const stripLeft = context.tokens.eatOptional(TOK_STRIP);
-  context.tokens.ignore(TOK_SPACE);
-  const path = parsePathExpression(context);
-  const params = [];
-  while (context.tokens.lookAhead?.type === "SPACE") {
+export const MustachePluginUnescaped = createMustachePlugin(
+  { type: "OPEN_UNESCAPED", match: "{{{", next: "unescapedMustache" },
+  { type: "CLOSE_UNESCAPED", match: "}}}", next: "main" },
+  "unescapedMustache",
+  false
+);
+
+export function createMustachePlugin(
+  openRule: HbsMatchRule,
+  closeRule: HbsMatchRule,
+  lexerState: HbsLexerState,
+  escaped: boolean
+): HandlebarsParserPlugin {
+  const TOK_OPEN = tok(openRule.type);
+  const TOK_CLOSE = tok(closeRule.type);
+
+  const TOK_SPACE = tok("SPACE");
+  const TOK_STRIP = tok("STRIP");
+  const TOK_PARAM_END = tok("STRIP", ...TOK_CLOSE);
+
+  function parseMustacheStatement(context: ParseContext): MustacheStatement {
+    const open = context.tokens.eat(TOK_OPEN);
+    const stripLeft = context.tokens.eatOptional(TOK_STRIP);
     context.tokens.ignore(TOK_SPACE);
-    if (!TOK_PARAM_END.has(context.tokens.lookAhead.type)) {
-      params.push(parsePathExpression(context));
+    const path = parsePathExpression(context);
+    const params = [];
+    while (context.tokens.lookAhead?.type === "SPACE") {
+      context.tokens.ignore(TOK_SPACE);
+      if (!TOK_PARAM_END.has(context.tokens.lookAhead.type)) {
+        params.push(parsePathExpression(context));
+      }
     }
+    context.tokens.ignore(TOK_SPACE);
+    const stripRight = context.tokens.eatOptional(TOK_STRIP);
+    const close = context.tokens.eat(TOK_CLOSE);
+
+    return {
+      type: "MustacheStatement",
+      path,
+      escaped,
+      params,
+      strip: { close: stripRight != null, open: stripLeft != null },
+      loc: context.tokens.location(open, close),
+    };
   }
-  context.tokens.ignore(TOK_SPACE);
-  const stripRight = context.tokens.eatOptional(TOK_STRIP);
-  const close = context.tokens.eat(TOK_CLOSE);
 
   return {
-    type: "MustacheStatement",
-    path,
-    escaped: true,
-    params,
-    strip: { close: stripRight != null, open: stripLeft != null },
-    loc: context.tokens.location(open, close),
+    statement(registry: StatementRegistry) {
+      registry.addMatchRule(openRule);
+      registry.addState(lexerState, {
+        fallbackRule: { type: "ID" },
+        matchRules: [
+          closeRule,
+          { type: "STRIP", match: "~" },
+          { type: "SPACE", match: /[ \t\n]/, lineBreaks: true },
+        ],
+      });
+      registry.addParser<MustacheStatement>(TOK_OPEN, parseMustacheStatement);
+    },
   };
 }
 
