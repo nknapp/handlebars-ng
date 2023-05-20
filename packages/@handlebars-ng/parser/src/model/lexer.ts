@@ -1,4 +1,4 @@
-import { BaaMatchRule, BaaRule, BaaToken, Lexer } from "baa-lexer";
+import { BaaMatchRule, BaaRule, BaaToken, Lexer, StateName } from "baa-lexer";
 
 export type MustacheOpenType = "OPEN_UNESCAPED" | "OPEN";
 export type MustacheCloseType = "CLOSE_UNESCAPED" | "CLOSE";
@@ -29,6 +29,7 @@ export type HbsRule = BaaRule<HbsLexerTypes>;
 export type HbsMatchRule = BaaMatchRule<HbsLexerTypes>;
 export type Token = BaaToken<HbsLexerTypes>;
 export type HbsLexer = Lexer<HbsLexerTypes>;
+export type HbsLexerState = StateName<HbsLexerTypes>;
 
 export interface TokenTypes extends Iterable<TokenType> {
   has(token: TokenType): boolean;

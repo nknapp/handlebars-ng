@@ -1,19 +1,19 @@
 import {
+  HbsLexerState,
   HbsLexerTypes,
   HbsMatchRule,
   HbsRule,
   TokenTypes,
 } from "../model/lexer";
-import { StatementParser, StatementRegistry, StatementRules } from "./types";
-import { TokenType } from "baa-lexer";
+import { StatementParser, StatementRegistry, LexerRules } from "./types";
+import { StateName, TokenType } from "baa-lexer";
 import { Statement } from "@handlebars-ng/abstract-syntax-tree";
 
-export class StatementRegistryImpl
-  implements StatementRegistry, StatementRules
-{
+export class StatementRegistryImpl implements StatementRegistry, LexerRules {
   fallbackRule: HbsRule | null = null;
   matchRules: HbsMatchRule[] = [];
   parsers: Map<TokenType<HbsLexerTypes>, StatementParser> = new Map();
+  states: Map<HbsLexerState, LexerRules> = new Map();
 
   setFallbackRule(rule: HbsRule) {
     if (this.fallbackRule != null)
@@ -26,6 +26,10 @@ export class StatementRegistryImpl
 
   addMatchRule(rule: HbsMatchRule) {
     this.matchRules.push(rule);
+  }
+
+  addState(name: StateName<HbsLexerTypes>, rules: LexerRules) {
+    this.states.set(name, rules);
   }
 
   addParser<T extends Statement>(

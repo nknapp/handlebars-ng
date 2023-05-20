@@ -1,9 +1,12 @@
 import { createLexer } from "./createLexer";
+import { HbsLexerState } from "../model/lexer";
+import { LexerRules } from "./types";
 
 describe("createLexer", () => {
   it("creates a lexer with a fallback rule", () => {
     const lexer = createLexer({
       statements: { fallbackRule: { type: "CONTENT" }, matchRules: [] },
+      states: new Map(),
     });
     const tokens = lexer.lex("a");
     expect([...tokens]).toEqual([
@@ -26,6 +29,7 @@ describe("createLexer", () => {
           { type: "CLOSE", match: "}}" },
         ],
       },
+      states: new Map(),
     });
     const tokens = lexer.lex("{{}}");
     expect([...tokens]).toEqual([
@@ -55,6 +59,7 @@ describe("createLexer", () => {
           { type: "CLOSE", match: "}}" },
         ],
       },
+      states: new Map(),
     });
     const tokens = lexer.lex("{{abc}}");
     expect(() => {
@@ -70,6 +75,7 @@ describe("createLexer", () => {
         fallbackRule: { type: "CONTENT" },
         matchRules: [{ type: "COMMENT", match: /\{\{!.*?}}/ }],
       },
+      states: new Map(),
     });
     const tokens = lexer.lex("a{{!b}}c");
     expect([...tokens]).toEqual([
@@ -93,6 +99,56 @@ describe("createLexer", () => {
         original: "c",
         start: { line: 1, column: 7 },
         end: { line: 1, column: 8 },
+      },
+    ]);
+  });
+
+  it("creates a lexer with multiple states", () => {
+    const lexer = createLexer({
+      statements: {
+        fallbackRule: { type: "CONTENT" },
+        matchRules: [{ type: "OPEN", match: "{{", next: "mustache" }],
+      },
+      states: new Map<HbsLexerState, LexerRules>([
+        [
+          "mustache",
+          {
+            fallbackRule: null,
+            matchRules: [{ type: "CLOSE", match: "}}", next: "main" }],
+          },
+        ],
+      ]),
+    });
+
+    const tokens = lexer.lex("a{{}}a");
+    expect([...tokens]).toEqual([
+      {
+        type: "CONTENT",
+        value: "a",
+        original: "a",
+        start: { line: 1, column: 0 },
+        end: { line: 1, column: 1 },
+      },
+      {
+        type: "OPEN",
+        value: "{{",
+        original: "{{",
+        start: { line: 1, column: 1 },
+        end: { line: 1, column: 3 },
+      },
+      {
+        type: "CLOSE",
+        value: "}}",
+        original: "}}",
+        start: { line: 1, column: 3 },
+        end: { line: 1, column: 5 },
+      },
+      {
+        type: "CONTENT",
+        value: "a",
+        original: "a",
+        start: { line: 1, column: 5 },
+        end: { line: 1, column: 6 },
       },
     ]);
   });

@@ -1,1 +1,1 @@
-export { ContentPlugin } from "./ContentPlugin";
+export { ContentPlugin } from "./content/ContentPlugin";

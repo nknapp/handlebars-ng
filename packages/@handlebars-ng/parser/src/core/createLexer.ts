@@ -5,31 +5,38 @@ import {
   createStateProcessor,
   createMatcher,
   StateProcessorDict,
-  TokenType,
 } from "baa-lexer";
-import { StatementRules } from "./types";
-import { HbsLexerTypes } from "../model/lexer";
+import { LexerRules } from "./types";
+import { HbsLexerState, HbsLexerTypes, TokenType } from "../model/lexer";
 
 interface CreateLexerOptions {
-  statements: StatementRules;
+  statements: LexerRules;
+  states: Map<HbsLexerState, LexerRules>;
 }
 
 export function createLexer({
   statements,
+  states,
 }: CreateLexerOptions): Lexer<HbsLexerTypes> {
-  const statementTypes: TokenType<HbsLexerTypes>[] = [];
-  return createBaaLexer<HbsLexerTypes>(
-    {
-      main: createStateProcessor(
-        statementTypes,
-        createMatcher<HbsLexerTypes>(
-          statements.matchRules,
-          statements.fallbackRule == null
-        ),
-        statements.fallbackRule,
-        null
-      ),
-    } as StateProcessorDict<HbsLexerTypes>,
-    createTokenFactory
+  const stateProcessors: StateProcessorDict<HbsLexerTypes> = {
+    main: hbsState(statements),
+  } as StateProcessorDict<HbsLexerTypes>;
+
+  for (const [name, rules] of states) {
+    stateProcessors[name] = hbsState(rules);
+  }
+  return createBaaLexer<HbsLexerTypes>(stateProcessors, createTokenFactory);
+}
+
+function hbsState(statements: LexerRules) {
+  const statementTypes: TokenType[] = [];
+  return createStateProcessor(
+    statementTypes,
+    createMatcher<HbsLexerTypes>(
+      statements.matchRules,
+      statements.fallbackRule == null
+    ),
+    statements.fallbackRule,
+    null
   );
 }

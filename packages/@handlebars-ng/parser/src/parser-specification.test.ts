@@ -36,7 +36,7 @@ function expectSameAst(testCase: SuccessTest) {
   } catch (error) {
     // Allow console in this case since it helps adjusting test-cases in case they are wrong
     // eslint-disable-next-line no-console
-    console.log(JSON.stringify(ast));
+    console.log(testCase.template, JSON.stringify(ast));
     throw error;
   }
 }

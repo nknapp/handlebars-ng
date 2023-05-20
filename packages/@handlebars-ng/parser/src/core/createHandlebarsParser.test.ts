@@ -4,6 +4,7 @@ import { tok } from "./utils/tok";
 import {
   CommentStatement,
   ContentStatement,
+  MustacheStatement,
 } from "@handlebars-ng/abstract-syntax-tree";
 import { loc } from "../test-utils/loc";
 import { HandlebarsParserPlugin } from "./types";
@@ -82,6 +83,42 @@ describe("createHandlebarsParse", () => {
   });
 });
 
+it("uses multiple lexer states", () => {
+  const parser = createHandlebarsParser({
+    plugins: [testContentPlugin, testMustachePlugin],
+  });
+  const program = parser.parse("a{{}}c");
+  expect(program.body).toEqual([
+    {
+      type: "ContentStatement",
+      loc: loc("1:0-1:1"),
+      value: "a",
+      original: "a",
+    },
+    {
+      type: "MustacheStatement",
+      loc: loc("1:1-1:5"),
+      strip: { open: false, close: false },
+      escaped: true,
+      params: [],
+      path: {
+        type: "PathExpression",
+        loc: loc("1:0-1:0"),
+        depth: 0,
+        data: false,
+        parts: [],
+        original: "",
+      },
+    },
+    {
+      type: "ContentStatement",
+      loc: loc("1:5-1:6"),
+      value: "c",
+      original: "c",
+    },
+  ]);
+});
+
 const testContentPlugin: HandlebarsParserPlugin = {
   statement(registry) {
     registry.setFallbackRule({ type: "CONTENT" });
@@ -114,6 +151,42 @@ const testCommentPlugin: HandlebarsParserPlugin = {
           loc: context.tokens.location(comment, comment),
           value: comment.value,
           strip: { open: false, close: false },
+        };
+      }
+    );
+  },
+};
+
+const testMustachePlugin: HandlebarsParserPlugin = {
+  statement(registry) {
+    registry.addMatchRule({ type: "OPEN", match: "{{", next: "mustache" });
+
+    const TOK_OPEN = tok("OPEN");
+    const TOK_CLOSE = tok("CLOSE");
+
+    registry.addState("mustache", {
+      fallbackRule: null,
+      matchRules: [{ type: "CLOSE", match: "}}", next: "main" }],
+    });
+    registry.addParser<MustacheStatement>(
+      TOK_OPEN,
+      (context): MustacheStatement => {
+        const open = context.tokens.eat(TOK_OPEN);
+        const close = context.tokens.eat(TOK_CLOSE);
+        return {
+          type: "MustacheStatement",
+          loc: context.tokens.location(open, close),
+          strip: { open: false, close: false },
+          escaped: true,
+          params: [],
+          path: {
+            type: "PathExpression",
+            loc: loc("1:0-1:0"),
+            depth: 0,
+            data: false,
+            parts: [],
+            original: "",
+          },
         };
       }
     );

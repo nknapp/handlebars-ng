@@ -1,9 +1,10 @@
-import { Program, Statement } from "@handlebars-ng/abstract-syntax-tree";
+import { Program } from "@handlebars-ng/abstract-syntax-tree";
 import { HandlebarsParserPlugin, ParseContext } from "./types";
 import { StatementRegistryImpl } from "./StatementRegistry";
 import { createLexer } from "./createLexer";
 import { TokenStream } from "./TokenStream";
 import { createCombinedStatementParser } from "./createCombinedStatementParser";
+import { parseProgram } from "./parseProgram";
 
 export interface HandlebarsParser {
   parse(template: string): Program;
@@ -20,7 +21,7 @@ export function createHandlebarsParser(
   for (const plugin of options.plugins) {
     plugin.statement(registry);
   }
-  const lexer = createLexer({ statements: registry });
+  const lexer = createLexer({ statements: registry, states: registry.states });
   const statementParser = createCombinedStatementParser(registry.parsers);
 
   return {
@@ -31,21 +32,7 @@ export function createHandlebarsParser(
           return statementParser(context);
         },
       };
-
-      const statements: Statement[] = [];
-      const firstToken = context.tokens.lookAhead;
-      let lastToken = null;
-      while (context.tokens.lookAhead != null) {
-        lastToken = context.tokens.lookAhead;
-        statements.push(context.parseStatement());
-      }
-
-      return {
-        type: "Program",
-        strip: {},
-        body: statements,
-        loc: context.tokens.location(firstToken, lastToken),
-      };
+      return parseProgram(context);
     },
   };
 }

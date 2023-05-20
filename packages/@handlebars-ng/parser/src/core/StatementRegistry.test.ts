@@ -38,4 +38,17 @@ describe("StatementRegistryImpl", () => {
     expect(registry.parsers.get("OPEN")).toEqual(parser);
     expect(registry.parsers.get("CLOSE")).toEqual(parser);
   });
+
+  it("add state", () => {
+    const registry = new StatementRegistryImpl();
+    registry.addState("mustache", {
+      fallbackRule: { type: "CONTENT" },
+      matchRules: [{ type: "OPEN", match: "{{" }],
+    });
+
+    expect(registry.states.get("mustache")).toEqual({
+      fallbackRule: { type: "CONTENT" },
+      matchRules: [{ type: "OPEN", match: "{{" }],
+    });
+  });
 });

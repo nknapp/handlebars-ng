@@ -6,7 +6,7 @@ import {
 } from "../model/lexer";
 import { Statement } from "@handlebars-ng/abstract-syntax-tree";
 import { TokenStream } from "./TokenStream";
-import { TokenType } from "baa-lexer";
+import { StateName, TokenType } from "baa-lexer";
 
 export interface HandlebarsParserPlugin {
   statement(statementRegistry: StatementRegistry): void;
@@ -14,6 +14,7 @@ export interface HandlebarsParserPlugin {
 export interface StatementRegistry {
   setFallbackRule(rule: HbsRule): void;
   addMatchRule(rule: HbsMatchRule): void;
+  addState(name: StateName<HbsLexerTypes>, rules: LexerRules): void;
   addParser<T extends Statement>(
     startToken: TokenTypes,
     parse: StatementParser<T>
@@ -21,7 +22,7 @@ export interface StatementRegistry {
   parsers: Map<TokenType<HbsLexerTypes>, StatementParser>;
 }
 
-export interface StatementRules {
+export interface LexerRules {
   fallbackRule: HbsRule | null;
   matchRules: HbsMatchRule[];
 }
