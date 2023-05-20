@@ -1,12 +1,12 @@
 import { ObjectUnderTest, TestBench } from "@handlebars-ng/benchmarks";
 import { originalHandlebars } from "@handlebars-ng/benchmarks";
 import { tests } from "@handlebars-ng/benchmarks";
-import { HandlebarsParser } from "../src";
+import { createDefaultParser } from "../src";
 
 const parserNg: ObjectUnderTest = {
   name: "ng parser",
   testFn(test) {
-    const parser = new HandlebarsParser();
+    const parser = createDefaultParser();
     return () => {
       parser.parse(test.template);
     };

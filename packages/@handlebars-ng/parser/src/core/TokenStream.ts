@@ -1,6 +1,6 @@
-import { HbsLexer, Token, TokenTypes } from "../lexer";
+import { HbsLexer, Token, TokenTypes } from "../model/lexer";
 import { SourceLocation } from "../model/ast";
-import { ParseError } from "./ParseError";
+import { ParseError } from "../error/ParseError";
 
 export class TokenStream {
   #tokens: Iterator<Token>;

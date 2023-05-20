@@ -3,8 +3,7 @@ import {
   ParseErrorTest,
   SuccessTest,
 } from "@handlebars-ng/specification";
-import { HandlebarsParser } from "./index";
-import { ParseError } from "./parser/ParseError";
+import { createDefaultParser, ParseError } from "./index";
 
 describe("test against Handlebars spec", () => {
   for (const [filename, testCase] of Object.entries(handlebarsSpec)) {
@@ -24,7 +23,7 @@ describe("test against Handlebars spec", () => {
 function expectSameAst(testCase: SuccessTest) {
   let ast;
   try {
-    const parser = new HandlebarsParser();
+    const parser = createDefaultParser();
     ast = parser.parse(testCase.template);
   } catch (error) {
     // Allow console in this case since it helps adjusting test-cases in case they are wrong
@@ -69,7 +68,7 @@ function expectSameError(testcase: ParseErrorTest) {
 
 function getParseError(template: string): ParseError {
   try {
-    const parser = new HandlebarsParser();
+    const parser = createDefaultParser();
     parser.parse(template);
   } catch (error) {
     if (error instanceof ParseError) {

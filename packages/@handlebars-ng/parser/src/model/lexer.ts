@@ -1,9 +1,10 @@
-import { MooState } from "baa-lexer";
+import { BaaMatchRule, BaaRule, BaaToken, Lexer } from "baa-lexer";
 
 export type MustacheOpenType = "OPEN_UNESCAPED" | "OPEN";
 export type MustacheCloseType = "CLOSE_UNESCAPED" | "CLOSE";
 export type TokenType =
   | "CONTENT"
+  | "COMMENT"
   | "SPACE"
   | "ID"
   | "SQUARE_WRAPPED_ID"
@@ -24,12 +25,11 @@ export interface HbsLexerTypes {
   stateName: "main" | "mustache" | "unescapedMustache";
 }
 
-export const LOOK_AHEAD = /[=~}\s/.)|]/;
-export const LITERAL_LOOKAHEAD = /[~}\s)]/;
+export type HbsRule = BaaRule<HbsLexerTypes>;
+export type HbsMatchRule = BaaMatchRule<HbsLexerTypes>;
+export type Token = BaaToken<HbsLexerTypes>;
+export type HbsLexer = Lexer<HbsLexerTypes>;
 
-export const mainRules: MooState<HbsLexerTypes> = {
-  OPEN_UNESCAPED: { match: "{{{", next: "unescapedMustache" },
-  OPEN: { match: "{{", next: "mustache" },
-  ESCAPED_MUSTACHE: { match: "\\{{", value: (text) => text.slice(1) },
-  CONTENT: { fallback: true, lineBreaks: true },
-};
+export interface TokenTypes extends Iterable<TokenType> {
+  has(token: TokenType): boolean;
+}

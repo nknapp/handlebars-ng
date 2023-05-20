@@ -20,7 +20,7 @@
     "test:unit": "vitest --run",
     "test:types": "tsc --build",
     "dev": "concurrently -k npm:dev:*",
-    "dev:unit": "vitest --ui",
+    "dev:unit": "vitest --ui src/ scripts/",
     "dev:types": "tsc --watch",
     "dev:build": "vite build --watch",
     "---- lerna tasks ----": "",

@@ -20,7 +20,7 @@ export interface Program extends Node {
 }
 
 export type AnyNode = Statement | Program | Expression;
-export type Statement = ContentStatement | MustacheStatement;
+export type Statement = ContentStatement | MustacheStatement | CommentStatement;
 export type Expression = PathExpression | Literal;
 export type Literal = StringLiteral | NumberLiteral | BooleanLiteral;
 
@@ -28,6 +28,12 @@ export interface ContentStatement extends Node {
   type: "ContentStatement";
   value: string;
   original: string;
+}
+
+interface CommentStatement extends Node {
+  type: "CommentStatement";
+  value: string;
+  strip: StripFlags;
 }
 
 export interface StripFlags {

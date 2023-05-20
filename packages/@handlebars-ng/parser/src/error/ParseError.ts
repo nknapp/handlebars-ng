@@ -1,15 +1,15 @@
-import { Location } from "../lexer";
+import { Position } from "@handlebars-ng/abstract-syntax-tree";
 
 export class ParseError extends Error {
-  location: Location;
+  location: Position;
 
-  constructor(message: string, location: Location, template: string) {
+  constructor(message: string, location: Position, template: string) {
     super(message + createMessageSuffix(template, location));
     this.location = location;
   }
 }
 
-function createMessageSuffix(template: string, location?: Location) {
+function createMessageSuffix(template: string, location?: Position) {
   if (location == null) return " in template\n-----\n" + template;
 
   return (
@@ -21,12 +21,12 @@ function createMessageSuffix(template: string, location?: Location) {
 class Snippet {
   private readonly contextLines = 2;
   private template: string;
-  private location: Location;
+  private location: Position;
   private startLine: number;
   private endLine: number;
   private lineNumberPadding: number;
 
-  constructor(template: string, location: Location) {
+  constructor(template: string, location: Position) {
     this.template = template;
     this.location = location;
     this.startLine = Math.max(location.line - this.contextLines, 1);
