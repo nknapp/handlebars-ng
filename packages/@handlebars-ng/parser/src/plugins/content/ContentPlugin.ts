@@ -5,14 +5,14 @@ import { tok } from "../../core/utils/tok";
 export const TOK_CONTENT = tok("CONTENT", "ESCAPED_MUSTACHE");
 
 export const ContentPlugin: HandlebarsParserPlugin = {
-  statement(registry) {
-    registry.setFallbackRule({ type: "CONTENT", lineBreaks: true });
-    registry.addMatchRule({
+  statement(api) {
+    api.lexerRules.setFallback({ type: "CONTENT", lineBreaks: true });
+    api.lexerRules.add({
       type: "ESCAPED_MUSTACHE",
       match: "\\{{",
       value: () => "{{",
     });
-    registry.addParser<ContentStatement>(TOK_CONTENT, parseContentStatement);
+    api.addParser(TOK_CONTENT, parseContentStatement);
   },
 };
 

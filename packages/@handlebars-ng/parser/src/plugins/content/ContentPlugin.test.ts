@@ -34,7 +34,7 @@ describe("ContentPlugin", () => {
 });
 
 const TestMustache: HandlebarsParserPlugin = {
-  statement(statementRegistry) {
-    statementRegistry.addMatchRule({ type: "OPEN", match: "{{" });
+  statement(api) {
+    api.lexerRules.add({ type: "OPEN", match: "{{" });
   },
 };

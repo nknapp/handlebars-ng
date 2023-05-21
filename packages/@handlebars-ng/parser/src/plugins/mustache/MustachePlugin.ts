@@ -1,8 +1,4 @@
-import {
-  HandlebarsParserPlugin,
-  ParseContext,
-  StatementRegistry,
-} from "../../core/types";
+import { HandlebarsParserPlugin, ParseContext } from "../../core/types";
 import {
   MustacheStatement,
   PathExpression,
@@ -66,9 +62,9 @@ export function createMustachePlugin(
   }
 
   return {
-    statement(registry: StatementRegistry) {
-      registry.addMatchRule(openRule);
-      registry.addState(lexerState, {
+    statement(api) {
+      api.lexerRules.add(openRule);
+      api.addState(lexerState, {
         fallbackRule: { type: "ID" },
         matchRules: [
           closeRule,
@@ -76,7 +72,7 @@ export function createMustachePlugin(
           { type: "SPACE", match: /[ \t\n]/, lineBreaks: true },
         ],
       });
-      registry.addParser<MustacheStatement>(TOK_OPEN, parseMustacheStatement);
+      api.addParser(TOK_OPEN, parseMustacheStatement);
     },
   };
 }

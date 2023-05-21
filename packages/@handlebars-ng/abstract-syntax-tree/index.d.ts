@@ -30,10 +30,18 @@ export interface ContentStatement extends Node {
   original: string;
 }
 
+interface NodeByType {
+  ContentStatement: ContentStatement;
+}
+
 interface CommentStatement extends Node {
   type: "CommentStatement";
   value: string;
   strip: StripFlags;
+}
+
+interface NodeByType {
+  CommentStatement: CommentStatement;
 }
 
 export interface StripFlags {
@@ -48,12 +56,21 @@ export interface MustacheStatement extends Node {
   path: PathExpression;
   strip: StripFlags;
 }
+
+interface NodeByType {
+  MustacheStatement: MustacheStatement;
+}
+
 export interface PathExpression extends Node {
   type: "PathExpression";
   depth: number;
   data: boolean;
   parts: string[];
   original: string;
+}
+
+interface NodeByType {
+  PathExpression: PathExpression;
 }
 
 export interface Node {
@@ -78,14 +95,26 @@ interface StringLiteral extends Node {
   original: string;
 }
 
+interface NodeByType {
+  StringLiteral: StringLiteral;
+}
+
 interface NumberLiteral extends Node {
   type: "NumberLiteral";
   value: number;
   original: string;
 }
 
+interface NodeByType {
+  NumberLiteral: NumberLiteral;
+}
+
 interface BooleanLiteral extends Node {
   type: "BooleanLiteral";
   value: boolean;
   original: string;
+}
+
+interface NodeByType {
+  BooleanLiteral: BooleanLiteral;
 }

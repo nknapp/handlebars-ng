@@ -1,0 +1,1 @@
+export { createHandlebarsParser } from "./createHandlebarsParser";

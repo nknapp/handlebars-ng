@@ -3,10 +3,7 @@ import {
   HandlebarsParser,
 } from "./core/createHandlebarsParser";
 import { ContentPlugin } from "./plugins";
-import {
-  MustachePluginEscaped,
-  MustachePluginUnescaped,
-} from "./plugins/mustache/MustachePlugin";
+import { MustachePluginEscaped, MustachePluginUnescaped } from "./plugins";
 
 export { ParseError } from "./error/ParseError";
 
