@@ -1,4 +1,8 @@
-import { NodeByType, Program } from "@handlebars-ng/abstract-syntax-tree";
+import {
+  AnyNode,
+  NodeByType,
+  Program,
+} from "@handlebars-ng/abstract-syntax-tree";
 import {
   ExpressionParser,
   ExpressionPluginArgs,
@@ -16,6 +20,7 @@ import { parseProgram } from "./parseProgram";
 import { RuleCollectionImpl } from "./registry/RuleCollectionImpl";
 import { DefaultParsers } from "./registry/DefaultParsers";
 import { HbsLexerState } from "../model/lexer";
+import { Traverser } from "../traverser/Traverser";
 
 export interface HandlebarsParser {
   parse(template: string): Program;
@@ -84,7 +89,36 @@ export function createHandlebarsParser(
           ) as NodeByType[T];
         },
       };
-      return parseProgram(context);
+      const ast = parseProgram(context);
+      for (const context of new Traverser().traverse(ast)) {
+        if (context.type === "array") {
+          applyWhitespaceControl(context.array);
+        }
+      }
+      return ast;
     },
   };
+}
+
+function applyWhitespaceControl(array: AnyNode[]) {
+  for (let i = 0; i < array.length; i++) {
+    const current = array[i];
+    const next = array[i + 1];
+    const previous = array[i - 1];
+
+    if (
+      current?.type === "ContentStatement" &&
+      next?.type === "MustacheStatement" &&
+      next.strip.open
+    ) {
+      current.value = current.value.trimEnd();
+    }
+    if (
+      current?.type === "ContentStatement" &&
+      previous?.type === "MustacheStatement" &&
+      previous.strip.close
+    ) {
+      current.value = current.value.trimStart();
+    }
+  }
 }
