@@ -1,12 +1,17 @@
 import { HandlebarsParserPlugin, Parser } from "../../core/types";
 import { BooleanLiteral } from "@handlebars-ng/abstract-syntax-tree";
 import { tok } from "../../core/utils/tok";
+import { withLookAhead } from "baa-lexer";
+import { LITERAL_LOOKAHEAD } from "../../common/lexer";
 
 const TOK_BOOLEAN = tok("BOOLEAN");
 
 export const BooleanLiteralPlugin: HandlebarsParserPlugin = {
   expression({ lexerRules, addParser }) {
-    lexerRules.add({ type: "BOOLEAN", match: /true|false/ });
+    lexerRules.add({
+      type: "BOOLEAN",
+      match: withLookAhead(/true|false/, LITERAL_LOOKAHEAD),
+    });
     addParser(TOK_BOOLEAN, booleanLiteralParser);
   },
 };

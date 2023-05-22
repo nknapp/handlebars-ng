@@ -1,6 +1,6 @@
 {
   "$schema": "../schema/testcase.json",
-  "description": "Paths that could be a number in part, yield and error",
+  "description": "Paths that could be a number in part throw an error",
   "type": "parseError",
   "template": "{{id 123.456.789}}",
   "expected": {

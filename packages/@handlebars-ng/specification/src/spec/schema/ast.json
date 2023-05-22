@@ -22,6 +22,26 @@
       "required": ["loc", "original", "type", "value"],
       "type": "object"
     },
+    "CommentStatement": {
+      "additionalProperties": false,
+      "properties": {
+        "loc": {
+          "$ref": "#/definitions/SourceLocation"
+        },
+        "strip": {
+          "$ref": "#/definitions/StripFlags"
+        },
+        "type": {
+          "const": "CommentStatement",
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": ["loc", "strip", "type", "value"],
+      "type": "object"
+    },
     "ContentStatement": {
       "additionalProperties": false,
       "properties": {
@@ -211,6 +231,9 @@
         },
         {
           "$ref": "#/definitions/MustacheStatement"
+        },
+        {
+          "$ref": "#/definitions/CommentStatement"
         }
       ]
     },

@@ -5,10 +5,10 @@ import {
   originalHandlebars,
   tests,
 } from "@handlebars-ng/benchmarks";
-import { HandlebarsParser } from "@handlebars-ng/parser";
+import { createDefaultParser } from "@handlebars-ng/parser";
 import { HandlebarsNgRunner } from ".";
 
-const parser = new HandlebarsParser();
+const parser = createDefaultParser();
 const ngRunner: ObjectUnderTest = {
   name: "ng runner",
   testFn(test) {
