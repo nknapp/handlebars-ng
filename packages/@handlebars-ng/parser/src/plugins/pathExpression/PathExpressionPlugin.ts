@@ -2,8 +2,7 @@ import { HandlebarsParserPlugin, Parser } from "../../core/types";
 import { PathExpression } from "@handlebars-ng/abstract-syntax-tree";
 import { tok } from "../../core/utils/tok";
 import { withLookAhead } from "baa-lexer";
-
-const LOOK_AHEAD = /[=~}\s/.)|]/;
+import { LOOK_AHEAD } from "../../common/lexer";
 
 export const PathExpressionPlugin: HandlebarsParserPlugin = {
   expression(api) {

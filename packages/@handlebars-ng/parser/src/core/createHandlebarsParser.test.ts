@@ -144,8 +144,6 @@ describe("createHandlebarsParse", () => {
       },
     ]);
   });
-
-  it.todo("shows expected statement types in error messages");
 });
 
 const testContentPlugin: HandlebarsParserPlugin = {

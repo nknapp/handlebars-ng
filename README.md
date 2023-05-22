@@ -71,7 +71,7 @@ instead of the link.
 **Go to "packages/@handlebars-ng/parser"**
 
 - Run `yarn parser dev:unit` to run unit-tests in watch mode. Your specification-test should be run as well and fail, so you can try to fix.
-- Add values to the `TokenType` and new tokens in [src/lexer/rules.ts](packages/@handlebars-ng/parser/src/lexer/rules.ts) if necessary.
+- Add values to the `TokenType` and new tokens in [src/lexer/lexer.ts](packages/@handlebars-ng/parser/src/lexer/rules.ts) if necessary.
 - Add new node-types to [src/parser/ParserContext.ts](packages/@handlebars-ng/parser/src/parser/ParserContext.ts) and a corresponding node-parser to
   [src/parser/nodes](packages/@handlebars-ng/parser/src/parser/nodes/)
 - When the test is green, cleanup your code.

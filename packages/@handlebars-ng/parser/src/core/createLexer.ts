@@ -37,6 +37,6 @@ function hbsState(statements: LexerRules) {
       statements.fallbackRule == null
     ),
     statements.fallbackRule,
-    null
+    { type: "error" }
   );
 }

@@ -62,11 +62,8 @@ describe("createLexer", () => {
       states: new Map(),
     });
     const tokens = lexer.lex("{{abc}}");
-    expect(() => {
-      for (const ignoredToken of tokens) {
-        /* noop */
-      }
-    }).toThrow("Syntax error at 1:2, expected one of  but got 'a'");
+    expect(tokens.next().value.type).toEqual("OPEN");
+    expect(tokens.next().value.type).toEqual("error");
   });
 
   it("creates a lexer with fallback and match rule", () => {

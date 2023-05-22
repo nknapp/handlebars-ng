@@ -3,7 +3,9 @@ import {
   HandlebarsParser,
 } from "./core/createHandlebarsParser";
 import {
+  BooleanLiteralPlugin,
   ContentPlugin,
+  NumberLiteralPlugin,
   PathExpressionPlugin,
   StringLiteralPlugin,
 } from "./plugins";
@@ -17,8 +19,10 @@ export function createDefaultParser(): HandlebarsParser {
       ContentPlugin,
       MustachePluginUnescaped,
       MustachePluginEscaped,
-      PathExpressionPlugin,
+      BooleanLiteralPlugin,
+      NumberLiteralPlugin,
       StringLiteralPlugin,
+      PathExpressionPlugin,
     ],
   });
 }
