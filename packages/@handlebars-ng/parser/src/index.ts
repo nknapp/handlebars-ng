@@ -13,6 +13,7 @@ import { MustachePluginEscaped, MustachePluginUnescaped } from "./plugins";
 
 export { ParseError } from "./error/ParseError";
 
+export type { HandlebarsParser } from "./core/createHandlebarsParser";
 export function createDefaultParser(): HandlebarsParser {
   return createHandlebarsParser({
     plugins: [
