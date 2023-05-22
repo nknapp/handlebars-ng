@@ -52,6 +52,8 @@ const nodeMapping: NodeMapping = {
         return new MustacheRenderer(node, this);
       case "Program":
         return new ProgramRenderer(node, this);
+      case "CommentStatement":
+        throw new Error("Not yet implemented");
       default:
         unexpectedNodeType(node);
     }
