@@ -71,9 +71,12 @@ instead of the link.
 **Go to "packages/@handlebars-ng/parser"**
 
 - Run `yarn parser dev:unit` to run unit-tests in watch mode. Your specification-test should be run as well and fail, so you can try to fix.
-- Add values to the `TokenType` and new tokens in [src/lexer/lexer.ts](packages/@handlebars-ng/parser/src/lexer/rules.ts) if necessary.
-- Add new node-types to [src/parser/ParserContext.ts](packages/@handlebars-ng/parser/src/parser/ParserContext.ts) and a corresponding node-parser to
-  [src/parser/nodes](packages/@handlebars-ng/parser/src/parser/nodes/)
+- Add values to the `TokenType` and new tokens in [src/model/lexer.ts](packages/@handlebars-ng/parser/src/model/lexer.ts) if necessary.
+- Add a new plugin to [src/plugins](packages/@handlebars-ng/parser/src/plugins/)
+  - Have a look at the existing plugins for reference. In general, a plugin
+    uses registers rules and lexer-states and parse-functions associates with those
+    rules. It's all in one place now.
+- Add your plugin to the [default parser](packages/@handlebars-ng/parser/src/index.ts)
 - When the test is green, cleanup your code.
 - You can run `yarn parser perf` to run the performance tests, but performance optimizations can also be done later on.
 - Finally, run `yarn parser test-and-build` to update the `dist`-folder
