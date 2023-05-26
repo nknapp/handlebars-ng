@@ -42,7 +42,7 @@
     "vitest": "0.30.1"
   },
   "dependencies": {
-    "baa-lexer": "0.3.0",
+    "baa-lexer": "0.3.1",
     "moo": "^0.5.2"
   }
 }
