@@ -6,6 +6,7 @@ import { HelperFn } from "./types/helper";
 import { NodeMapping, RenderContext } from "./types/nodeMapping";
 import { PathEvaluator } from "./expressions/PathEvaluator";
 import { LiteralEvaluator } from "./expressions/LiteralEvaluator";
+import { SubExpressionEvaluator } from "./expressions/SubExpressionEvaluator";
 
 type Runnable = (input: Record<string, unknown>) => string;
 
@@ -39,6 +40,8 @@ const nodeMapping: NodeMapping = {
       case "NumberLiteral":
       case "BooleanLiteral":
         return new LiteralEvaluator(node);
+      case "SubExpression":
+        return new SubExpressionEvaluator(node, nodeMapping);
       default:
         unexpectedNodeType(node);
     }

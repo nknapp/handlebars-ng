@@ -4,7 +4,12 @@ import {
   Evaluator,
   EvaluationContext,
 } from "../types/nodeMapping";
-import { MustacheStatement, Node } from "../types/ast";
+import {
+  Expression,
+  MustacheStatement,
+  Node,
+  PathExpression,
+} from "../types/ast";
 import { renderEscapedHtml } from "../utils/htmlEscape";
 import { AbstractNodeRenderer } from "./AbstractNodeRenderer";
 import { getOwnProperty } from "../utils/getOwnProperty";
@@ -28,8 +33,11 @@ export class MustacheRenderer extends AbstractNodeRenderer<MustacheStatement> {
   }
 }
 
-function createEvaluator(
-  node: MustacheStatement,
+export function createEvaluator(
+  node: {
+    params: Expression[];
+    path: PathExpression;
+  },
   nodeMapping: NodeMapping
 ): Evaluator {
   const pathParts = node.path.parts;

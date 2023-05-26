@@ -24,6 +24,12 @@ import { Traverser } from "../traverser/Traverser";
 
 export interface HandlebarsParser {
   parse(template: string): Program;
+
+  /**
+   * Experimental: This method is only intended for debugging purposes,
+   * for human eyes. It can change without respecting semantic versioning
+   */
+  debug(): Record<string, unknown>;
 }
 
 interface HandlebarsParserOptions {
@@ -96,6 +102,11 @@ export function createHandlebarsParser(
         }
       }
       return ast;
+    },
+    debug() {
+      return {
+        lexer: lexer.debug(),
+      };
     },
   };
 }

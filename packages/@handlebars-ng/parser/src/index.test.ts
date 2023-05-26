@@ -1,7 +1,7 @@
 import { createDefaultParser } from "./index";
 
 describe("index", () => {
-  it("parses content", () => {
+  it("parses empty content", () => {
     const parser = createDefaultParser();
     const ast = parser.parse("");
     expect(ast).toEqual({
