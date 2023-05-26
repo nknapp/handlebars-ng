@@ -49,14 +49,6 @@ function replaceChar(char: string): string {
   return escapeRules.get(char)!;
 }
 
-/**
- * Escape special characters in the given string of text.
- *
- * @param  {string} string The string to escape for inserting into HTML
- * @return {string}
- * @public
- */
-
 export function renderEscapedHtml(
   str: string,
   context: Pick<RenderContext, "output">
