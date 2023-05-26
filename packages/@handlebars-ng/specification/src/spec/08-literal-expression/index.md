@@ -1,4 +1,4 @@
-# Literal ParameterExpression
+# Literal expression
 
 A literal expression resolves to a constant value or the following types
 

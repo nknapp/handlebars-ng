@@ -2,6 +2,7 @@ import { HandlebarsParserPlugin, ParseContext } from "../../core/types";
 import { MustacheStatement } from "@handlebars-ng/abstract-syntax-tree";
 import { tok } from "../../core/utils/tok";
 import { HbsLexerState, HbsMatchRule } from "../../model/lexer";
+import { pathAndParameters } from "../../common/pathAndParameters";
 
 export const MustachePluginEscaped = createMustachePlugin(
   { type: "OPEN", match: "{{", next: "mustache" },
@@ -26,23 +27,15 @@ export function createMustachePlugin(
   const TOK_OPEN = tok(openRule.type);
   const TOK_CLOSE = tok(closeRule.type);
 
-  const TOK_SPACE = tok("SPACE");
   const TOK_STRIP = tok("STRIP");
   const TOK_PARAM_END = tok("STRIP", ...TOK_CLOSE);
+  const { parse: parsePathAndParameters, rules } =
+    pathAndParameters(TOK_PARAM_END);
 
   function parseMustacheStatement(context: ParseContext): MustacheStatement {
     const open = context.tokens.eat(TOK_OPEN);
     const stripLeft = context.tokens.eatOptional(TOK_STRIP);
-    context.tokens.ignore(TOK_SPACE);
-    const path = context.parse("PathExpression");
-    const params = [];
-    while (context.tokens.lookAhead?.type === "SPACE") {
-      context.tokens.ignore(TOK_SPACE);
-      if (!TOK_PARAM_END.has(context.tokens.lookAhead.type)) {
-        params.push(context.parseExpression());
-      }
-    }
-    context.tokens.ignore(TOK_SPACE);
+    const { path, params } = parsePathAndParameters(context);
     const stripRight = context.tokens.eatOptional(TOK_STRIP);
     const close = context.tokens.eat(TOK_CLOSE);
 
@@ -65,7 +58,7 @@ export function createMustachePlugin(
           ...api.expressionRules.matchRules,
           closeRule,
           { type: "STRIP", match: "~" },
-          { type: "SPACE", match: /[ \t\n]/, lineBreaks: true },
+          ...rules,
         ],
       });
       api.addParser(TOK_OPEN, parseMustacheStatement);

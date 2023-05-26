@@ -21,7 +21,7 @@ export interface Program extends Node {
 
 export type AnyNode = Statement | Program | Expression;
 export type Statement = ContentStatement | MustacheStatement | CommentStatement;
-export type Expression = PathExpression | Literal;
+export type Expression = PathExpression | Literal | SubExpression;
 export type Literal = StringLiteral | NumberLiteral | BooleanLiteral;
 
 export interface ContentStatement extends Node {
@@ -117,4 +117,14 @@ interface BooleanLiteral extends Node {
 
 interface NodeByType {
   BooleanLiteral: BooleanLiteral;
+}
+
+interface SubExpression extends Node {
+  type: "SubExpression";
+  path: PathExpression;
+  params: Expression[];
+}
+
+interface NodeByType {
+  SubExpression: SubExpression;
 }

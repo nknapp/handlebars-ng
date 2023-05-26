@@ -69,6 +69,9 @@
         },
         {
           "$ref": "#/definitions/Literal"
+        },
+        {
+          "$ref": "#/definitions/SubExpression"
         }
       ]
     },
@@ -268,6 +271,29 @@
         }
       },
       "required": ["open", "close"],
+      "type": "object"
+    },
+    "SubExpression": {
+      "additionalProperties": false,
+      "properties": {
+        "loc": {
+          "$ref": "#/definitions/SourceLocation"
+        },
+        "params": {
+          "items": {
+            "$ref": "#/definitions/Expression"
+          },
+          "type": "array"
+        },
+        "path": {
+          "$ref": "#/definitions/PathExpression"
+        },
+        "type": {
+          "const": "SubExpression",
+          "type": "string"
+        }
+      },
+      "required": ["loc", "params", "path", "type"],
       "type": "object"
     }
   }

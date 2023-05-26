@@ -41,7 +41,10 @@ MustacheContents ::
 
 WhitespaceControl :: `~`
 
-Whitespace :: one of
+Whitespace ::
+    WhitespaceChar Whitespace?
+
+WhitespaceChar :: one of
     `<SPACE>` `<TAB>` `<LF>` `<CR>`
 
 // @section:PathExpressions
@@ -74,6 +77,7 @@ MustacheParameters ::
 MustacheParameter ::
     Literal
     PathExpression
+    SubExpression
 
 
 // @section:LiteralExpressions
@@ -111,3 +115,8 @@ Fraction ::
 BooleanLiteral :: one of
     `true` `false`
 
+
+// @section:SubExpressions
+
+SubExpression ::
+    `(` Whitespace? PathExpression MustacheParameters? Whitespace? `)`

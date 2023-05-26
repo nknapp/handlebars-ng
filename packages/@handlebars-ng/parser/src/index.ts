@@ -8,6 +8,7 @@ import {
   NumberLiteralPlugin,
   PathExpressionPlugin,
   StringLiteralPlugin,
+  SubExpressionPlugin,
 } from "./plugins";
 import { MustachePluginEscaped, MustachePluginUnescaped } from "./plugins";
 
@@ -24,6 +25,7 @@ export function createDefaultParser(): HandlebarsParser {
       NumberLiteralPlugin,
       StringLiteralPlugin,
       PathExpressionPlugin,
+      SubExpressionPlugin,
     ],
   });
 }

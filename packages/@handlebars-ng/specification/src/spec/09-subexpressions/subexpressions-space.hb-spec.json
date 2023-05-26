@@ -1,0 +1,167 @@
+{
+  "$schema": "../schema/testcase.json",
+  "description": "Additional whitespace is ignored in subexpressions",
+  "type": "success",
+  "template": "{{add (add   2 \n\n 3) \t 4}}",
+  "input": {},
+  "helpers": { "add": "add" },
+  "output": "9",
+  "ast": {
+    "type": "Program",
+    "body": [
+      {
+        "type": "MustacheStatement",
+        "escaped": true,
+        "params": [
+          {
+            "type": "SubExpression",
+            "params": [
+              {
+                "type": "NumberLiteral",
+                "value": 2,
+                "original": "2",
+                "loc": {
+                  "start": { "line": 1, "column": 13 },
+                  "end": { "line": 1, "column": 14 }
+                }
+              },
+              {
+                "type": "NumberLiteral",
+                "value": 3,
+                "original": "3",
+                "loc": {
+                  "start": { "line": 3, "column": 1 },
+                  "end": { "line": 3, "column": 2 }
+                }
+              }
+            ],
+            "path": {
+              "type": "PathExpression",
+              "original": "add",
+              "data": false,
+              "depth": 0,
+              "parts": ["add"],
+              "loc": {
+                "start": { "line": 1, "column": 7 },
+                "end": { "line": 1, "column": 10 }
+              }
+            },
+            "loc": {
+              "start": { "line": 1, "column": 6 },
+              "end": { "line": 3, "column": 3 }
+            }
+          },
+          {
+            "type": "NumberLiteral",
+            "value": 4,
+            "original": "4",
+            "loc": {
+              "start": { "line": 3, "column": 6 },
+              "end": { "line": 3, "column": 7 }
+            }
+          }
+        ],
+        "path": {
+          "type": "PathExpression",
+          "original": "add",
+          "data": false,
+          "depth": 0,
+          "parts": ["add"],
+          "loc": {
+            "start": { "line": 1, "column": 2 },
+            "end": { "line": 1, "column": 5 }
+          }
+        },
+        "strip": { "open": false, "close": false },
+        "loc": {
+          "start": { "line": 1, "column": 0 },
+          "end": { "line": 3, "column": 9 }
+        }
+      }
+    ],
+    "strip": {},
+    "loc": {
+      "start": { "line": 1, "column": 0 },
+      "end": { "line": 3, "column": 9 }
+    }
+  },
+  "originalAst": {
+    "type": "Program",
+    "body": [
+      {
+        "type": "MustacheStatement",
+        "escaped": true,
+        "params": [
+          {
+            "type": "SubExpression",
+            "params": [
+              {
+                "type": "NumberLiteral",
+                "value": 2,
+                "original": 2,
+                "loc": {
+                  "start": { "line": 1, "column": 13 },
+                  "end": { "line": 1, "column": 14 }
+                }
+              },
+              {
+                "type": "NumberLiteral",
+                "value": 3,
+                "original": 3,
+                "loc": {
+                  "start": { "line": 3, "column": 1 },
+                  "end": { "line": 3, "column": 2 }
+                }
+              }
+            ],
+            "path": {
+              "type": "PathExpression",
+              "original": "add",
+              "data": false,
+              "depth": 0,
+              "parts": ["add"],
+              "loc": {
+                "start": { "line": 1, "column": 7 },
+                "end": { "line": 1, "column": 10 }
+              }
+            },
+            "loc": {
+              "start": { "line": 1, "column": 6 },
+              "end": { "line": 3, "column": 3 }
+            }
+          },
+          {
+            "type": "NumberLiteral",
+            "value": 4,
+            "original": 4,
+            "loc": {
+              "start": { "line": 3, "column": 6 },
+              "end": { "line": 3, "column": 7 }
+            }
+          }
+        ],
+        "path": {
+          "type": "PathExpression",
+          "original": "add",
+          "data": false,
+          "depth": 0,
+          "parts": ["add"],
+          "loc": {
+            "start": { "line": 1, "column": 2 },
+            "end": { "line": 1, "column": 5 }
+          }
+        },
+        "strip": { "open": false, "close": false },
+        "loc": {
+          "start": { "line": 1, "column": 0 },
+          "end": { "line": 3, "column": 9 }
+        }
+      }
+    ],
+    "strip": {},
+    "loc": {
+      "start": { "line": 1, "column": 0 },
+      "end": { "line": 3, "column": 9 }
+    }
+  }
+}

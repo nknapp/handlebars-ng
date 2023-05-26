@@ -16,6 +16,8 @@ export type TokenType =
   | "STRING_LITERAL_SINGLE_QUOTE"
   | "NUMBER"
   | "BOOLEAN"
+  | "OPEN_SUB_EXPRESSION"
+  | "CLOSE_SUB_EXPRESSION"
   | MustacheOpenType
   | MustacheCloseType
   | "error";

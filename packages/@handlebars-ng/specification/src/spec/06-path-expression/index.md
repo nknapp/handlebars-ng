@@ -1,6 +1,6 @@
-# Path ParameterExpression
+# Path Expressions
 
-[Path ParameterExpression Grammar](../handlebars.grammar#PathExpressions)
+[Path Expression Grammar](../handlebars.grammar#PathExpressions)
 
 A path expression is a list of ids separated by dots. It is resolved by recursively retrieving the property matching the id
 of the current input object.
