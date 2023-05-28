@@ -13,7 +13,11 @@ export const CodeEditor: Component<CodeEditorProps> = ({
 
   return (
     <div class={"border border-orange-200 rounded bg-white h-64 relative"}>
-      <div class={"border-b border-orange-200 bg-gray-50 h-8 ps-2 flex items-center"}>
+      <div
+        class={
+          "border-b border-orange-200 bg-gray-50 h-8 ps-2 flex items-center"
+        }
+      >
         <label for={id}>{label}</label>
       </div>
       <div class={"absolute inset-2 mt-1 top-8"}>

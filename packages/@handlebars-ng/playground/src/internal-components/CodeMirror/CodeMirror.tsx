@@ -25,17 +25,19 @@ const CodeMirror: Component<CodeMirrorProps> = ({
 
   onMount(() => {
     if (textarea == null || container == null) {
-      throw new Error("Cannot inject CodeMirror, container or textarea is null!");
+      throw new Error(
+        "Cannot inject CodeMirror, container or textarea is null!"
+      );
     }
-    const bounds = container.getBoundingClientRect()
+    const bounds = container.getBoundingClientRect();
     editor = CodeMirrorFactory.fromTextArea(textarea, {
       value,
       mode: codeMirrorMode(language),
     });
-    editor.setSize(bounds.width, bounds.height)
+    editor.setSize(bounds.width, bounds.height);
     editor.on("change", () => {
-        if (editor == null) return
-        onInput(editor.getValue());
+      if (editor == null) return;
+      onInput(editor.getValue());
     });
   });
 

@@ -3,7 +3,7 @@ import { CodeEditor } from "./internal-components/CodeEditor";
 import { createMemo, createSignal } from "solid-js";
 import json5 from "json5";
 import prettier from "prettier/standalone";
-import parserBabel from 'prettier/parser-babel'
+import parserBabel from "prettier/parser-babel";
 
 const initialValues: PlaygroundModel = {
   template: "{{firstname}} {{loud lastname}}",
@@ -29,7 +29,10 @@ export const Playground: Component = () => {
   const [input, setInput] = createSignal(initialValues.input);
 
   const prettyInput = createMemo(() => {
-    return prettier.format(json5.stringify(input()), { parser: "json5",  plugins:[parserBabel]});
+    return prettier.format(json5.stringify(input()), {
+      parser: "json5",
+      plugins: [parserBabel],
+    });
   });
 
   return (

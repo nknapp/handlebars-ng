@@ -1,6 +1,6 @@
 import { render, screen } from "@solidjs/testing-library";
 import { CodeEditor } from "./CodeEditor";
-import type { CodeEditorProps} from "./CodeEditor.types";
+import type { CodeEditorProps } from "./CodeEditor.types";
 import userEvent from "@testing-library/user-event";
 import { vi } from "vitest";
 
