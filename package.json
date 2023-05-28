@@ -19,6 +19,7 @@
     "parser": "lerna run --scope @handlebars-ng/parser",
     "benchmarks": "lerna run --scope @handlebars-ng/benchmarks",
     "spec": "lerna run --scope @handlebars-ng/specification",
+    "playground": "lerna run --scope @handlebars-ng/playground",
     "site": "lerna run --scope handlebars-ng.knappi.org",
     "---- chores ----": "",
     "prepare": "husky install",
