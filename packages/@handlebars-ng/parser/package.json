@@ -34,12 +34,12 @@
     "@handlebars-ng/eslint-plugin": "0.0.1",
     "@handlebars-ng/specification": "0.0.1",
     "@types/moo": "0.5.5",
-    "@vitest/ui": "0.30.1",
+    "@vitest/ui": "0.31.1",
     "typescript": "5.0.4",
-    "vite": "4.3.3",
-    "vite-node": "0.30.1",
+    "vite": "4.3.9",
+    "vite-node": "0.31.1",
     "vite-plugin-dts": "2.3.0",
-    "vitest": "0.30.1"
+    "vitest": "0.31.1"
   },
   "dependencies": {
     "baa-lexer": "0.3.1",

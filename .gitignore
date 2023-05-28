@@ -28,3 +28,4 @@ dist-ssr
 __generated__
 
 dist-node
+.vitest-preview
