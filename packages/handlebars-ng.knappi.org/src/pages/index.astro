@@ -2,6 +2,7 @@
 import Card from "@/components/Card.astro";
 import CardContainer from "@/components/CardContainer.astro";
 import Home from "@/layouts/Home.astro";
+import { featPlayground } from "../featureToggles";
 ---
 
 <Home title="Handlebars - the next generation" logo="/images/logo-large.png">
@@ -26,5 +27,17 @@ import Home from "@/layouts/Home.astro";
       easy in the future.
     </Card>
   </CardContainer>
-  <div class="h-30"></div>
+  {
+    featPlayground && (
+      <div class="flex align-center justify-center">
+        <a
+          class="font-bold shadow-lg shadow-orange-400/40 border border-orange-400 p-2 w-64 inline-block text-center rounded-2xl"
+          href="playground/"
+        >
+          Try it!
+        </a>
+      </div>
+    )
+  }
+  <div class="h-30 flex"></div>
 </Home>

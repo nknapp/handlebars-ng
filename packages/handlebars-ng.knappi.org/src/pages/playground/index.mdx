@@ -1,0 +1,17 @@
+---
+layout: "@/layouts/MdxLayout.astro"
+title: "Playground"
+---
+
+import { Playground } from "@handlebars-ng/playground";
+import { featPlayground } from "@/featureToggles.js";
+
+import "@handlebars-ng/playground/dist/style.css";
+
+# Playground
+
+Here you can play with Handlebars and compare the results to handlebars-ng.
+
+&nbsp;
+
+{featPlayground ? <Playground client:only /> : <p class="text-red-500 border border-red-500 p-5 text-xl text-center rounded-xl" >Playground is still under construction!</p> }

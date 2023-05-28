@@ -1,0 +1,53 @@
+{
+  "name": "@handlebars-ng/playground",
+  "version": "0.0.1",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs"
+    },
+    "./dist/style.css": "./dist/style.css"
+  },
+  "scripts": {
+    "dev": "concurrently -k npm:dev:*",
+    "build": "vite build",
+    "preview": "vite preview",
+    "dev:server": "vite",
+    "dev:types": "tsc --build --watch",
+    "dev:unit": "vitest --ui",
+    "dev:vitest-preview": "vitest-preview",
+    "test": "concurrently -m 1 npm:test:*",
+    "test:types": "tsc --build",
+    "test:unit": "vitest --run",
+    "---- lerna tasks ----": "",
+    "build:watch": "vite build --watch",
+    "test-and-build": "yarn test && yarn build",
+    "clean": "rm dist dist-node -rf"
+  },
+  "devDependencies": {
+    "@handlebars-ng/common-dev": "0.0.1",
+    "@solidjs/testing-library": "0.7.1",
+    "@testing-library/jest-dom": "5.16.5",
+    "@testing-library/user-event": "^14.4.3",
+    "@types/codemirror": "^5.60.7",
+    "autoprefixer": "10.4.14",
+    "concurrently": "8.0.1",
+    "jsdom": "22.1.0",
+    "postcss": "8.4.24",
+    "tailwindcss": "3.3.2",
+    "vite": "4.3.9",
+    "vite-plugin-solid": "2.7.0",
+    "vitest": "0.31.1",
+    "vitest-preview": "0.0.1"
+  },
+  "dependencies": {
+    "codemirror": "5.65.13",
+    "solid-js": "1.7.5"
+  }
+}
