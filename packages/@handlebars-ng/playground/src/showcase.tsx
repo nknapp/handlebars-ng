@@ -1,6 +1,6 @@
 import { render } from "solid-js/web";
 import { Playground } from "./Playground";
-import "./showcase.css";
+import "./index.css";
 
 const root = document.getElementById("root");
 
