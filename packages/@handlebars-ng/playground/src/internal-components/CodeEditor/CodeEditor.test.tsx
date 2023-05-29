@@ -4,8 +4,6 @@ import type { CodeEditorProps } from "./CodeEditor.types";
 import userEvent from "@testing-library/user-event";
 import { vi } from "vitest";
 
-vi.mock("./CodeMirror");
-
 function renderCodeEditor(props: CodeEditorProps) {
   render(() => <CodeEditor {...props} />);
 }

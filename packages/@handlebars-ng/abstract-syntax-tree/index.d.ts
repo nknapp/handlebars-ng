@@ -66,6 +66,7 @@ export interface PathExpression extends Node {
   depth: number;
   data: boolean;
   parts: string[];
+  strict?: boolean;
   original: string;
 }
 

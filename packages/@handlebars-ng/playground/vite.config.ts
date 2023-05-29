@@ -35,11 +35,14 @@ export default defineConfig({
       entry: {
         index: path.join(srcDir, "index.ts"),
       },
-      formats: ["es", "cjs"],
+      formats: ["es"],
       name: "handlebars-ng-playground",
     },
     sourcemap: true,
     target: "esnext",
+  },
+  worker: {
+    format: "es",
   },
   test: {
     environment: "jsdom",

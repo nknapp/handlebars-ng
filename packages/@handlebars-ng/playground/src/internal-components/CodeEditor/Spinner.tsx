@@ -26,6 +26,7 @@ export const Spinner: Component = () => {
   // from https://github.com/n3r4zzurr0/svg-spinners
   return (
     <svg
+      class={"inline-block"}
       data-testid={"spinner"}
       width="24"
       height="24"

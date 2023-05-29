@@ -36,6 +36,7 @@
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/user-event": "^14.4.3",
     "@types/codemirror": "^5.60.7",
+    "@vitest/web-worker": "^0.31.1",
     "autoprefixer": "10.4.14",
     "concurrently": "8.0.1",
     "jsdom": "22.1.0",
@@ -47,7 +48,12 @@
     "vitest-preview": "0.0.1"
   },
   "dependencies": {
+    "@handlebars-ng/abstract-syntax-tree": "0.0.1",
+    "@handlebars-ng/parser": "0.0.1",
+    "@handlebars-ng/runner": "0.0.1",
     "codemirror": "5.65.13",
+    "comlink": "^4.4.1",
+    "handlebars": "4.7.7",
     "solid-js": "1.7.5"
   }
 }
