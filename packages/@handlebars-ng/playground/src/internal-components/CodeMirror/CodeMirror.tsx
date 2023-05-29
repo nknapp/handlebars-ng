@@ -23,13 +23,14 @@ const CodeMirror: Component<CodeMirrorProps> = ({
   let container: HTMLElement | undefined = undefined;
   let editor: CodeMirrorFactory.EditorFromTextArea | null = null;
 
-  onMount(() => {
+  onMount(async () => {
     if (textarea == null || container == null) {
       throw new Error(
         "Cannot inject CodeMirror, container or textarea is null!"
       );
     }
-    const bounds = container.getBoundingClientRect();
+
+    const bounds = await waitForBounds(container);
     editor = CodeMirrorFactory.fromTextArea(textarea, {
       value,
       mode: codeMirrorMode(language),
@@ -53,5 +54,16 @@ const CodeMirror: Component<CodeMirrorProps> = ({
     </div>
   );
 };
+
+async function waitForBounds(container: HTMLElement): Promise<DOMRect> {
+  for (let i = 0; i < 10; i++) {
+    const bounds = container.getBoundingClientRect();
+    if (bounds.width > 0 && bounds.height > 0) {
+      return bounds;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 10));
+  }
+  throw new Error("CodeMirror container has size 0");
+}
 
 export default CodeMirror;
