@@ -51,6 +51,7 @@
     "@handlebars-ng/abstract-syntax-tree": "0.0.1",
     "@handlebars-ng/parser": "0.0.1",
     "@handlebars-ng/runner": "0.0.1",
+    "@handlebars-ng/specification": "0.0.1",
     "codemirror": "5.65.13",
     "comlink": "^4.4.1",
     "handlebars": "4.7.7",

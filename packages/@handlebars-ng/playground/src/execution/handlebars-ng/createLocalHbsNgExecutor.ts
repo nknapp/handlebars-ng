@@ -1,11 +1,12 @@
 import { LocalExecutor } from "../common/LocalExecutor";
 import { Program } from "@handlebars-ng/abstract-syntax-tree";
-import Handlebars from "handlebars";
+import { createDefaultParser } from "@handlebars-ng/parser";
 
-export function createLocalHbs4Executor() {
+export function createLocalHbsNgExecutor() {
+  const parser = createDefaultParser();
   return new LocalExecutor({
     async parse(template: string): Promise<Program> {
-      return Handlebars.parse(template) as Program;
+      return parser.parse(template) as Program;
     },
   });
 }
