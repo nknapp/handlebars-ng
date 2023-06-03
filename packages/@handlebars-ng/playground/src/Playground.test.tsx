@@ -12,4 +12,10 @@ describe("Playground", () => {
       initialValues.template
     );
   });
+
+  it("renders the generated AST", async () => {
+    render(() => <Playground />);
+    const astElement = await screen.findByLabelText<HTMLTextAreaElement>("AST");
+    expect(astElement.value).toContain("firstname");
+  });
 });

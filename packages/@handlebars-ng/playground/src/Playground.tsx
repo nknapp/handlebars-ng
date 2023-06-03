@@ -1,10 +1,8 @@
-import type { Component } from "solid-js";
+import { Component, createResource } from "solid-js";
 import { CodeEditor } from "./internal-components/CodeEditor";
-import { createResource, createSignal } from "solid-js";
-import { createHandlebars4xExecutor } from "./execution/handlebars4x";
-import { Spinner } from "./internal-components/CodeEditor/Spinner";
-import { createHandlebarsNgExecutor } from "./execution/handlebars-ng";
-import { normalizeAst } from "@handlebars-ng/specification";
+import { createSignal } from "solid-js";
+import { AstView } from "./internal-components/AstView/AstView";
+import { createLocalHbsNgExecutor } from "./execution/handlebars-ng/createLocalHbsNgExecutor";
 
 const initialValues: PlaygroundModel = {
   template: "{{firstname}} {{loud lastname}}",
@@ -16,15 +14,9 @@ export interface PlaygroundModel {
 
 export const Playground: Component = () => {
   const [template, setTemplate] = createSignal(initialValues.template);
-
-  const executor4x = createHandlebars4xExecutor();
-  const [ast4x] = createResource(template, async (template) =>
-    normalizeAst(await executor4x.parse(template))
-  );
-
-  const executorNg = createHandlebarsNgExecutor();
-  const [astNg] = createResource(template, async (template) =>
-    normalizeAst(await executorNg.parse(template))
+  const executor = createLocalHbsNgExecutor();
+  const [astNg] = createResource(template, (template) =>
+    executor.parse(template)
   );
 
   return (
@@ -37,29 +29,8 @@ export const Playground: Component = () => {
           language={"handlebars"}
         />
       </div>
-      <div class={"grid grid-cols-1 md:grid-cols-2 gap-4"}>
-        <div>
-          <h2 class={"text-lg relative"}>
-            Abstract Syntax Tree (Handlebars 4.x) {ast4x.loading && <Spinner />}
-          </h2>
-          {ast4x.state === "errored" && (
-            <span class={"text-red-500"}>Error</span>
-          )}
-          <pre>
-            {ast4x.state === "ready" && JSON.stringify(ast4x(), null, 2)}
-          </pre>
-        </div>
-        <div>
-          <h2 class={"text-lg relativ"}>
-            Abstract Syntax Tree (Handlebars Ng) {astNg.loading && <Spinner />}
-          </h2>
-          {astNg.state === "errored" && (
-            <span class={"text-red-500"}>Error</span>
-          )}
-          <pre>
-            {astNg.state === "ready" && JSON.stringify(astNg(), null, 2)}
-          </pre>
-        </div>
+      <div>
+        {astNg.state === "ready" && <AstView label="AST" ast={astNg()} />}
       </div>
     </div>
   );

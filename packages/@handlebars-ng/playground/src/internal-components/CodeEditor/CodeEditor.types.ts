@@ -4,5 +4,6 @@ export interface CodeEditorProps {
   label: string;
   value: string;
   language?: EditorLanguage;
-  onInput: (newValue: string) => void;
+  readonly?: boolean;
+  onInput?: (newValue: string) => void;
 }

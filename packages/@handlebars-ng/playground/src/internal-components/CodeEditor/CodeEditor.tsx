@@ -8,6 +8,7 @@ export const CodeEditor: Component<CodeEditorProps> = ({
   value,
   language,
   onInput,
+  readonly,
 }) => {
   const id = createUniqueId();
 
@@ -26,6 +27,7 @@ export const CodeEditor: Component<CodeEditorProps> = ({
           value={value}
           onInput={onInput}
           language={language}
+          readonly={readonly}
         />
       </div>
     </div>

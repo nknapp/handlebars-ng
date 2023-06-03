@@ -228,6 +228,9 @@
           },
           "type": "array"
         },
+        "strict": {
+          "type": "boolean"
+        },
         "type": {
           "const": "PathExpression",
           "type": "string"

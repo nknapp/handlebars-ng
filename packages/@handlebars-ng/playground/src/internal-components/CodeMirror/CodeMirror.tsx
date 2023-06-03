@@ -14,6 +14,7 @@ const CodeMirror: Component<CodeMirrorProps> = ({
   value,
   language,
   onInput,
+  readonly = false,
 }) => {
   // textarea must be writable, but eslint does not recognize this
   // eslint-disable-next-line prefer-const
@@ -34,11 +35,12 @@ const CodeMirror: Component<CodeMirrorProps> = ({
     editor = CodeMirrorFactory.fromTextArea(textarea, {
       value,
       mode: codeMirrorMode(language),
+      readOnly: readonly,
     });
     editor.setSize(bounds.width, bounds.height);
     editor.on("change", () => {
       if (editor == null) return;
-      onInput(editor.getValue());
+      onInput?.(editor.getValue());
     });
   });
 

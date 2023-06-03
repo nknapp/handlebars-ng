@@ -4,5 +4,6 @@ export interface CodeMirrorProps {
   id: string;
   value: string;
   language?: EditorLanguage | undefined;
-  onInput(value: string): void;
+  onInput?: (value: string) => void;
+  readonly?: boolean;
 }
