@@ -27,4 +27,9 @@ describe("AstView", () => {
     render(() => <AstView label="label" ast={testAst} />);
     expect(screen.getByLabelText("label")).toHaveValue(expectedPrettyAst);
   });
+
+  it("renders a readonly editor", () => {
+    render(() => <AstView label="label" ast={testAst} />);
+    expect(screen.getByLabelText("label")).toHaveAttribute("readonly");
+  });
 });

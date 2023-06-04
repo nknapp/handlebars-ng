@@ -48,6 +48,7 @@ export default defineConfig({
     environment: "jsdom",
     globals: true,
     setupFiles: ["src/setup-tests.ts"],
+    open: false,
     // otherwise, solid would be loaded twice:
     deps: { registerNodeLoader: true },
   },

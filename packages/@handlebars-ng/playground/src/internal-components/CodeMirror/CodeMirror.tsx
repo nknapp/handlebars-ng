@@ -2,70 +2,48 @@ import "codemirror/lib/codemirror.css";
 import "codemirror/mode/javascript/javascript.js";
 import "codemirror/mode/handlebars/handlebars";
 import "codemirror/mode/xml/xml";
-import type { Component } from "solid-js";
-import { codeMirrorMode } from "./codeMirrorMode";
-
-import CodeMirrorFactory from "codemirror";
+import { Component, createEffect, createSignal } from "solid-js";
 import { CodeMirrorProps } from "./CodeMirror.types";
-import { onCleanup, onMount } from "solid-js";
+import { onCleanup } from "solid-js";
+import { createCodeMirror } from "./createCodeMirror";
 
-const CodeMirror: Component<CodeMirrorProps> = ({
-  id,
-  value,
-  language,
-  onInput,
-  readonly = false,
-}) => {
+const CodeMirror: Component<CodeMirrorProps> = (props) => {
+  const [container, setContainer] = createSignal<HTMLElement | null>(null);
   // textarea must be writable, but eslint does not recognize this
   // eslint-disable-next-line prefer-const
-  let textarea: HTMLTextAreaElement | undefined = undefined;
-  // Container must be writable, but eslint does not recognize this
-  // eslint-disable-next-line prefer-const
-  let container: HTMLElement | undefined = undefined;
-  let editor: CodeMirrorFactory.EditorFromTextArea | null = null;
+  const [textarea, setTextArea] = createSignal<HTMLTextAreaElement | null>(
+    null
+  );
 
-  onMount(async () => {
-    if (textarea == null || container == null) {
-      throw new Error(
-        "Cannot inject CodeMirror, container or textarea is null!"
-      );
-    }
+  const editor = createCodeMirror(textarea, () => props.language);
 
-    const bounds = await waitForBounds(container);
-    editor = CodeMirrorFactory.fromTextArea(textarea, {
-      value,
-      mode: codeMirrorMode(language),
-      readOnly: readonly,
+  createEffect(() => {
+    const containerElement = container();
+    const editorInstance = editor();
+    if (containerElement == null) return;
+    if (editorInstance == null) return;
+    const resizeObserver = new ResizeObserver(() => {
+      const { width, height } = containerElement.getBoundingClientRect();
+      editorInstance.setSize(width, height);
     });
-    editor.setSize(bounds.width, bounds.height);
-    editor.on("change", () => {
-      if (editor == null) return;
-      onInput?.(editor.getValue());
-    });
-  });
-
-  onCleanup(() => {
-    editor?.toTextArea();
+    resizeObserver.observe(containerElement);
+    onCleanup(() => resizeObserver.disconnect());
   });
 
   return (
-    <div class={"h-full"} ref={container}>
-      <textarea id={id} class="hidden" ref={textarea}>
-        {value}
+    <div class={"h-full"} ref={setContainer}>
+      {props.readonly ? "true" : "false"}
+      <textarea
+        id={props.id}
+        class="hidden"
+        ref={setTextArea}
+        readOnly={props.readonly}
+        onInput={(event) => props.onInput?.(event.target.value)}
+      >
+        {props.value}
       </textarea>
     </div>
   );
 };
-
-async function waitForBounds(container: HTMLElement): Promise<DOMRect> {
-  for (let i = 0; i < 10; i++) {
-    const bounds = container.getBoundingClientRect();
-    if (bounds.width > 0 && bounds.height > 0) {
-      return bounds;
-    }
-    await new Promise((resolve) => setTimeout(resolve, 10));
-  }
-  throw new Error("CodeMirror container has size 0");
-}
 
 export default CodeMirror;

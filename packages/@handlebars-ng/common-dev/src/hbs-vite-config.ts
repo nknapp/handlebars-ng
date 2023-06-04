@@ -57,6 +57,7 @@ export function hbsViteConfig({
     },
     test: {
       globals: true,
+      open: false,
     },
   });
 }
