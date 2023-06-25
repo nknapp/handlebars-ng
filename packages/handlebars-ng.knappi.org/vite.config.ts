@@ -19,5 +19,6 @@ export default defineConfig({
   },
   test: {
     globals: true,
+    open: false,
   },
 } as UserConfigExport);

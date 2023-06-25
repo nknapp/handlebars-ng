@@ -3,13 +3,7 @@ import { createUniqueId } from "solid-js";
 import { CodeMirror } from "../CodeMirror";
 import { CodeEditorProps } from "./CodeEditor.types";
 
-export const CodeEditor: Component<CodeEditorProps> = ({
-  label,
-  value,
-  language,
-  onInput,
-  readonly,
-}) => {
+export const CodeEditor: Component<CodeEditorProps> = (props) => {
   const id = createUniqueId();
 
   return (
@@ -19,15 +13,15 @@ export const CodeEditor: Component<CodeEditorProps> = ({
           "border-b border-orange-200 bg-gray-50 h-8 ps-2 flex items-center"
         }
       >
-        <label for={id}>{label}</label>
+        <label for={id}>{props.label}</label>
       </div>
       <div class={"absolute inset-2 mt-1 top-8"}>
         <CodeMirror
           id={id}
-          value={value}
-          onInput={onInput}
-          language={language}
-          readonly={readonly}
+          value={props.value}
+          onInput={props.onInput}
+          language={props.language}
+          readonly={props.readonly}
         />
       </div>
     </div>

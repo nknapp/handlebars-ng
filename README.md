@@ -14,6 +14,12 @@ This project is a mono-repo. The directory [packages/@handlebars-ng](packages/%4
 - [runner](packages/%40handlebars-ng/runner/) - a TypeScript-based compiler/executor for Handlebars ASTs
 - [benchmark](packages/@handlebars-ng/benchmarks) - measures the performance of the new parser/executor compared to the original Handlebars
 
+And some auxillary modules
+
+- [playground](packages/@handlebars-ng/playground) - The SolidJS components for the [HandlebarsNG playground](https://handlebars-ng.knappi.org/playground)
+- [common-dev](package/@handlebars-ng/common-dev) - project configuration files shared by multiple sub-repositories
+- [eslint-plugin](package/@handlebars-ng/eslint-plugin) - eslint-rules and configuration shared by multiple sub-repositories
+
 ## Contributing
 
 I use [Visual Studio Code]() to work in this repository.

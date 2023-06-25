@@ -34,6 +34,6 @@ A helper parameter wrapper in single quotes can contain all characters except a 
 
 [](./true-literal.hb-spec.json)
 
-[](./false-literal.hb-spec.json
+[](./false-literal.hb-spec.json)
 
-[](./path-starting-with-boolean.hb-spec.json))
+[](./path-starting-with-boolean.hb-spec.json)

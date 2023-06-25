@@ -32,7 +32,6 @@ const CodeMirror: Component<CodeMirrorProps> = (props) => {
 
   return (
     <div class={"h-full"} ref={setContainer}>
-      {props.readonly ? "true" : "false"}
       <textarea
         id={props.id}
         class="hidden"
