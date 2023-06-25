@@ -1,7 +1,7 @@
 import { Accessor, createEffect, createSignal, onCleanup } from "solid-js";
 import CodeMirrorFactory from "codemirror";
 import { codeMirrorMode } from "./codeMirrorMode";
-import { EditorLanguage } from "dist/internal-components/CodeMirror";
+import { EditorLanguage } from "./CodeMirror.types";
 
 export function createCodeMirror(
   textArea: Accessor<HTMLTextAreaElement | null>,

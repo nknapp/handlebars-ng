@@ -9,8 +9,6 @@ import { createCodeMirror } from "./createCodeMirror";
 
 const CodeMirror: Component<CodeMirrorProps> = (props) => {
   const [container, setContainer] = createSignal<HTMLElement | null>(null);
-  // textarea must be writable, but eslint does not recognize this
-  // eslint-disable-next-line prefer-const
   const [textarea, setTextArea] = createSignal<HTMLTextAreaElement | null>(
     null
   );
