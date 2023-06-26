@@ -71,7 +71,7 @@ function keepSticky(
   containerElement: Accessor<HTMLElement | undefined>
 ) {
   if (typeof window === "undefined") return;
-  let lastScrollY = window.scrollY;
+  let lastScrollY = window.scrollY + 20;
 
   function adjustHeight() {
     const sticky = stickyElement();
@@ -79,6 +79,14 @@ function keepSticky(
     if (sticky == null || container == null) return;
     const { height } = sticky.getBoundingClientRect();
     container.style.minHeight = height + "px";
+  }
+
+  function adjustInitialYPosition() {
+    const sticky = stickyElement();
+    const container = containerElement();
+    if (sticky == null || container == null) return;
+    const containerBounds = container.getBoundingClientRect();
+    sticky.style.top = -containerBounds.top + "px";
   }
 
   function adjustYPosition() {
@@ -109,6 +117,7 @@ function keepSticky(
   onMount(() => {
     window.addEventListener("scroll", rafAdjustPosition);
     adjustHeight();
+    adjustInitialYPosition();
   });
 
   onCleanup(() => {
