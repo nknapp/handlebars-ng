@@ -25,7 +25,14 @@ export const Sidebar: Component<{ children?: JSXElement }> = (props) => {
   keepSticky(stickyElement, containerElement);
 
   const swipeDetector = new SwipeDetector((direction) => {
-    showSidebar.set(direction === "right");
+    switch (direction) {
+      case "right":
+        showSidebar.set(true);
+        return;
+      case "left":
+        showSidebar.set(false);
+        return;
+    }
   });
   const clickOutSide = new ClickOutSide((event) => {
     event.preventDefault();
