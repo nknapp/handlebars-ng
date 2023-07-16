@@ -61,7 +61,7 @@ export const Sidebar: Component<{ children?: JSXElement }> = (props) => {
 
   return (
     <div ref={setContainerElement} class="h-full relative">
-      <div ref={setStickyElement} class="absolute">
+      <div ref={setStickyElement} class="absolute w-0 overflow-visible">
         <aside
           ref={clickOutSide.setElement}
           class={aside + " " + (show() ? "" : translateLeft)}
