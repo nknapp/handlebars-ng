@@ -93,7 +93,7 @@ function keepSticky(
     const container = containerElement();
     if (sticky == null || container == null) return;
     const containerBounds = container.getBoundingClientRect();
-    sticky.style.top = -containerBounds.top + "px";
+    sticky.style.top = Math.max(0, -containerBounds.top) + "px";
   }
 
   function adjustYPosition() {

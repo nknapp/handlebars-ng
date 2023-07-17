@@ -16,7 +16,6 @@
         tab.querySelectorAll<HTMLElement>("[data-my-tab-contents] > header")
       );
       headers.forEach((header) => {
-        console.log(header, headerEl);
         contentEl.removeChild(header);
         headerEl.appendChild(header);
       });
