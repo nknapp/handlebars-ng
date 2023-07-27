@@ -60,4 +60,14 @@ describe("CodeEditor", () => {
     const editor = await screen.findByLabelText("label");
     expect(editor).toHaveAttribute("readonly");
   });
+
+  it("renders overlay when specified", async () => {
+    await renderCodeEditor({
+      label: "label",
+      value: "value",
+      overlayText: "overlay text",
+      readonly: true,
+    });
+    expect(screen.queryByText("overlay text")).not.toBeNull();
+  });
 });

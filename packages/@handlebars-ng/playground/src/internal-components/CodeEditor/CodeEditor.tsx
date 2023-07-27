@@ -20,6 +20,7 @@ export const CodeEditor: Component<CodeEditorProps> = (props) => {
           id={id}
           value={props.value}
           onInput={props.onInput}
+          overlayText={props.overlayText}
           language={props.language}
           readonly={props.readonly}
         />

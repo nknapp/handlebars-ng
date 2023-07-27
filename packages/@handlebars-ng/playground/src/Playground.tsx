@@ -15,9 +15,14 @@ export interface PlaygroundModel {
 export const Playground: Component = () => {
   const [template, setTemplate] = createSignal(initialValues.template);
   const executor = createLocalHbsNgExecutor();
-  const [astNg] = createResource(template, (template) =>
-    executor.parse(template)
-  );
+  const [astNg] = createResource(template, async (template) => {
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    try {
+      return await executor.parse(template);
+    } catch (error) {
+      return undefined;
+    }
+  });
 
   return (
     <div class={"border bg-amber-50 rounded-lg p-2 shadow-lg"}>
@@ -30,7 +35,11 @@ export const Playground: Component = () => {
         />
       </div>
       <div>
-        {astNg.state === "ready" && <AstView label="AST" ast={astNg()} />}
+        <AstView
+          label="AST"
+          ast={astNg()}
+          loading={astNg.state === "pending"}
+        />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { render, screen } from "@solidjs/testing-library";
+import { render, screen, waitFor } from "@solidjs/testing-library";
 import { Playground } from "./Playground";
 
 const initialValues = {
@@ -16,6 +16,8 @@ describe("Playground", () => {
   it("renders the generated AST", async () => {
     render(() => <Playground />);
     const astElement = await screen.findByLabelText<HTMLTextAreaElement>("AST");
-    expect(astElement.value).toContain("firstname");
+    await waitFor(() => {
+      expect(astElement.value).toContain("firstname");
+    });
   });
 });

@@ -6,4 +6,5 @@ export interface CodeMirrorProps {
   language?: EditorLanguage | undefined;
   onInput?: (value: string) => void;
   readonly?: boolean;
+  overlayText?: string;
 }

@@ -5,5 +5,6 @@ export interface CodeEditorProps {
   value: string;
   language?: EditorLanguage;
   readonly?: boolean;
+  overlayText?: string;
   onInput?: (newValue: string) => void;
 }

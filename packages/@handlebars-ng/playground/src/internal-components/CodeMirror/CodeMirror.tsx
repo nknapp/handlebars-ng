@@ -16,6 +16,14 @@ const CodeMirror: Component<CodeMirrorProps> = (props) => {
   const editor = createCodeMirror(textarea, () => props.language);
 
   createEffect(() => {
+    const e = editor();
+
+    if (e != null && e.getValue() !== props.value) {
+      e.setValue(props.value);
+    }
+  });
+
+  createEffect(() => {
     const containerElement = container();
     const editorInstance = editor();
     if (containerElement == null) return;

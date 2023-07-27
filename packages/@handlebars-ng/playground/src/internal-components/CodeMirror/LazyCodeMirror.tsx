@@ -1,21 +1,23 @@
-import { Component, createSignal, lazy, onMount } from "solid-js";
+import { Component, lazy } from "solid-js";
 import { CodeMirrorProps } from "./CodeMirror.types";
+import { MyTransition } from "../MyTransition";
 
 const LazyCodeMirror = lazy(() => import("./CodeMirror"));
 
 export const CodeMirror: Component<CodeMirrorProps> = (props) => {
-  const [mounted, setMounted] = createSignal(false);
-  onMount(() => {
-    setTimeout(() => {
-      setMounted(true);
-    }, 0);
-  });
   return (
-    <div
-      class={"opacity-0 h-full duration-700"}
-      classList={{ "opacity-100": mounted() }}
-    >
+    <div class="relative">
       <LazyCodeMirror {...props} />
+      <MyTransition name="fade">
+        {props.overlayText != null && (
+          <div
+            data-test="overlay"
+            class="absolute inset-0 flex items-center justify-center bg-white/10"
+          >
+            <div class="text-lg">{props.overlayText}</div>
+          </div>
+        )}
+      </MyTransition>
     </div>
   );
 };
