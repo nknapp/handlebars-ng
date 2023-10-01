@@ -11,7 +11,7 @@ function renderCodeEditor(props: CodeEditorProps) {
 
 describe("CodeEditor", () => {
   it("shows label and value", async () => {
-    await renderCodeEditor({
+    renderCodeEditor({
       label: "label",
       value: "value",
       onInput: vi.fn(),
@@ -22,7 +22,7 @@ describe("CodeEditor", () => {
   it("calls onInput when content changes", async () => {
     const user = userEvent.setup();
     const onInput = vi.fn();
-    await renderCodeEditor({
+    renderCodeEditor({
       label: "label",
       value: "value",
       onInput,
@@ -37,7 +37,7 @@ describe("CodeEditor", () => {
 
   it("ignores input when no onInput is provided", async () => {
     const user = userEvent.setup();
-    await renderCodeEditor({
+    renderCodeEditor({
       label: "label",
       value: "value",
     });
@@ -52,7 +52,7 @@ describe("CodeEditor", () => {
   });
 
   it("renders a readonly editor when set to 'readonly'", async () => {
-    await renderCodeEditor({
+    renderCodeEditor({
       label: "label",
       value: "value",
       readonly: true,
@@ -62,7 +62,7 @@ describe("CodeEditor", () => {
   });
 
   it("renders overlay when specified", async () => {
-    await renderCodeEditor({
+    renderCodeEditor({
       label: "label",
       value: "value",
       overlayText: "overlay text",
