@@ -10,6 +10,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+      - run: node --version
       - run: yarn
       - run: yarn dep-versions
       - run: yarn test:lint
