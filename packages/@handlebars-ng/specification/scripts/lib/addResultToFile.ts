@@ -17,7 +17,7 @@ import { compileAndRun } from "../../src/utils/hbs4-compileAndRun";
 export async function addResultToFile(file: string) {
   console.log("Processing: " + file);
   const testcase = JSON.parse(
-    await fs.readFile(file, "utf-8")
+    await fs.readFile(file, "utf-8"),
   ) as HandlebarsTest;
 
   const type = testcase.type;
@@ -102,6 +102,6 @@ function adjustParseErrorTestcase(testcase: ParseErrorTest): void {
     }
   }
   throw new Error(
-    `Expected Handlebars 4.x to fail parsing "${testcase.template}"`
+    `Expected Handlebars 4.x to fail parsing "${testcase.template}"`,
   );
 }

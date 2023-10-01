@@ -6,19 +6,19 @@ export class DefaultParsers implements ParserCollector {
 
   setDefaultParser<T extends keyof NodeByType>(
     nodeType: T,
-    parse: Parser<NodeByType[T]>
+    parse: Parser<NodeByType[T]>,
   ): void {
     if (this.parsers.has(nodeType)) {
       throw new Error(
         "A default parser for this node-type was already registered: " +
-          nodeType
+          nodeType,
       );
     }
     this.parsers.set(nodeType, parse);
   }
 
   getDefaultParser<T extends keyof NodeByType>(
-    nodeType: T
+    nodeType: T,
   ): Parser<NodeByType[T]> {
     const result = this.parsers.get(nodeType) as Parser<NodeByType[T]>;
     if (result == null)

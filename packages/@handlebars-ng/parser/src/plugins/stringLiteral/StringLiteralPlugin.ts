@@ -4,7 +4,7 @@ import { tok } from "../../core/utils/tok";
 
 const TOK_STRING_LITERAL = tok(
   "STRING_LITERAL_DOUBLE_QUOTE",
-  "STRING_LITERAL_SINGLE_QUOTE"
+  "STRING_LITERAL_SINGLE_QUOTE",
 );
 
 export const StringLiteralPlugin: HandlebarsParserPlugin = {

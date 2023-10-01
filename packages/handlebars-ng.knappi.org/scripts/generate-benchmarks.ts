@@ -42,7 +42,7 @@ const ngRunner: ObjectUnderTest = {
 async function writeData(filename: string, ...testees: ObjectUnderTest[]) {
   if (!force && existsSync(filename)) {
     console.log(
-      "Skipping performance generation for existing file: " + filename
+      "Skipping performance generation for existing file: " + filename,
     );
     return;
   }
@@ -62,7 +62,7 @@ async function writeData(filename: string, ...testees: ObjectUnderTest[]) {
 
   const table = bench.asTable(
     (result) =>
-      `x̄=${format.format(result.mean)} p99=${format.format(result.p99)}`
+      `x̄=${format.format(result.mean)} p99=${format.format(result.p99)}`,
   );
   const graph = bench.asGraphData((result) => [result.mean, result.p99]);
 
@@ -73,10 +73,10 @@ async function writeData(filename: string, ...testees: ObjectUnderTest[]) {
 await writeData(
   "src/__generated__/benchmarks/parser.json",
   ngParser,
-  originalHandlebars.parser
+  originalHandlebars.parser,
 );
 await writeData(
   "src/__generated__/benchmarks/runner.json",
   ngRunner,
-  originalHandlebars.runner
+  originalHandlebars.runner,
 );

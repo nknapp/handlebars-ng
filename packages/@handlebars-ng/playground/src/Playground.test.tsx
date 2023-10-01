@@ -9,7 +9,7 @@ describe("Playground", () => {
   it("renders an template input", async () => {
     render(() => <Playground />);
     expect(await screen.findByLabelText("Template")).toHaveValue(
-      initialValues.template
+      initialValues.template,
     );
   });
 

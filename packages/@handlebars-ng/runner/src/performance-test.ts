@@ -51,5 +51,5 @@ const numberFormat = new Intl.NumberFormat("en-US", {
 const f = (number: number) => numberFormat.format(number).padStart(7);
 
 console.table(
-  bench.asTable((r) => `${f(r.min)} ${f(r.mean)} ${f(r.p99)} ${f(r.max)}`)
+  bench.asTable((r) => `${f(r.min)} ${f(r.mean)} ${f(r.p99)} ${f(r.max)}`),
 );

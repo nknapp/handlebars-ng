@@ -72,7 +72,7 @@ describe("normalizeAst", () => {
     },
     "source": ""
   }
-}`.trim()
+}`.trim(),
     );
   });
 });

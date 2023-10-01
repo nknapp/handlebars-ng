@@ -37,7 +37,7 @@ interface HandlebarsParserOptions {
 }
 
 export function createHandlebarsParser(
-  options: HandlebarsParserOptions
+  options: HandlebarsParserOptions,
 ): HandlebarsParser {
   const expressionRules = new RuleCollectionImpl();
   const statementRules = new RuleCollectionImpl();
@@ -91,7 +91,7 @@ export function createHandlebarsParser(
         },
         parse<T extends keyof NodeByType>(nodeType: T): NodeByType[T] {
           return defaultParsers.getDefaultParser(nodeType)(
-            context
+            context,
           ) as NodeByType[T];
         },
       };

@@ -8,21 +8,21 @@ export const MustachePluginEscaped = createMustachePlugin(
   { type: "OPEN", match: "{{", next: "mustache" },
   { type: "CLOSE", match: "}}", next: "main" },
   "mustache",
-  true
+  true,
 );
 
 export const MustachePluginUnescaped = createMustachePlugin(
   { type: "OPEN_UNESCAPED", match: "{{{", next: "unescapedMustache" },
   { type: "CLOSE_UNESCAPED", match: "}}}", next: "main" },
   "unescapedMustache",
-  false
+  false,
 );
 
 export function createMustachePlugin(
   openRule: HbsMatchRule,
   closeRule: HbsMatchRule,
   lexerState: HbsLexerState,
-  escaped: boolean
+  escaped: boolean,
 ): HandlebarsParserPlugin {
   const TOK_OPEN = tok(openRule.type);
   const TOK_CLOSE = tok(closeRule.type);

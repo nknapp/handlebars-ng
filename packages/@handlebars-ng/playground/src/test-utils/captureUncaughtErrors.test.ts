@@ -11,7 +11,7 @@ describe("captureUncaughtErrors", () => {
   it("returns errors that have not been caught during execution", async () => {
     const errors = await captureUncaughtErrors(async () => {
       window.dispatchEvent(
-        new ErrorEvent("error", { error: new Error("Test-Error") })
+        new ErrorEvent("error", { error: new Error("Test-Error") }),
       );
     });
     expect(errors).toHaveLength(1);
@@ -24,7 +24,7 @@ describe("captureUncaughtErrors", () => {
     });
     await captureUncaughtErrors(async () => {
       window.dispatchEvent(
-        new ErrorEvent("error", { error: new Error("Test-Error") })
+        new ErrorEvent("error", { error: new Error("Test-Error") }),
       );
     });
 

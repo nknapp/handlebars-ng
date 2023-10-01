@@ -17,7 +17,7 @@ export class SyncDirs {
   constructor(
     sourceDir: string,
     targetDir: string,
-    applyTransformations: Transform
+    applyTransformations: Transform,
   ) {
     this.sourceDir = sourceDir;
     this.targetDir = targetDir;

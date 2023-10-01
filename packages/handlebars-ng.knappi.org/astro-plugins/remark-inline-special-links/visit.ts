@@ -8,7 +8,7 @@ interface Visited<Node extends MyNode> {
 
 export function* visit<NodeType extends MyNode>(
   node: MyNode,
-  type: string
+  type: string,
 ): Generator<Visited<NodeType>> {
   for (const visited of visitAll(node)) {
     if (visited.node.type === type) {
@@ -20,7 +20,7 @@ export function* visit<NodeType extends MyNode>(
 function* visitAll(
   node: MyNode,
   parent?: Parent<MyNode>,
-  childIndex?: number
+  childIndex?: number,
 ): Generator<Visited<MyNode>> {
   yield {
     node,

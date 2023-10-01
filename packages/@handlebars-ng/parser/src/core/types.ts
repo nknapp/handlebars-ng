@@ -20,13 +20,13 @@ export interface RuleCollector {
 
 export type SetDefaultParser = <T extends keyof NodeByType>(
   nodeType: T,
-  parse: Parser<NodeByType[T]>
+  parse: Parser<NodeByType[T]>,
 ) => void;
 
 export interface ParserCollector {
   setDefaultParser: SetDefaultParser;
   getDefaultParser<T extends keyof NodeByType>(
-    nodeType: T
+    nodeType: T,
   ): Parser<NodeByType[T]>;
 }
 
@@ -50,7 +50,7 @@ export interface HandlebarsParserPlugin {
 }
 
 export type ExpressionParser<T extends Expression = Expression> = (
-  context: ParseContext
+  context: ParseContext,
 ) => T;
 
 export interface LexerRules {
@@ -59,7 +59,7 @@ export interface LexerRules {
 }
 
 export type StatementParser<T extends Statement = Statement> = (
-  context: ParseContext
+  context: ParseContext,
 ) => T;
 
 export type Parser<T extends Node> = (context: ParseContext) => T;

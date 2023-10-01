@@ -18,7 +18,7 @@ export function syncHandlebarsSpec(): AstroIntegration {
           const syncDirs = new SyncDirs(
             specSourceDir,
             specTargetDir,
-            applyTransformations
+            applyTransformations,
           );
           await syncDirs.syncAllFilesFromSpec();
 
@@ -50,7 +50,7 @@ async function applyTransformations(file: SyncFile): Promise<void> {
       break;
     default:
       throw new Error(
-        "Unknown file type for transformation: " + file.relativePath
+        "Unknown file type for transformation: " + file.relativePath,
       );
   }
 }

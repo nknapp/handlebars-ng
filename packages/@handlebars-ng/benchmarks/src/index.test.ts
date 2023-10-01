@@ -3,7 +3,7 @@ import { ObjectUnderTest } from "./types/types";
 import { busyWaitMs } from "./utils/tests/busyWait";
 
 const someTests = tests.filter((test) =>
-  ["mustaches.perf.ts", "unescaped-mustaches.perf.ts"].includes(test.name)
+  ["mustaches.perf.ts", "unescaped-mustaches.perf.ts"].includes(test.name),
 );
 
 describe("benchmarks", () => {

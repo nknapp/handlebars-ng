@@ -5,7 +5,7 @@ import { EditorLanguage } from "./CodeMirror.types";
 
 export function createCodeMirror(
   textArea: Accessor<HTMLTextAreaElement | null>,
-  language: Accessor<EditorLanguage | undefined>
+  language: Accessor<EditorLanguage | undefined>,
 ) {
   const [editor, setEditor] =
     createSignal<CodeMirrorFactory.EditorFromTextArea | null>(null);
@@ -14,7 +14,7 @@ export function createCodeMirror(
     const textAreaElement = textArea();
     if (textAreaElement == null) {
       throw new Error(
-        "Cannot inject CodeMirror, container or textarea is null!"
+        "Cannot inject CodeMirror, container or textarea is null!",
       );
     }
 

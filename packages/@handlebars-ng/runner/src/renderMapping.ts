@@ -13,7 +13,7 @@ export function getRendererForNode(node: AnyNode): NodeRenderer<Node> {
 
 export function registerNodeRenderer(
   type: AnyNode["type"],
-  factory: new (node: Node) => NodeRenderer<Node>
+  factory: new (node: Node) => NodeRenderer<Node>,
 ) {
   mapping.set(type, factory);
 }

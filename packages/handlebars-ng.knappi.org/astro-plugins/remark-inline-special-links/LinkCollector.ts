@@ -35,7 +35,7 @@ export class LinkCollector {
     for (const linkConfig of this.config.links) {
       if (linkConfig.match.test(linkTarget)) {
         const jsxElementName = this.imports.lazyCreateImportVar(
-          linkConfig.component
+          linkConfig.component,
         );
         return {
           jsxElementName: jsxElementName,
@@ -55,7 +55,7 @@ export class LinkCollector {
   private getPropValue(
     linkConfig: SpecialLinkConfig,
     value: symbol,
-    linkTarget: string
+    linkTarget: string,
   ): PropValue | typeof OMIT_VALUE {
     const [linkPath, hash] = linkTarget.split("#");
 
@@ -98,12 +98,12 @@ const OMIT_VALUE = Symbol("omit value");
 
 function mapValues<Input, Output>(
   input: Record<string, Input>,
-  mapFn: (value: Input) => Output | typeof OMIT_VALUE
+  mapFn: (value: Input) => Output | typeof OMIT_VALUE,
 ): Record<string, Output> {
   return Object.fromEntries(
     Object.entries(input)
       .map(([key, value]) => [key, mapFn(value)])
-      .filter((entry) => entry[1] !== OMIT_VALUE)
+      .filter((entry) => entry[1] !== OMIT_VALUE),
   );
 }
 

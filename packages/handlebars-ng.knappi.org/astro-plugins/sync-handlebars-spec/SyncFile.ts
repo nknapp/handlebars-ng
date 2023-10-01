@@ -27,23 +27,23 @@ export class SyncFile {
   wrapContentInFences(language: string): void {
     if (this.contents.match(/```/))
       throw new Error(
-        "Content already contains fences. This is currently not supported"
+        "Content already contains fences. This is currently not supported",
       );
 
     const title = capitalize(
-      path.basename(this.relativePath, path.extname(this.relativePath))
+      path.basename(this.relativePath, path.extname(this.relativePath)),
     );
     this.updateContents(
       `# ${title}`,
       ``,
       "```" + language,
       this.contents,
-      "```"
+      "```",
     );
   }
 
   async transform(
-    fn: (contents: string) => Promise<string> | string
+    fn: (contents: string) => Promise<string> | string,
   ): Promise<void> {
     this.contents = await fn(this.contents);
   }
@@ -63,7 +63,7 @@ export class SyncFile {
       ``,
       `---`,
       ``,
-      this.contents
+      this.contents,
     );
   }
 

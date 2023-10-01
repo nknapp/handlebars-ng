@@ -108,7 +108,7 @@ export class TestBench {
 
   private getResult(
     testee: ObjectUnderTest,
-    test: NamedPerformanceTest
+    test: NamedPerformanceTest,
   ): TaskResult {
     return this.results[this.taskName(testee, test)];
   }

@@ -21,7 +21,7 @@ function combineTwoContentStatements(nodes: Node[]) {
     ) {
       const mergedNode = merge(
         current as ContentStatement,
-        next as ContentStatement
+        next as ContentStatement,
       );
       nodes.splice(i, 2, mergedNode);
       return { shouldRepeat: true };

@@ -12,11 +12,11 @@ import { getOwnProperty } from "../utils/getOwnProperty";
 export function createEvaluatorForHelperOrPath(
   path: PathExpression,
   parameters: Expression[],
-  nodeMapping: NodeMapping
+  nodeMapping: NodeMapping,
 ): Evaluator {
   const pathParts = path.parts;
   const paramEvaluators = parameters.map((node) =>
-    nodeMapping.createEvaluator(node)
+    nodeMapping.createEvaluator(node),
   );
 
   if (pathParts.length === 1 && paramEvaluators.length === 0) {

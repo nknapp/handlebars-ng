@@ -17,14 +17,14 @@ const testModules = import.meta.glob<HandlebarsTest>(
   {
     eager: true,
     import: "default",
-  }
+  },
 );
 
 export const handlebarsSpec: Record<string, HandlebarsTest> =
   Object.fromEntries(
     Object.entries(testModules)
       .map(([path, spec]) => [removePrefix(path), spec])
-      .sort(compareBy(0))
+      .sort(compareBy(0)),
   );
 
 function removePrefix(path: string): string {

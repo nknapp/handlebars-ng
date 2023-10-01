@@ -29,7 +29,7 @@ type CompareFn<T> = (a: T, b: T) => number;
 
 function deepSortProperties(
   ast: Program,
-  compareFn: CompareFn<string>
+  compareFn: CompareFn<string>,
 ): Program {
   return JSON.parse(JSON.stringify(ast), (key: string, value: unknown) => {
     if (Array.isArray(value)) return value;

@@ -14,7 +14,7 @@ export class SubExpressionEvaluator extends AbstractEvaluator<SubExpression> {
     this.subEvaluator = createEvaluatorForHelperOrPath(
       this.node.path,
       this.node.params,
-      nodeMapping
+      nodeMapping,
     );
   }
   evaluate(context: EvaluationContext): unknown {

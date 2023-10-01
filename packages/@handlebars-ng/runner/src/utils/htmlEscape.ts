@@ -51,7 +51,7 @@ function replaceChar(char: string): string {
 
 export function renderEscapedHtml(
   str: string,
-  context: Pick<RenderContext, "output">
+  context: Pick<RenderContext, "output">,
 ): void {
   // Checking for illegal chars with a non-global regex. Covers most cases and
   // is faster than regex-replace or iteration

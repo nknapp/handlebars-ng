@@ -8,7 +8,7 @@ export interface Props {
 }
 
 const { ast } = Astro.props;
-const prettyAst = prettier.format(JSON.stringify(ast), { parser: "json" });
+const prettyAst = await prettier.format(JSON.stringify(ast), { parser: "json" });
 ---
 
 <Code code={prettyAst} lang={"json"} />

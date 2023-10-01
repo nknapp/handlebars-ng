@@ -34,7 +34,7 @@ export const get: APIRoute = async ({ params }) => {
   const content = jsonFiles[params.path ?? ""];
   const json = JSON.stringify(content);
   return {
-    body: prettier.format(json, { parser: "json" }),
+    body: await prettier.format(json, { parser: "json" }),
     encoding: "utf-8",
   };
 };

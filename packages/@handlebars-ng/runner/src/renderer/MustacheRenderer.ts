@@ -12,7 +12,7 @@ export class MustacheRenderer extends AbstractNodeRenderer<MustacheStatement> {
     this.evaluator = createEvaluatorForHelperOrPath(
       this.node.path,
       this.node.params,
-      nodeMapping
+      nodeMapping,
     );
   }
 

@@ -15,7 +15,7 @@ interface Props {
 
 const { spec, filename } = Astro.props;
 
-const prettyInput = prettier.format(JSON.stringify(spec.input), {
+const prettyInput = await prettier.format(JSON.stringify(spec.input), {
   parser: "json",
 });
 ---

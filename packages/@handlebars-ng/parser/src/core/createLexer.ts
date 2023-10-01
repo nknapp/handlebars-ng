@@ -34,9 +34,9 @@ function hbsState(statements: LexerRules) {
     statementTypes,
     createMatcher<HbsLexerTypes>(
       statements.matchRules,
-      statements.fallbackRule == null
+      statements.fallbackRule == null,
     ),
     statements.fallbackRule,
-    { type: "error" }
+    { type: "error" },
   );
 }

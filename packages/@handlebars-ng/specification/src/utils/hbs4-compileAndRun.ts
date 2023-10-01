@@ -3,7 +3,7 @@ import { RuntimeErrorTest, SuccessTest } from "../types/tests";
 import Handlebars from "handlebars";
 
 export function compileAndRun(
-  testcase: SuccessTest | RuntimeErrorTest
+  testcase: SuccessTest | RuntimeErrorTest,
 ): string {
   const instance = Handlebars.create();
   if (testcase.helpers != null) {

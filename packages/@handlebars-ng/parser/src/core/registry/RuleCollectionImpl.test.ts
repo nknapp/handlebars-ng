@@ -11,7 +11,7 @@ describe("RuleCollectionImpl", () => {
     const registry = new RuleCollectionImpl();
     registry.setFallback({ type: "CONTENT" });
     expect(() => registry.setFallback({ type: "CONTENT" })).toThrow(
-      "Only one fallback rule is allowed, and this one already exists: CONTENT"
+      "Only one fallback rule is allowed, and this one already exists: CONTENT",
     );
     expect(registry.fallbackRule).toEqual({ type: "CONTENT" });
   });

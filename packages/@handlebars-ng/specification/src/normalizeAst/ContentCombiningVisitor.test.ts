@@ -16,15 +16,15 @@ describe("Normalizer", () => {
         createContent("d", loc("1:5 - 1:6")),
         createContent("e", loc("1:6 - 1:7")),
       ],
-      loc("1:0 - 1:7")
+      loc("1:0 - 1:7"),
     );
 
     new ContentCombiningVisitor().accept(ast as hbs.AST.Program);
     expect(ast).toEqual(
       createProgram(
         [createContent("abc cde", loc("1:0 - 1:7"))],
-        loc("1:0 - 1:7")
-      )
+        loc("1:0 - 1:7"),
+      ),
     );
   });
 
@@ -40,7 +40,7 @@ describe("Normalizer", () => {
         createContent("d", loc("1:17 - 1:18")),
         createContent("e", loc("1:18 - 1:19")),
       ],
-      loc("1:0 - 1:19")
+      loc("1:0 - 1:19"),
     );
 
     new ContentCombiningVisitor().accept(ast as hbs.AST.Program);
@@ -51,8 +51,8 @@ describe("Normalizer", () => {
           createComment("{{! hi }}", loc("1:7 - 1:16")),
           createContent("cde", loc("1:16 - 1:19")),
         ],
-        loc("1:0 - 1:19")
-      )
+        loc("1:0 - 1:19"),
+      ),
     );
   });
 });

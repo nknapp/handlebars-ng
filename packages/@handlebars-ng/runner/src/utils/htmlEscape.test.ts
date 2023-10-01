@@ -27,7 +27,7 @@ describe("escapeExpression (Handlebars 4.x)", () => {
 
   it("long string", () => {
     expect(Handlebars.escapeExpression(input.repeat(100))).toBe(
-      expected.repeat(100)
+      expected.repeat(100),
     );
   });
 });

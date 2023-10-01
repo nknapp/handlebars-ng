@@ -1,11 +1,11 @@
 import { showSidebar } from "@/layouts/default/sidebar-store";
 import { useStore } from "@nanostores/solid";
 import {
-  Component,
+  type Component,
   createEffect,
   createSignal,
-  Accessor,
-  JSXElement,
+  type Accessor,
+  type JSXElement,
   onCleanup,
   onMount,
 } from "solid-js";
@@ -75,7 +75,7 @@ export const Sidebar: Component<{ children?: JSXElement }> = (props) => {
 
 function keepSticky(
   stickyElement: Accessor<HTMLElement | undefined>,
-  containerElement: Accessor<HTMLElement | undefined>
+  containerElement: Accessor<HTMLElement | undefined>,
 ) {
   if (typeof window === "undefined") return;
   let lastScrollY = window.scrollY + 20;
@@ -108,7 +108,7 @@ function keepSticky(
       scrollingDown,
       containerBounds,
       stickyBounds,
-      window.innerHeight
+      window.innerHeight,
     );
     sticky.style.top = newTop + "px";
     lastScrollY = window.scrollY;

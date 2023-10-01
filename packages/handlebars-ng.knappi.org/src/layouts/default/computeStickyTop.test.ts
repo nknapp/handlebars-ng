@@ -34,8 +34,8 @@ describe("computeStickyTop", () => {
           true,
           { top: -50, height: 40 },
           { top: 0, height: 20 },
-          80
-        )
+          80,
+        ),
       ).toEqual(20);
     });
 
@@ -140,7 +140,7 @@ class Szenario {
       scrollingDown,
       container,
       sticky,
-      this.viewPort.height
+      this.viewPort.height,
     );
     this.stickyOnPage.top = this.containerOnPage.top + this.stickyStyleTop;
   }

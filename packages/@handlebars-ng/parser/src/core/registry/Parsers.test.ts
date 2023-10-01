@@ -8,7 +8,7 @@ describe("StatementRegistryImpl", () => {
     const parser = vi.fn();
     registry.addParser(
       new Set<TokenType<HbsLexerTypes>>(["OPEN", "CLOSE"]),
-      parser
+      parser,
     );
     expect(registry.parsers.get("OPEN")).toEqual(parser);
     expect(registry.parsers.get("CLOSE")).toEqual(parser);

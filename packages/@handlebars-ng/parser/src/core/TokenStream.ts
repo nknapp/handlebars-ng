@@ -23,7 +23,7 @@ export class TokenStream {
       throw new ParseError(
         `Expected '${[...types]}', but received '${this.currentToken.type}'`,
         this.currentToken.start,
-        this.#template
+        this.#template,
       );
     this.lookAhead = this.#tokens.next().value;
     return this.currentToken;
@@ -53,7 +53,7 @@ export class TokenStream {
 
   location(
     firstToken?: Token | null,
-    lastToken?: Token | null
+    lastToken?: Token | null,
   ): SourceLocation {
     const start = firstToken?.start ?? { column: 0, line: 1 };
     const end = lastToken?.end ?? { column: 1, line: 1 };

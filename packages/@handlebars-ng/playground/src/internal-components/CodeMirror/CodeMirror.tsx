@@ -10,7 +10,7 @@ import { createCodeMirror } from "./createCodeMirror";
 const CodeMirror: Component<CodeMirrorProps> = (props) => {
   const [container, setContainer] = createSignal<HTMLElement | null>(null);
   const [textarea, setTextArea] = createSignal<HTMLTextAreaElement | null>(
-    null
+    null,
   );
 
   const editor = createCodeMirror(textarea, () => props.language);

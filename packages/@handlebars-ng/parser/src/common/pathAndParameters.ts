@@ -15,7 +15,7 @@ interface PathAndParametersReturn {
 }
 
 export function pathAndParameters(
-  endType: TokenTypes
+  endType: TokenTypes,
 ): PathAndParametersReturn {
   const rules = [RULE_SPACE];
 

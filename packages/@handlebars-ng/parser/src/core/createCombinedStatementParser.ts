@@ -3,7 +3,7 @@ import { Node } from "@handlebars-ng/abstract-syntax-tree";
 import { TokenType } from "../model/lexer";
 
 export function createCombinedStatementParser<T extends Node>(
-  parsers: Map<TokenType, (context: ParseContext) => T>
+  parsers: Map<TokenType, (context: ParseContext) => T>,
 ): (context: ParseContext) => T {
   return (context) => {
     const lookahead = context.tokens.lookAhead;

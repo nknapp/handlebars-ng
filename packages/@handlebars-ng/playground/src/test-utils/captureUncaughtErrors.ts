@@ -1,5 +1,5 @@
 export async function captureUncaughtErrors(
-  callback: () => Promise<void>
+  callback: () => Promise<void>,
 ): Promise<Error[]> {
   const uncaughtErrors: Error[] = [];
   const errorHandler = (event: ErrorEvent) => {

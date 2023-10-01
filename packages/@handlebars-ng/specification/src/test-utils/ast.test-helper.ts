@@ -1,6 +1,6 @@
 export function createProgram(
   body: hbs.AST.Statement[],
-  loc: hbs.AST.SourceLocation
+  loc: hbs.AST.SourceLocation,
 ): hbs.AST.Program {
   return {
     type: "Program",
@@ -13,7 +13,7 @@ export function createProgram(
 
 export function createContent(
   text: string,
-  loc: hbs.AST.SourceLocation
+  loc: hbs.AST.SourceLocation,
 ): hbs.AST.ContentStatement {
   return {
     type: "ContentStatement",
@@ -25,7 +25,7 @@ export function createContent(
 
 export function createComment(
   comment: string,
-  loc: hbs.AST.SourceLocation
+  loc: hbs.AST.SourceLocation,
 ): hbs.AST.CommentStatement {
   return {
     type: "CommentStatement",

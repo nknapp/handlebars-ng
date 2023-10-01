@@ -15,7 +15,7 @@ export const PathExpressionPlugin: HandlebarsParserPlugin = {
       type: "ID",
       match: withLookAhead(
         /[^\n \t!"#%&'()*+,./;<=>@[\\\]^`{|}~]+?/,
-        LOOK_AHEAD
+        LOOK_AHEAD,
       ),
     });
     api.lexerRules.add({ type: "DOT", match: "." });

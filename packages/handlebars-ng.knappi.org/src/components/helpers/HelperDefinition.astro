@@ -13,8 +13,8 @@ const { name } = Astro.props;
 const spec = helpers[name];
 
 const description = spec.description;
-const sourceCode = prettier
-  .format(spec.fn.toString().replace(/^fn/, "function " + name))
+const sourceCode = (await prettier
+  .format(spec.fn.toString().replace(/^fn/, "function " + name), {parser: "babel"}))
   .trim();
 
 const { slug, hash } = helperLink(name);

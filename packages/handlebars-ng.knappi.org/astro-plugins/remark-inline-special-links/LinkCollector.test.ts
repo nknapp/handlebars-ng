@@ -34,7 +34,7 @@ describe("LinkCollector", () => {
   it("returns a node for configured links", () => {
     const collector = new LinkCollector("./source/01/file.md", config);
     const replacementSpec = collector.replacementForLink(
-      "./some-test.hb-spec.json#hash"
+      "./some-test.hb-spec.json#hash",
     );
     expect(replacementSpec).toEqual({
       jsxElementName: expect.any(String),
@@ -58,7 +58,7 @@ describe("LinkCollector", () => {
   it("omits the hash, if no havh is present in the url", () => {
     const collector = new LinkCollector("./source/01/file.md", config);
     const replacementSpec = collector.replacementForLink(
-      "./some-test.hb-spec.json"
+      "./some-test.hb-spec.json",
     );
     expect(replacementSpec).toEqual({
       jsxElementName: expect.any(String),
@@ -78,7 +78,7 @@ describe("LinkCollector", () => {
   it("adds an import for the generated link", () => {
     const collector = new LinkCollector("./source/01/file.md", config);
     const replacementSpec = collector.replacementForLink(
-      "./some-test.hb-spec.json#hash"
+      "./some-test.hb-spec.json#hash",
     );
     const variableName = replacementSpec?.props.spec.value;
     assertNotNull(variableName);
@@ -105,7 +105,7 @@ describe("LinkCollector", () => {
       ],
     });
     const replacementSpec = collector.replacementForLink(
-      "./some-test.hb-spec.json"
+      "./some-test.hb-spec.json",
     );
     const variableName = replacementSpec?.props.spec.value;
 
@@ -120,7 +120,7 @@ describe("LinkCollector", () => {
   it("adds an import for component", () => {
     const collector = new LinkCollector("./source/01/file.md", config);
     const replacementSpec = collector.replacementForLink(
-      "./some-test.hb-spec.json"
+      "./some-test.hb-spec.json",
     );
     const variableName = replacementSpec?.jsxElementName;
 
@@ -135,20 +135,20 @@ describe("LinkCollector", () => {
   it("reuses import variables for the same import source", () => {
     const collector = new LinkCollector("./source/01/file.md", config);
     const replacementSpec1 = collector.replacementForLink(
-      "./some-test.hb-spec.json"
+      "./some-test.hb-spec.json",
     );
     const variableName1 = replacementSpec1?.jsxElementName;
     assertNotNull(variableName1);
 
     const replacementSpec2 = collector.replacementForLink(
-      "./some-test.hb-spec.json"
+      "./some-test.hb-spec.json",
     );
     const variableName2 = replacementSpec2?.jsxElementName;
     assertNotNull(variableName2);
 
     expect(variableName1).toEqual(variableName2);
     expect(count(collector.imports, ({ name }) => name === variableName1)).toBe(
-      1
+      1,
     );
   });
 });

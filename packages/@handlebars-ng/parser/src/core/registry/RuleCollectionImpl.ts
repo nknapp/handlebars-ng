@@ -12,7 +12,7 @@ export class RuleCollectionImpl implements RuleCollector, LexerRules {
     if (this.fallbackRule != null)
       throw new Error(
         "Only one fallback rule is allowed, and this one already exists: " +
-          this.fallbackRule.type
+          this.fallbackRule.type,
       );
     this.fallbackRule = rule;
   }

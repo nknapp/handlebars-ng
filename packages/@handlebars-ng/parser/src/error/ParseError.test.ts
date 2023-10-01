@@ -5,7 +5,7 @@ describe("ParseError", () => {
     const error = new ParseError(
       "Test-Error",
       { line: 1, column: 0 },
-      template(2, 2)
+      template(2, 2),
     );
     expect(error.message).toEqual(`Test-Error at 1:0
 -----
@@ -18,7 +18,7 @@ describe("ParseError", () => {
     const error = new ParseError(
       "Test-Error",
       { line: 4, column: 3 },
-      template(8, 5)
+      template(8, 5),
     );
     expect(error.message).toEqual(`Test-Error at 4:3
 -----
@@ -34,7 +34,7 @@ describe("ParseError", () => {
     const error = new ParseError(
       "Test-Error",
       { line: 8, column: 3 },
-      template(10, 5)
+      template(10, 5),
     );
     expect(error.message).toEqual(`Test-Error at 8:3
 -----
@@ -50,7 +50,7 @@ describe("ParseError", () => {
     const error = new ParseError(
       "Test-Error",
       { line: 4, column: 3 },
-      template(20, 5)
+      template(20, 5),
     );
     expect(error.message).toEqual(`Test-Error at 4:3
 -----

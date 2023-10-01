@@ -13,7 +13,7 @@ describe("ParserCollectionImpl", () => {
   it("throws an exception if no parser was found", () => {
     const collection = new DefaultParsers();
     expect(() => collection.getDefaultParser("BooleanLiteral")).toThrow(
-      "No default parser found for node type: BooleanLiteral"
+      "No default parser found for node type: BooleanLiteral",
     );
   });
 
@@ -21,9 +21,9 @@ describe("ParserCollectionImpl", () => {
     const collection = new DefaultParsers();
     collection.setDefaultParser("BooleanLiteral", vi.fn());
     expect(() =>
-      collection.setDefaultParser("BooleanLiteral", vi.fn())
+      collection.setDefaultParser("BooleanLiteral", vi.fn()),
     ).toThrow(
-      "A default parser for this node-type was already registered: BooleanLiteral"
+      "A default parser for this node-type was already registered: BooleanLiteral",
     );
   });
 });

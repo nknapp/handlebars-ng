@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-import { Component, onMount } from "solid-js";
+import { type Component, onMount } from "solid-js";
 import {
   Chart,
   BarController,
@@ -20,7 +20,7 @@ Chart.register(
   LinearScale,
   Tooltip,
   Colors,
-  Legend
+  Legend,
 );
 
 export const BenchmarkChart: Component<{
