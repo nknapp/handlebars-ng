@@ -1,4 +1,5 @@
 dist
 dist-node
 packages/handlebars-ng.knappi.org/src/pages/spec/
+.vitest-preview
 __generated__
