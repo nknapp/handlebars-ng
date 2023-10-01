@@ -4,7 +4,6 @@ import type { CodeMirrorProps } from "../CodeMirror.types";
 const CodeMirror: Component<CodeMirrorProps> = (props) => {
   return (
     <div>
-      {props.overlayText}
       <textarea
         id={props.id}
         value={props.value}

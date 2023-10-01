@@ -20,15 +20,15 @@
     "clean": "rm dist dist-node -rf"
   },
   "dependencies": {
-    "handlebars": "4.7.7",
-    "tinybench": "2.5.0"
+    "handlebars": "4.7.8",
+    "tinybench": "2.5.1"
   },
   "devDependencies": {
     "@handlebars-ng/common-dev": "0.0.1",
     "@handlebars-ng/eslint-plugin": "0.0.1",
-    "concurrently": "8.0.1",
-    "typescript": "5.0.4",
-    "vite": "4.3.9",
-    "vitest": "0.31.1"
+    "concurrently": "8.2.1",
+    "typescript": "5.2.2",
+    "vite": "4.4.9",
+    "vitest": "0.34.6"
   }
 }

@@ -45,7 +45,7 @@ class ExpectedSuccess {
     this.filename = filename;
   }
 
-  testSuccess() {
+  async testSuccess() {
     if (this.shouldWorkWithOriginalHandlebars()) {
       it.todo(this.testcase.description);
     } else {
@@ -54,8 +54,8 @@ class ExpectedSuccess {
           this.expectCorrectOutput();
         });
 
-        it("ast", () => {
-          this.expectCorrectAst();
+        it("ast", async () => {
+          await this.expectCorrectAst();
         });
       });
     }
@@ -67,14 +67,14 @@ class ExpectedSuccess {
     );
   }
 
-  expectCorrectAst() {
+  async expectCorrectAst() {
     const instance = Handlebars.create();
     const ast = instance.parse(this.testcase.template) as Program;
     const actual = { ...this.testcase, ast: normalizeAst(ast) };
     try {
       expect(actual.ast).toEqual(this.testcase.ast);
     } catch (error) {
-      writeActualSpecForComparison(this.filename, actual);
+      await writeActualSpecForComparison(this.filename, actual);
     }
   }
 
@@ -96,20 +96,20 @@ class ExpectedParseError {
     if (this.testcase.originalMessage != null) {
       it.todo("should yield a parse error");
     } else {
-      it("should yield a parse error", () => {
+      it("should yield a parse error", async () => {
         const instance = Handlebars.create();
         try {
           instance.parse(this.testcase.template);
           expect.fail("Expected template to fail");
         } catch (error) {
-          this.verifyError(error as Error);
+          await this.verifyError(error as Error);
           return;
         }
       });
     }
   }
 
-  verifyError(error: Error) {
+  async verifyError(error: Error) {
     const { line, column } = posFromParseError(error);
     try {
       expect(error.message).toEqual(this.testcase.expected.message);
@@ -122,20 +122,23 @@ class ExpectedParseError {
         ...this.testcase,
         expected: { message: error.message, line, column },
       };
-      writeActualSpecForComparison(this.filename, actual);
+      await writeActualSpecForComparison(this.filename, actual);
       throw failedExpectation;
     }
   }
 }
 
-function writeActualSpecForComparison(filename: string, actualSpec: unknown) {
+async function writeActualSpecForComparison(
+  filename: string,
+  actualSpec: unknown,
+) {
   const actualFile = path.join(specDir, filename + ".actual.json");
   const actualContents = JSON.stringify(actualSpec);
   fs.writeFileSync(
     actualFile,
-    prettier.format(actualContents, { parser: "json" })
+    await prettier.format(actualContents, { parser: "json" }),
   );
   throw new Error(
-    `Difference in "${filename}": Adding "${actualFile}" as reference`
+    `Difference in "${filename}": Adding "${actualFile}" as reference`,
   );
 }

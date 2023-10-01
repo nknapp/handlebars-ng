@@ -1,5 +1,5 @@
 import { Program } from "@handlebars-ng/abstract-syntax-tree";
-import { Component, createMemo } from "solid-js";
+import { Component, createEffect, createResource } from "solid-js";
 import { formatAst } from "./formatAst";
 import { CodeEditor } from "../CodeEditor";
 
@@ -10,12 +10,22 @@ interface AstViewProps {
 }
 
 export const AstView: Component<AstViewProps> = (props) => {
-  const prettyAst = createMemo(() => (props.ast ? formatAst(props.ast) : ""));
+  const prettifyAst = async () => {
+    return props.ast ? await formatAst(props.ast) : "";
+  };
+  const [prettyAst, { refetch: reloadAst }] = createResource(prettifyAst, {});
+
+  createEffect(() => {
+    if (props.ast != null) reloadAst();
+  });
+
   return (
     <CodeEditor
       label={props.label}
-      value={prettyAst()}
-      overlayText={props.loading ? "Loading..." : undefined}
+      value={prettyAst.state === "ready" ? prettyAst() : ""}
+      overlayText={
+        props.loading || prettyAst.loading ? "Loading..." : undefined
+      }
       readonly
       language="json"
     />

@@ -49,7 +49,20 @@ export default defineConfig({
     globals: true,
     setupFiles: ["src/setup-tests.ts"],
     open: false,
-    // otherwise, solid would be loaded twice:
-    deps: { registerNodeLoader: true },
+    testTransformMode: { web: ["**/*.tsx", "**/*.ts"] },
+    server: {
+      // https://github.com/solidjs/vite-plugin-solid/issues/114#issuecomment-1701491260
+      deps: {
+        inline: [/solid-js/],
+      },
+    },
+    deps: {
+      // https://github.com/solidjs/vite-plugin-solid/issues/114#issuecomment-1701491260
+      optimizer: {
+        web: {
+          enabled: true,
+        },
+      },
+    },
   },
 });

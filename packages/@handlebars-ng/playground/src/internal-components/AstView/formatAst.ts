@@ -1,12 +1,12 @@
 import { Program } from "@handlebars-ng/abstract-syntax-tree";
 import JSON5 from "json5";
 import prettier from "prettier/standalone";
-import parserBabel from "prettier/parser-babel";
+import * as parserBabel from "prettier/plugins/babel.js";
+import * as prettierPluginEstree from "prettier/plugins/estree";
 
-export function formatAst(ast: Program): string {
+export async function formatAst(ast: Program): Promise<string> {
   return prettier.format(JSON5.stringify(ast), {
     parser: "json5",
-    pluginSearchDirs: false,
-    plugins: [parserBabel],
+    plugins: [parserBabel, prettierPluginEstree],
   });
 }

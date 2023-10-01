@@ -4,10 +4,10 @@ import fs from "node:fs/promises";
 
 export async function writeTestcase(
   file: string,
-  testcase: HandlebarsTest
+  testcase: HandlebarsTest,
 ): Promise<void> {
   const json = JSON.stringify(testcase);
-  const formatted = prettier.format(json, { parser: "json" });
+  const formatted = await prettier.format(json, { parser: "json" });
   if ((await readFileOrNull(file)) !== formatted) {
     console.log("Updating " + file);
     await fs.writeFile(file, formatted);
@@ -27,7 +27,7 @@ async function readFileOrNull(file: string): Promise<string | null> {
 
 function hasProperty<T extends string>(
   object: unknown,
-  prop: T
+  prop: T,
 ): object is { [prop in T]: string } {
   return prop in (object as { [prop in T]: string });
 }

@@ -1,4 +1,4 @@
-import { render, screen } from "@solidjs/testing-library";
+import { render, screen, waitFor } from "@solidjs/testing-library";
 import { AstView } from "./AstView";
 import { Program } from "@handlebars-ng/abstract-syntax-tree";
 
@@ -23,9 +23,11 @@ describe("AstView", () => {
     expect(await screen.findByLabelText("label")).toBeInTheDocument();
   });
 
-  it("renders a Program node with prettier", () => {
+  it("renders a Program node with prettier", async () => {
     render(() => <AstView label="label" ast={testAst} loading={false} />);
-    expect(screen.getByLabelText("label")).toHaveValue(expectedPrettyAst);
+    await waitFor(() => {
+      expect(screen.getByLabelText("label")).toHaveValue(expectedPrettyAst);
+    });
   });
 
   it("renders a readonly editor", () => {
@@ -33,9 +35,11 @@ describe("AstView", () => {
     expect(screen.getByLabelText("label")).toHaveAttribute("readonly");
   });
 
-  it("renders loading indicator while loading", () => {
+  it("renders loading indicator while loading", async () => {
     render(() => <AstView label="label" ast={testAst} loading={true} />);
-    expect(screen.queryByText("Loading...")).not.toBeNull();
+    await waitFor(() => {
+      expect(screen.getByText("Loading...")).toBeInTheDocument();
+    });
   });
 
   it("renders empty editor when ASt is undefined", () => {
